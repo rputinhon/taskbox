@@ -1,0 +1,240 @@
+import axios from 'axios'
+
+const state = { 
+    users: []
+};
+
+const getters = { 
+    usersList: state => state.users
+};
+
+const actions = { 
+    async fetchUsers({commit}){
+      const response = await axios.get("http://localhost:3000/users");
+      commit("setUsers", response.data)
+    },
+    async addUsers({commit}, user){
+      const response = await axios.post("http://localhost:3000/users", user);
+      commit("addNewUser", response.data)
+    },
+    async deleteUser({commit}, id){
+      await axios.delete(`http://localhost:3000/users/${id}`);
+      commit("removeUser", id)
+    }
+};
+
+const mutations = { 
+    setUsers: (state, users) => (
+        state.users = users
+    ),
+    addNewUser: (state, user) => state.users.unshift(user),
+    removeUser: (state, id) => (
+        state.users.filter(user => user.id !== id),
+        state.users.splice(user => user.id, 1)
+    )
+};
+
+export default {
+    state,
+    getters,
+    actions,
+    mutations
+}
+
+
+
+import { IUser } from '../../interfaces/IUser';
+import { ILoginError }  from '../../interfaces/ILoginError';
+import  Permissions  from '../../enums/Permissions';
+import { ActionContext } from 'vuex';
+import { IState } from '../../interfaces/IState';
+import { remoteDb } from '../../config/pouchdb';
+
+/////// STATE
+export interface IUserState {
+  /**
+   * put your state attributes here, for example:
+   * myAttribute: any;
+   */
+   permissions: (Permissions | null)[];
+   user?: IUser;
+   loginError?: ILoginError;
+   currentUser?: any;
+}
+
+export const state = (): IUserState => {
+  return {
+    /**
+     * put your default value here, for example:
+     * myAttribute: null,
+     */
+     user: {},
+     permissions:[],
+     currentUser: undefined,
+  };
+};
+
+export const UserDefaultState = (): IUserState => {
+  return {
+    /**
+     * put your default value here, for example:
+     * myAttribute: null,
+     */
+     user: {givenName: "User",familyName: "Test",fullName: "User Test",id: "test-user"},
+     permissions:[Permissions.ReadNodes,Permissions.WriteNodes,Permissions.ReadModules,Permissions.WriteModules],
+     currentUser: undefined,
+  };
+};
+
+/////// GETTERS
+export interface IUserGetters {
+    currentUser(state: IUserState): IUser;
+}
+
+export const getters: IUserGetters = {
+    currentUser(state) {
+        return state.currentUser;
+    },
+};  
+
+/////// ACTIONS
+
+export interface IUserActions {
+  fetchPermissions(context: ActionContext<IUserState, IState>): Promise<any>;
+  loginSuccess(context: ActionContext<IUserState, IState>, id: string): Promise<any>;
+  loginError(context: ActionContext<IUserState, IState>, user: IUser): Promise<any>;
+  logoutSuccess(context: ActionContext<IUserState, IState>, user: IUser): Promise<any>;
+}
+
+export const actions: IUserActions = {    
+  async fetchPermissions({commit}) {
+        try {
+            const data = await axios.get('/user/fetchPermissions');
+            commit('SET_PERMISSIONS', data);
+        } catch (e) {
+            console.error(e);
+            // throw new Error();
+        }
+  },
+  async loginSuccess({ commit }) {
+        try {
+        const data = await axios.get('/user/loginSuccess');
+        commit('SET_LOGIN_SUCCESS', data);
+        } catch (e) {
+            console.error(e);
+        // throw new Error();
+        }
+  },
+  async loginError({ commit }) {
+        try {
+        const data = await axios.get('/user/loginError');
+        commit('SET_LOGIN_ERROR', data);
+        } catch (e) {
+            console.error(e);
+        // throw new Error();
+        }
+  },
+  async logoutSuccess({ commit }) {
+        try {
+        const data = await axios.get('/user/logoutSuccess');
+        commit('SET_LOGOUT_SUCCESS', data);
+        } catch (e) {
+            console.error(e);
+        // throw new Error();
+        }
+    },
+};
+
+/////// MUTATIONS
+export interface IUserMutations {
+    SET_PERMISSIONS(state: IUserState, Permissions: Permissions): void;
+    SET_LOGIN_SUCCESS(state: IUserState, User: IUser): void;
+    SET_LOGIN_ERROR(state: IUserState, LoginError: ILoginError): void;
+    SET_LOGOUT_SUCCESS(state: IUserState, User: IUser): void;
+}
+
+export const mutations: IUserMutations = {
+  SET_PERMISSIONS: (state, permissions) => {
+    state.permissions.push(permissions);
+  },
+  SET_LOGIN_SUCCESS: (state, User) => {
+    state.currentUser = User;
+  },
+  SET_LOGIN_ERROR: (state, error) => {
+    state.loginError = error;
+  },
+  SET_LOGOUT_SUCCESS: (state) => {
+    state.currentUser = undefined;
+    state.permissions = [];
+  },*/
+ /* DELETE_User: (state, User) => {
+    const idx = state.Users.findIndex((item) => item.id === User.id);
+    state.Users.splice(idx, 1);
+  },    */
+};
+
+/*
+export const getCurrentSession = (
+    username: string
+  ): AppThunk => async dispatch => {
+    const user = await remoteDb.getUser(username);
+    dispatch(
+        this.$store
+        store.commit()
+       loginSuccess({
+        user: {
+          id: user._id,
+          givenName: (user as any).metadata.givenName,
+          familyName: (user as any).metadata.familyName
+        },
+        permissions:  initialState.permissions
+      })
+    );
+  };
+  
+  export const login = (
+    username: string,
+    password: string
+  ): AppThunk => async dispatch => {
+    try {
+      const response = await remoteDb.logIn(username, password);
+      const user = await remoteDb.getUser(response.name);
+      dispatch(
+        loginSuccess({
+          user: {
+            id: user._id,
+            givenName: (user as any).metadata.givenName,
+            familyName: (user as any).metadata.familyName
+          },
+          permissions: initialState.permissions
+        })
+      );
+    } catch (error) {
+      if (!username || !password) {
+        dispatch(
+          loginError({
+            message: "user.login.error.message.required",
+            username: "user.login.error.username.required",
+            password: "user.login.error.password.required"
+          })
+        );
+      } else {
+        if (error.status === 401) {
+          dispatch(
+            loginError({
+              message: "user.login.error.message.incorrect"
+            })
+          );
+       
+        }
+      }
+  
+      }
+  };
+  
+  export const logout = (): AppThunk => async dispatch => {
+    await remoteDb.logOut();
+    dispatch(logoutSuccess());
+  };
+  
+*/
