@@ -11,7 +11,7 @@
       Opening in the default external app...
       <v-btn x-small color="accent" @click="working = false">back</v-btn>
     </v-overlay>
-    <v-toolbar v-if="showToolsBar" v-show="!loading && fileExist" color="grey lighten-2" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 40%; bottom: 50px" rounded="pill">
+    <v-toolbar v-if="showToolsBar" v-show="!loading" color="grey lighten-2" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 43.5%; bottom: 50px" rounded="pill">
       <v-tooltip bottom transition="none">
         <template v-slot:activator="{ on: onTooltip }">
           <v-btn elevation="0" class="mr-1" color="primary" v-on="onTooltip" rounded x-small @click="selectFile()" v-text="'change file'"> </v-btn>
@@ -24,7 +24,7 @@
         </template>
         Edit in the default external application
       </v-tooltip>
-      <v-btn-toggle class="ml-2 mb-1" rounded group mandatory v-model="background">
+      <v-btn-toggle v-if="fileExist" class="ml-2 mb-1" rounded group mandatory v-model="background">
         <v-item-group v-for="(color, c) in backgroundTypes" :key="c">
           <v-tooltip v-if="image" bottom transition="none">
             <template v-slot:activator="{ on: onTooltip }">
@@ -80,11 +80,14 @@ export default {
               this.maxheight = size < 610 ? size : 610;
               eventBus.$emit('previewLoaded', false);
               this.loading = false;
-            });
+            })
         });
     });
   },
   watch: {
+    fileExist() {
+      eventBus.$emit('previewLoaded', false);
+    },
     async previewingTask() {
       this.fileExist = await this.checkFileExist();
     },

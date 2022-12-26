@@ -15,7 +15,7 @@
     <!-- <task-menu :task="task" :options="['icon', 'tile', 'fab']" @showReviews="$emit('showReviews')" /> -->
     <!-- <avatar-list v-if="authenticated" style="direction: rtl" class="mr-3" :concat="4" :size="28" :max="8" :list="workers" /> -->
     <!-- <span class="text-subtitle-2 grey--text"> | {{ task.progress }}% </span> -->
-    <task-status-menu :task="task" :options="['progress', 'fab', 'icon', 'flat']" :extraClass="'mx-3'" :hideItems="isTaskBox ? [0, 2] : []" :hideSlideBar="isTaskBox ? true : false" @confirmChange="changeStatus" @updateTaskBox="$emit('updateTaskBox')" />
+    <task-status-menu :task="task" :options="['progress','workers', 'fab', 'icon', 'flat']" :extraClass="'mx-3'" :hideItems="isTaskBox ? [0, 2] : []" :hideSlideBar="isTaskBox ? true : false" @confirmChange="changeStatus" @updateTaskBox="$emit('updateTaskBox')" />
 
     <v-tooltip bottom transition="none" z-index="1000">
       <template v-if="hasReviews" v-slot:activator="{ on: tooltip }">

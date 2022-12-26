@@ -64,13 +64,13 @@ import TaskTitle from './TaskTitle.vue';
 import TaskIcon from './TaskIcon.vue';
 
 import { eventBus } from '../../../main';
-import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
 import { taskModel } from '../../store/models/TaskModel';
 import { mapGetters, mapState } from 'vuex';
 import FlowTaskMenu from '../menus/FlowTaskMenu.vue';
 import CandidateList from '../browse/CandidateList.vue';
 import { postType } from '../../store/models/PostModel';
 import { postRepository } from '../../store/modules/post/postRepository';
+import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
 import Review from '../forms/Review.vue';
 import reviewstatus from '../../enums/reviewstatus';
 

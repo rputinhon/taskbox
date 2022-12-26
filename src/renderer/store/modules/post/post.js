@@ -1,7 +1,7 @@
 import { postRepository } from './postRepository';
 import store from "../.."
 import apistate from "../../../enums/apistate";
-import { checkModel, postModel, postType } from '../../models/PostModel';
+import { checkModel, postModel } from '../../models/PostModel';
 import _ from 'lodash';
 import { messageModel } from '../../models/ConnectionModel';
 
@@ -192,7 +192,7 @@ const mutations = {
         } else {
             state.personal = args.posts;
         }
-        state.opentasks = args.posts.filter(p => p.postType == postType.TASK.value).map(post => { return { [post.task]: post.data.candidats } });
+        // state.opentasks = args.posts.filter(p => p.postType == postType.TASK.value).map(post => { return { [post.task]: post.data.candidats } });
     },
     SUCCESS_FETCH_POSTS(state, args) {
         if (!args.clear) {

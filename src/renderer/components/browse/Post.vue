@@ -39,7 +39,7 @@
 <script>
 import moment from 'moment';
 import { mapState } from 'vuex';
-import { getPostTypeByValue, postType } from '../../store/models/PostModel';
+import { getPostTypeByValue } from '../../store/models/PostModel';
 import MemberItem from '../lists/MemberItem.vue';
 import PostMenu from '../menus/PostMenu.vue';
 import Check from './Check.vue';
@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     if (this.postType) {
-      this.postTypeModel = this.postType.value;
+      // this.postTypeModel = this.postType.value;
       this.getComponentType(this.postType.componentType);
       if (this.isTask) {
         this.getTask(this.post.data.task);
@@ -90,7 +90,7 @@ export default {
       return getPostTypeByValue(this.post.postType);
     },
     isTask() {
-      return this.postType.value == postType.TASK.value;
+      return false// this.postType.value == postType.TASK.value;
     },
     isCandidate() {
       return this.candidats.includes(this.member.id);
