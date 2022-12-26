@@ -69,11 +69,15 @@ const actions = {
             console.log(error);
         })
     },
-    async SAVE({ dispatch }, post) {
+    async SAVE({ commit,dispatch }, post) {
         store.commit('SET_API_STATE', apistate.SAVING);
         try {
             postRepository.saveOrUpdate(post).then((result) => {
-                dispatch('FETCH_PERSONAL', { filter: null, member: result.createdBy, clear: true });
+                dispatch('FETCH', { filter: null, clear: true }).then(() => {
+                    dispatch('FETCH_PERSONAL', { filter: null, member: result.createdBy, clear: true }).then(() => {
+                        commit("SUCCESS_UPDATE_POST", result)
+                    })
+                })
             });
         } catch (error) {
             store.commit('SET_ERROR_STATE', error.message);
@@ -212,9 +216,15 @@ const mutations = {
         store.commit('SET_API_STATE', apistate.DONE);
     },
     OPEN_POST_CREATOR(state, args) {
-        state.creatingPost = Object.assign({}, postModel);
-        if (args)
-            Object.assign(state.creatingPost, args);
+        state.creatingPost = args.post || Object.assign({}, postModel);
+        if (args.postType)
+            state.creatingPost.postType = args.postType;
+    },
+    SET_SUBJECT(state, subject) {
+        state.creatingPost.subject = subject;
+    },
+    SET_DATA(state, data) {
+        Object.assign(state.creatingPost.data, data);
     },
     UPDATE_CREATING_POST(state, post) {
         state.creatingPost = post;
@@ -248,6 +258,8 @@ const mutations = {
         if (post) {
             let index = state.posts.indexOf(p);
             state.posts[index] = post;
+            if(state.previewingPost)
+            state.previewingPost = post;
             // eventBus.$emit('updatePost', post)
         }
     },

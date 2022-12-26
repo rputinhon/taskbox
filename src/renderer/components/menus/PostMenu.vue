@@ -1,9 +1,10 @@
 <template>
   <v-menu rounded="0" right offset-x light :close-on-content-click="true" @click.stop>
     <template v-slot:activator="{ on: menu }">
-      <v-btn v-on="{ ...menu }" x-small icon fab>
+      <v-btn v-on="{ ...menu }" x-small :icon="!post.archived" fab depressed :color="post.archived?'error':''">
         <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path d="M 12 20.345703 A 3.6551981 3.6551981 0 0 0 8.3457031 24 A 3.6551981 3.6551981 0 0 0 12 27.654297 A 3.6551981 3.6551981 0 0 0 15.654297 24 A 3.6551981 3.6551981 0 0 0 12 20.345703 z M 24 20.345703 A 3.6551981 3.6551981 0 0 0 20.345703 24 A 3.6551981 3.6551981 0 0 0 24 27.654297 A 3.6551981 3.6551981 0 0 0 27.654297 24 A 3.6551981 3.6551981 0 0 0 24 20.345703 z M 36 20.345703 A 3.6551981 3.6551981 0 0 0 32.345703 24 A 3.6551981 3.6551981 0 0 0 36 27.654297 A 3.6551981 3.6551981 0 0 0 39.654297 24 A 3.6551981 3.6551981 0 0 0 36 20.345703 z " fill="grey" />
+          <path d="M 12 20.345703 A 3.6551981 3.6551981 0 0 0 8.3457031 24 A 3.6551981 3.6551981 0 0 0 12 27.654297 A 3.6551981 3.6551981 0 0 0 15.654297 24 A 3.6551981 3.6551981 0 0 0 12 20.345703 z M 24 20.345703 A 3.6551981 3.6551981 0 0 0 20.345703 24 A 3.6551981 3.6551981 0 0 0 24 27.654297 A 3.6551981 3.6551981 0 0 0 27.654297 24 A 3.6551981 3.6551981 0 0 0 24 20.345703 z M 36 20.345703 A 3.6551981 3.6551981 0 0 0 32.345703 24 A 3.6551981 3.6551981 0 0 0 36 27.654297 A 3.6551981 3.6551981 0 0 0 39.654297 24 A 3.6551981 3.6551981 0 0 0 36 20.345703 z " 
+          :fill="!post.archived&&'grey'||'white'" />
         </svg>
       </v-btn>
     </template>
@@ -21,14 +22,14 @@
           </v-select>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item link style="min-height: 40px; height: 40px">
+        <!-- <v-list-item link style="min-height: 40px; height: 40px">
           <v-btn text block small @click.stop="sharePost()"> Share </v-btn>
-        </v-list-item>
+        </v-list-item> -->
         <v-list-item link style="min-height: 40px; height: 40px">
           <v-btn text block small @click.stop="modifyPost()"> Modify </v-btn>
         </v-list-item>
         <v-list-item link style="min-height: 40px; height: 40px">
-          <v-btn text block :color="post.archived?'primary':''" small v-text="post.archived?'archived':'archive'" @click.stop="archivePost()"> Archive </v-btn>
+          <v-btn :text="!post.archived" block :color="post.archived?'error':''" small v-text="post.archived?'archived':'archive'" @click.stop="archivePost()"> Archive </v-btn>
         </v-list-item>
         <v-list-item link style="min-height: 40px; height: 40px">
           <v-btn text block small @click.stop="deletePost()"> Delete </v-btn>
@@ -65,7 +66,9 @@ export default {
       });
     },
     sharePost() {},
-    modifyPost() {},
+    modifyPost() {
+      this.$store.commit('post/OPEN_POST_CREATOR', { post: this.post });
+    },
     archivePost() {
       let copy = _.cloneDeep(this.post);
       if (!copy.archived) Object.assign(copy, { archived: false });

@@ -46,7 +46,7 @@
 <script>
 import { mapState } from 'vuex';
 import { eventBus } from '../../../main';
-import { getPostTypeByValue, postType, shareWith } from '../../store/models/PostModel';
+import { getPostTypeByValue, shareWith } from '../../store/models/PostModel';
 import MemberItem from '../lists/MemberItem.vue';
 import Check from './Check.vue';
 import _ from 'lodash';
@@ -99,7 +99,7 @@ export default {
       post: (state) => _.cloneDeep(state.post.previewingPost),
     }),
     isTask() {
-      return this.postType.value == postType.TASK.value;
+      return  false // this.postType.value == postType.TASK.value;
     },
     icon() {
       return this.isTask ? this.status.icon : this.postType.icon;
