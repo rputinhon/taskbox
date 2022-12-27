@@ -1,3 +1,5 @@
+[![Taskbox Logo](public/img/logo_worm_256_flat.png)]
+
 # taskbox
 
 ## Project setup
