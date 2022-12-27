@@ -1,6 +1,7 @@
 [![Taskbox Logo](public/img/social_media_1280_640.svg)]
 
-# taskbox
+#   taskbox
+A flowing way to manage your tasks.
 
 ## Project setup
 ```
