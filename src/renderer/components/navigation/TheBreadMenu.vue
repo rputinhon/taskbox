@@ -38,8 +38,10 @@ import { mapGetters, mapState } from 'vuex';
 import { getStatusTypeByValue } from '../../enums/taskstate';
 import NavMenu from './NavMenu.vue';
 export default {
-  components: { NavMenu },
   name: 'BreadCrumb',
+  components: { 
+    NavMenu,
+    },
   data: () => ({
     editingTitle: false,
   }),

@@ -513,6 +513,8 @@ class _nodeView extends TaskBox {
                 editor.removeNode(s);
                 selected.pop(s);
             }
+            if(s.name=='TasBox')
+            console.log(s.data);
         })
 
         if(selected.length>0){
@@ -560,8 +562,6 @@ class _nodeView extends TaskBox {
         editor.removeConnection(conn.input.node.getConnections().filter(c => c.input.key == conn.input.key)[0]);
         self.process();
     }
-
-
 
     async connectFromExtenalInput(output, input, data) {
 

@@ -47,7 +47,9 @@
           Show Reviews
         </v-tooltip>
       </v-list-item>
-      <due-control v-show="hovering || !completed" :hovering="hovering" :showDetails="false" :task="task" />
+      <v-list-item v-if="false" style="min-height:15px;margin-top:-5px!important;z-index:50" class="my-1">
+      <due-control  :showDetails="false" :task="task" />
+      </v-list-item>
     </v-card>
     <v-list-item-icon v-if="authenticated && options.includes('audit')" :class="auditing && 'ml-3'" class="mx-0 px-0 my-0">
       <flow-task-menu :task="task" :status="status" :options="['tile']" />

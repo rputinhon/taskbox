@@ -1,6 +1,6 @@
 <template>
   <RULE :rule="rules.EDIT" :returnCondition="true" v-if="currentTask">
-    <v-menu :disabled="!options.includes('popup')"  right bottom offset-y  z-index="1000" :close-on-content-click="false">
+    <v-menu :disabled="!options.includes('popup')"  left bottom offset-y  z-index="1000" :close-on-content-click="false">
       <template v-slot:activator="{ on: onHover }">
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on: onTooltip }">

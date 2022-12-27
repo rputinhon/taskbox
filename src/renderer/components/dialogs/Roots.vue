@@ -3,7 +3,7 @@
     <v-card-title class="text-subtitle-1 py-0" v-if="!searching">
       <v-list-item class="ma-0 pa-0" style="min-height: 40px; width: 100%">
         <v-list-item-content class="text-left" style="min-width: 180px">
-          <v-list-item-title> Roots </v-list-item-title>
+          <v-list-item-title> Projects </v-list-item-title>
         </v-list-item-content>
         <v-btn v-show="!searching" rounded x-small color="primary" class="mr-2" @click="newProject()"> new </v-btn>
         <task-sort v-if="false" :show="!searching" @update="updateSort" />

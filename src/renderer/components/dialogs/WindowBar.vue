@@ -38,7 +38,6 @@
         <task-box-title v-if="false" :options="['info']" v-show="analysing == false" />
         <v-spacer></v-spacer>
         <task-box-menu v-if="analysing == false" :taskbox="currentTaskBox" :extraClass="'mr-1'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
-        <task-box-table-info  :taskbox="currentTaskBox" :options="['status']" />
         <task-subject :color="'grey'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" />
       </v-list-item>
 
@@ -125,7 +124,6 @@ import TaskBoxMenu from '../menus/TaskBoxMenu.vue';
 import AnalalisisMenu from '../menus/AnalalisisMenu.vue';
 import Profile from './Profile.vue';
 import TaskSubject from '../lists/TaskSubject.vue';
-import TaskBoxTableInfo from './TaskBoxTableInfo.vue';
 
 export default {
   name: 'WindowBar',
@@ -139,7 +137,6 @@ export default {
     TaskBoxMenu,
     TaskSubject,
     TaskBoxTitle,
-    TaskBoxTableInfo,
   },
   data() {
     return {

@@ -75,8 +75,8 @@
         <v-list-item-subtitle class="my-0 py-0" v-if="taskBoxInfo"> {{ taskBoxInfo.Done.value }} of {{ taskBoxInfo.Total.value - taskBoxInfo.Canceled.value }} tasks done </v-list-item-subtitle>
       </v-list-item-content>
       <v-spacer v-if="!searching"></v-spacer>
-      <task-status-menu :extraStyle="'z-index:6'" :task="currentTaskBoxTask" :extraClass="'mr-2'" :options="['flat', 'fab', 'icon']" />
       <task-box-menu :extraStyle="'z-index:6'" :extraClass="'mx-1 ml-3'" :taskbox="currentTaskBoxTask" :options="['icon', 'template', 'pack']" />
+      <task-box-table-info  :taskbox="currentTaskBoxTask" :options="['status']" />
       <v-btn v-if="false" style="margin-right: -20px !important" class="mx-0" icon @click="selecting = !selecting">
         <svg width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="m10.754-3.4365e-8c-5.9037 0-10.754 4.8503-10.754 10.754v26.492c0 5.9037 4.8503 10.754 10.754 10.754h26.492c5.9037 0 10.754-4.8503 10.754-10.754v-26.492c1e-15 -5.9037-4.8503-10.754-10.754-10.754zm0 6.2495h26.492c2.5507 0 4.5045 1.9538 4.5045 4.5045v26.492c0 2.5507-1.9538 4.5045-4.5045 4.5045h-26.492c-2.5507 0-4.5045-1.9538-4.5045-4.5045v-26.492c0-2.5507 1.9538-4.5045 4.5045-4.5045z" color="#000000" fill="grey" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.67" style="-inkscape-stroke: none; paint-order: stroke fill markers" />
@@ -125,10 +125,10 @@ import TaskSort from '../menus/TaskSort.vue';
 import NavMenu from '../navigation/NavMenu.vue';
 import TaskBoxMenu from '../menus/TaskBoxMenu.vue';
 import Analisys from '../navigation/Analisys.vue';
-import TaskStatusMenu from '../menus/TaskStatusMenu.vue';
 import { isTaskCanceled, isTaskPaused } from '../../store/modules/task/task';
 import auditionstatus from '../../enums/auditionstatus';
 import { eventBus } from '../../../main';
+import TaskBoxTableInfo from './TaskBoxTableInfo.vue';
 
 export default {
   name: 'TasksPannel',
@@ -140,7 +140,7 @@ export default {
     NavMenu,
     TaskBoxMenu,
     Analisys,
-    TaskStatusMenu,
+    TaskBoxTableInfo,
     // AuditionBit,
   },
   data() {

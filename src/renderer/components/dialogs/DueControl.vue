@@ -1,15 +1,12 @@
 <template>
-  <v-app-bar flat class="pa-0 ma-0" style="position: absolute; z-index: 12;" width="100%" height="100%" color="transparent" v-if="task">
-    <v-progress-linear absolute height="5" buffer-value="100" />
+  <v-app-bar rounded="lg" flat class="pa-0 ma-0" width="100%" height="10px" color="transparent" v-if="task">
+    <v-progress-linear  color="grey" absolute height="100%" buffer-value="100" ><small style="font-size:10px">{{ dueIn }}</small></v-progress-linear>
     <date-time-picker :completed="completed" :started="started" :task="task" :type="'plannedToStartAt'" :dueColor="hasDue ? dueColor : 'grey'" />
     <v-spacer/>
     <date-time-picker :completed="completed" :started="started" :isLate="isLate" :task="task" :type="'plannedToEndAt'" :dueColor="hasDue ? dueColor : 'grey'"> ! </date-time-picker>
     <svg v-if="hasDue && !completed" :style="`position:absolute;left:${interval < 100 ? interval : 100}%`" version="1.1" width="18" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
       <rect x="0" y="0" width="14" height="14" ry="24" :fill="dueColor" />
     </svg>
-    <v-overlay class="black--text" v-show="(!hovering && hasDue && started)" :color="dueColor" style="height: 50px" :opacity="interval / 100 - 0.4">
-     <div class="text-subtitle-2"> {{ dueIn() }}</div>
-    </v-overlay>
   </v-app-bar>
 </template>
 
