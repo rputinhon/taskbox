@@ -1,6 +1,7 @@
 ![Taskbox Logo](public/img/logo_worm_128_flat.png)
 
 #   taskbox
+A flowing way to manage your tasks.
 
 ## Project setup
 ```
