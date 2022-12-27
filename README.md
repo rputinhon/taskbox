@@ -1,4 +1,4 @@
-[![Taskbox Logo](public/img/social_media_1280_640.svg)]
+![Taskbox Logo](public/img/social_media_1280_640.png)
 
 #   taskbox
 A flowing way to manage your tasks.
