@@ -74,6 +74,7 @@ export default {
   },
   mounted() {
     this.subject = this.post.subject;
+    if (!this.post.data || !this.post.data.options) Object.assign(this.post, { data: { options: defaultOptions } });
   },
   watch: {
     align(value) {
@@ -141,7 +142,7 @@ export default {
       return getPostTypeByValue(this.post.postType);
     },
     options() {
-        return this.post.data.options;
+      return this.post.data.options;
     },
   },
   methods: {

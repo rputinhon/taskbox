@@ -515,7 +515,6 @@ class _nodeView extends TaskBox {
             }
         })
 
-        
         if(selected.length>0){
             if (force) {
                 store.dispatch('taskbox/DELETE_TASKS', selected.map(s => s.id)).then(() => {

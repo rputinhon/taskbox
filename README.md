@@ -1,4 +1,4 @@
-[![Taskbox Logo](public/img/logo_worm_256_flat.png)]
+[![Taskbox Logo](public/img/social_media_1280_640.svg)]
 
 # taskbox
 
