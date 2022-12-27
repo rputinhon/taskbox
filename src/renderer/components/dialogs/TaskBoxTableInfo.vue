@@ -1,7 +1,7 @@
 <template>
-  <v-menu bottom offset-x left z-index="10" v-if="taskBoxInfo">
+  <v-menu bottom offset-y left z-index="10" v-if="taskBoxInfo">
     <template v-slot:activator="{ on: menu }">
-      <v-btn :ripple="false" class="windowbar-button mx-1 pr-1 pl-2" v-on="{ ...menu }" depressed rounded small @dblclick.stop>
+      <v-btn :ripple="false" class="windowbar-button pr-1 pl-2" v-on="{ ...menu }" depressed rounded small @dblclick.stop>
          <small class="mx-0" :style="`font-size:11px;color:${status.color}`">{{ taskBoxInfo.Progress || 0 }}%</small>
         <svg style="pointer-events: none" width="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <path :d="status.icon" :fill="status.color" />

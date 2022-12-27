@@ -73,7 +73,7 @@ class _nodeView extends TaskBox {
 
         components.splice(0, components.length);
         let index = 0;
-        
+
         library.blockLibrary.blocktypes.forEach(type => {
 
             if (type.properties.isactive && library.categoryLibrary.find(t => t.name == type.meta.category).active) {
@@ -384,11 +384,11 @@ class _nodeView extends TaskBox {
 
     }
 
-    async findNode(id,filter) {
+    async findNode(id, filter) {
         if (!editor) return;
         let node = editor.nodes.find(n => n.id == id);
-        if(!filter || (filter && node.name == filter))
-        return node;
+        if (!filter || (filter && node.name == filter))
+            return node;
     }
 
     getPos(id) {
@@ -486,14 +486,16 @@ class _nodeView extends TaskBox {
     async deleteNode(id) {
         self.findNode(id).then(async (node) => {
             if (!node) return;
+            changing=true;
             await editor.removeNode(node);
+            changing=false;
             self.process();
         });
     }
-
+    
 
     async deleteSelected(force, list) {
-
+        changing=true;
         let selected = editor.selected.list;
 
         if (list)
@@ -507,18 +509,28 @@ class _nodeView extends TaskBox {
         commentsSelected = commentsSelected.splice(0, commentsSelected.length);
 
         selected.map(s => {
-            if (!store.state.taskbox.root.tasks[s.id] || !store.state.taskbox.root.tasks[s.id].value)
-                self.deleteNode(s.id);
+            if (!store.state.taskbox.root.tasks[s.id]) {
+                editor.removeNode(s);
+                selected.pop(s);
+            }
         })
 
-        if (force) {
-            store.dispatch('taskbox/DELETE_TASKS', selected.map(s => s.id)).then(() => {
-                self.saveTaskBox();
-            })
+        
+        if(selected.length>0){
+            if (force) {
+                store.dispatch('taskbox/DELETE_TASKS', selected.map(s => s.id)).then(() => {
+                    changing=false;
+                    self.saveTaskBox(true);
+                })
+            }
+            else {
+                if (!store.state.taskbox.deletingNodes)
+                    store.commit('taskbox/CONFIRM_DELETE_TASKS', selected.map(s => s.id))
+            }
         }
         else{
-            if(!store.state.taskbox.deletingNodes)
-            store.commit('taskbox/CONFIRM_DELETE_TASKS', selected.map(s => s.id))
+            changing=false;
+            self.saveTaskBox(true);
         }
 
     }
@@ -804,7 +816,7 @@ class _nodeView extends TaskBox {
                 return false;
 
 
-            if (changing || editor.nodes.length == 0 && cleared == false)
+            if (changing)
                 return;
 
             let data = self.getData();

@@ -78,7 +78,7 @@
         </v-tooltip>
       </v-col>
     </v-row>
-    <empty v-show="isEmpty" :loading="loading" :size="100" :extraClass="''" :text="' '" :icon="icon" />
+    <empty v-show="isEmpty" :loading="loading" :size="100" :extraClass="''" :text="'empty'" :icon="icon" />
   </v-sheet>
 </template>
 

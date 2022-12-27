@@ -64,11 +64,11 @@ export class taskboxDB {
                 // info.direction === 'pull' && 
                 if (info.change) {
                   store.commit('app/SET_SYNC_STATUS', { info: serverInfo, syncInfo: info.change });
-                  const host = store.state.user.user.metadata.profileId;
+                  // const host = store.state.user.user.metadata.profileId;
                   if (info.change.docs_written > 0) {
 
                     // Connection changes
-                    if (info.change.docs.find(d => d.data && d.data.type == 'connection' && d.data.guest == host || d.data.host == host))
+                    if (info.change.docs.find(d => d.data && d.data.type == 'connection'))// && d.data.guest == host || d.data.host == host
                       store.dispatch('connection/GET_ALL');
 
                     let idList = store.getters['taskbox/currentTaskBoxTasksIdList'];

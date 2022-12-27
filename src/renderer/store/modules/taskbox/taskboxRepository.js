@@ -50,31 +50,6 @@ class TaskboxRepository extends Repository {
             let tasks = arrayToKeyValue(response.tasks.filter(t => nodeList.includes(t.id)));
             return { taskbox: taskbox, tasks: tasks, inputs: [] }
         })
-        // return new Promise((resolve) => {
-        //     // if (!taskbox) reject();
-        //     // super.find(task.taskbox).then(parent => {
-        //     //     let inputList = parent.data.nodes[id] ? parent.data.nodes[id].inputs.in.connections.map(c => c.node) : [];
-        //     //     if(task.externalValue && !inputList.includes(task.externalValue))
-        //     //     inputList.push(task.externalValue);
-
-        //     // taskRepository.getList(inputList, ['_id', 'data.title', 'data.progress', 'data.status', 'data.taskType', 'data.value']).then((inputs) => {
-        //     let taskList = Object.keys(taskbox.data.nodes);
-        //     taskList.push(taskbox.id);
-
-
-        //     this.db.rel.find('task', taskList).then((response) => {
-
-        //         let tbtask = response.tasks.find(t => t.id == taskbox.id);
-        //         let tasks = arrayToKeyValue(response.tasks);
-
-        //         delete tasks[taskbox.id]
-        //         resolve({ taskbox: taskbox, task: tbtask, tasks: tasks, inputs: [] })
-        //         // })
-
-        //     })
-        //     // })
-
-        // })
 
     }
 
@@ -181,21 +156,19 @@ class TaskboxRepository extends Repository {
 
     async deleteTaskBox(id) {
 
-        super.find(id).then(taskbox => {
-            let idList = Object.values(taskbox.data.nodes).filter(child => child.name == 'TaskBox').map(n => n.id);
-            const response = this.db.rel.find('taskbox', idList);
-            if (response.taskboxes) {
-                response.taskboxes.forEach(async taskbox => {
-                    taskRepository.deleteTasks(Object.keys(taskbox.data.nodes));
-                    await super.delete(taskbox)
-                    await this.deleteTaskBox(taskbox.id);
-                });
+        let root = await this.db.rel.find('task',id);
+        const search = await this.getChildrenRecursive(id, {});
+        let tasks = Object.values(search.children);
+        tasks.push(root.tasks[0]);
+        let taskboxesIds = Object.values(search.children).filter(t => t.taskType == 'taskbox').map(t => t.id);
+        taskboxesIds.push(id)
+        console.log(tasks);
+        // delete all tasks
+        await taskRepository.deleteMany(tasks);
 
-                super.delete(response.taskbox).then((result) => {
-                    console.log(result);
-                })
-            }
-        })
+        // delete all taskboxes
+        const taskboxsearch = await this.db.rel.find('taskbox', taskboxesIds);
+        await super.deleteMany(taskboxsearch.taskboxes);
 
     }
 

@@ -53,7 +53,7 @@
 
 <script>
 import { ipcRenderer } from 'electron';
-import { NodeView } from '../../libs/nodeview';
+// import { NodeView } from '../../libs/nodeview';
 import { mapState } from 'vuex';
 import { getFileType } from '../../fixtures/fileTypes';
 import moment from 'moment';
@@ -136,7 +136,7 @@ export default {
             .finally(async () => {
               if (this.deletingItem) {
                 this.$store.dispatch('taskbox/DELETE_TASKS', [this.deletingItem.id]).then(() => {
-                  if (this.deletingItem && this.deletingItem.taskbox == this.currentTaskBox.id) NodeView.deleteNode(this.deletingItem.id);
+                  //  NodeView.deleteNode(this.deletingItem.id);
                 });
               }
               setTimeout(res, 10);
@@ -144,7 +144,7 @@ export default {
         } else {
           if (this.deletingItem) {
             this.$store.dispatch('taskbox/DELETE_TASKS', [this.deletingItem.id]).then(() => {
-              if (this.deletingItem && this.deletingItem.taskbox == this.currentTaskBox.id) NodeView.deleteNode(this.deletingItem.id);
+              //  NodeView.deleteNode(this.deletingItem.id);
             });
           }
           setTimeout(res, 10);

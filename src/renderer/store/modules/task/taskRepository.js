@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import taskstate, { getStatusTypeByValue } from '../../../enums/taskstate';
+import  { getStatusTypeByValue } from '../../../enums/taskstate';
 import { relationalDb } from '../../config/pouchdb'
 import { Repository } from '../../db/AbstractDBRepository'
 import { taskboxRepository } from '../taskbox/taskboxRepository';
@@ -234,7 +234,6 @@ class TaskRepository extends Repository {
             let taskboxes = relDocs.taskboxes || []
             const taskboxesTasks = await this.db.rel.find('task', taskboxes.map(t => t.id));
 
-        
             return {
                 roots: roots,
                 tasks: relDocs.tasks,

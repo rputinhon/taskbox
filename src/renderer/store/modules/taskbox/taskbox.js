@@ -652,12 +652,17 @@ const mutations = {
         list.forEach(id => {
             delete state.root.tasks[id];
             NodeView.deleteNode(id);
+            if(state.root.taskboxes[state.currentTaskBox.id].data.nodes[id])
+            delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
         })
+
+        NodeView.saveTaskBox(true);
 
         nextTick(() => {
             store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                 store.dispatch('taskbox/GET_TASKBOX_INFO').then((info) => {
                     store.dispatch('taskbox/UPDATE_TASKBOX_PROGRESS', info).then(() => {
+                    
                         setTimeout(() => {
                             store.commit('SET_API_STATE', apistate.DONE);
                             eventBus.$emit('updateTasks');

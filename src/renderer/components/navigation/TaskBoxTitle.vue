@@ -2,7 +2,7 @@
   <v-card v-if="dataReady" color="transparent" flat height="43" width="100%" class="windowbar py-0 mx-1 mr-0 my-auto">
     <v-list-item class="ma-0 pa-0 my-auto" style="width: 100%; min-height: 35px !important; margin-top: 3px !important">
       <v-list-item-title class="py-0 text-left" style="font-weight: 550; color: #555555 !important">
-        <task-subject :color="'#0187f3'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" />
+        <!-- <task-subject :color="'#0187f3'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" /> -->
         <task-box-table-info v-if="options && options.includes('info')" :taskbox="currentTaskBox" :options="['status']" />
         {{ currentTaskBox.title }}
       </v-list-item-title>
@@ -17,14 +17,14 @@ import { analizeColor, getPercentage, isTaskDone, isTaskStarted } from '../../st
 import { mapState } from 'vuex';
 import _ from 'lodash';
 import { getStatusTypeByValue } from '../../enums/taskstate';
-import TaskSubject from '../lists/TaskSubject.vue';
+// import TaskSubject from '../lists/TaskSubject.vue';
 import TaskBoxTableInfo from '../dialogs/TaskBoxTableInfo.vue';
 
 export default {
   name: 'TaskBoxTitle',
   props: { options: Array },
   components: {
-    TaskSubject,
+    // TaskSubject,
     TaskBoxTableInfo,
   },
   data() {

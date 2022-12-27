@@ -2,7 +2,7 @@
   <v-container fluid fill-height style="position: absolute; z-index: 100; margin: 0; width: 100vw; height: 100vh; background-color: white">
     <v-row align="center" justify="center">
       <v-list-item>
-        <v-img  src="img/logo_worm_128.png" style="margin-right:10px" width="110" height="110" contain>
+        <v-img  src="img/logo_worm_128_flat.png" style="margin-right:10px" width="110" height="110" contain>
         </v-img>
       </v-list-item>
       <v-list-item>
