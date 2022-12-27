@@ -9,6 +9,9 @@
    id="svg51"
    sodipodi:docname="social_media_1280_640.svg"
    inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   inkscape:export-filename="C:\dev\taskbox\public\img\social_media_1280_640.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -23,8 +26,8 @@
      inkscape:pagecheckerboard="0"
      showgrid="false"
      inkscape:zoom="0.29223397"
-     inkscape:cx="550.92841"
-     inkscape:cy="210.44781"
+     inkscape:cx="499.59968"
+     inkscape:cy="196.76015"
      inkscape:window-width="1366"
      inkscape:window-height="715"
      inkscape:window-x="-8"
@@ -103,64 +106,68 @@
      stroke-width=".52917"
      id="rect23" />
   <g
-     transform="matrix(1.3244752,0,0,1.3244752,132.21643,26.990944)"
-     id="g33">
+     id="g7743"
+     transform="translate(1.0211524e-5,8.7208681)">
     <g
-       transform="matrix(1.0245,0,0,1.0245,0.5388,-0.58448)"
-       id="g31">
-      <path
-         d="m 23.102,7.3947 c -1.3401,4.3844 -2.5291,8.8149 -3.5643,13.281 -0.58667,2.5311 -1.1254,5.0834 -1.3164,7.6746 -0.10536,1.4289 -0.10382,2.873 0.13554,4.2857 0.23936,1.4127 0.72321,2.7967 1.5265,3.9831 1.3917,2.0554 3.7564,3.4235 6.233,3.5913 2.4766,0.16771 5.0099,-0.87369 6.6416,-2.7442 1.6161,-1.8527 2.3079,-4.4544 1.906,-6.8799 -0.40193,-2.4254 -1.8674,-4.6395 -3.8972,-6.0267 -1.4377,-0.98263 -3.1235,-1.5574 -4.8357,-1.875 -1.7122,-0.31766 -3.4598,-0.38804 -5.2007,-0.43274 -4.3936,-0.1128 -8.7912,-0.06694 -13.181,0.13745"
-         fill="none"
-         stroke="url(#linearGradient1241)"
-         stroke-linecap="round"
-         stroke-width="12.898"
-         id="path25"
-         style="stroke:url(#linearGradient1241)" />
-      <path
-         d="M 27.216,16.335 C 22.6261,15.47506 14.087,15.7543 14.087,15.7543 l 1.4209,-5.3549 12.969,1.3986 c 0,0 -0.99735,3.5485 -1.2603,4.537 z"
-         fill="url(#linearGradient2195)"
-         opacity="0.7"
-         id="path27"
-         style="fill:url(#linearGradient2195)" />
-      <path
-         d="m 11.673,28.686 c 0,0 6.7746,-0.49538 12.974,0.31146 -0.14296,1.3267 0.05941,2.5136 0.05941,2.5136 0,0 -10.616,1.9503 -12.746,2.3103 -0.31855,-1.452 -0.28686,-5.1353 -0.28686,-5.1353 z"
-         fill="url(#linearGradient3788)"
-         opacity="0.7"
-         id="path29"
-         style="fill:url(#linearGradient3788)" />
+       transform="matrix(1.3244752,0,0,1.3244752,132.21643,26.990944)"
+       id="g33">
+      <g
+         transform="matrix(1.0245,0,0,1.0245,0.5388,-0.58448)"
+         id="g31">
+        <path
+           d="m 23.102,7.3947 c -1.3401,4.3844 -2.5291,8.8149 -3.5643,13.281 -0.58667,2.5311 -1.1254,5.0834 -1.3164,7.6746 -0.10536,1.4289 -0.10382,2.873 0.13554,4.2857 0.23936,1.4127 0.72321,2.7967 1.5265,3.9831 1.3917,2.0554 3.7564,3.4235 6.233,3.5913 2.4766,0.16771 5.0099,-0.87369 6.6416,-2.7442 1.6161,-1.8527 2.3079,-4.4544 1.906,-6.8799 -0.40193,-2.4254 -1.8674,-4.6395 -3.8972,-6.0267 -1.4377,-0.98263 -3.1235,-1.5574 -4.8357,-1.875 -1.7122,-0.31766 -3.4598,-0.38804 -5.2007,-0.43274 -4.3936,-0.1128 -8.7912,-0.06694 -13.181,0.13745"
+           fill="none"
+           stroke="url(#linearGradient1241)"
+           stroke-linecap="round"
+           stroke-width="12.898"
+           id="path25"
+           style="stroke:url(#linearGradient1241)" />
+        <path
+           d="M 27.216,16.335 C 22.6261,15.47506 14.087,15.7543 14.087,15.7543 l 1.4209,-5.3549 12.969,1.3986 c 0,0 -0.99735,3.5485 -1.2603,4.537 z"
+           fill="url(#linearGradient2195)"
+           opacity="0.7"
+           id="path27"
+           style="fill:url(#linearGradient2195)" />
+        <path
+           d="m 11.673,28.686 c 0,0 6.7746,-0.49538 12.974,0.31146 -0.14296,1.3267 0.05941,2.5136 0.05941,2.5136 0,0 -10.616,1.9503 -12.746,2.3103 -0.31855,-1.452 -0.28686,-5.1353 -0.28686,-5.1353 z"
+           fill="url(#linearGradient3788)"
+           opacity="0.7"
+           id="path29"
+           style="fill:url(#linearGradient3788)" />
+      </g>
     </g>
-  </g>
-  <text
-     x="126.3439"
-     y="116.15306"
-     fill="#000000"
-     font-family="sans-serif"
-     font-size="24.8752px"
-     stroke-width="0.621867"
-     style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#131313;fill-opacity:1"
-     xml:space="preserve"
-     id="text37"><tspan
-       x="126.3439"
-       y="116.15306"
-       stroke-width="0.621867"
-       id="tspan35"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial;fill:#131313;fill-opacity:1">taskbox</tspan></text>
-  <text
-     x="100.79313"
-     y="131.47911"
-     fill="#000000"
-     font-family="sans-serif"
-     font-size="7.6218px"
-     stroke-width="0.292662"
-     style="font-size:7.45044px;line-height:1.25;fill:#222222;fill-opacity:1"
-     xml:space="preserve"
-     id="text41"><tspan
-       x="100.79313"
-       y="131.47911"
+    <text
+       x="141.71275"
+       y="111.37721"
+       fill="#000000"
+       font-family="sans-serif"
+       font-size="14.3156px"
+       stroke-width="0.357883"
+       style="font-style:normal;font-variant:normal;font-weight:600;font-stretch:normal;line-height:1.25;font-family:'Segoe UI';-inkscape-font-specification:'Segoe UI Semi-Bold';fill:#131313;fill-opacity:1"
+       xml:space="preserve"
+       id="text37"><tspan
+         x="141.71275"
+         y="111.37721"
+         stroke-width="0.357883"
+         id="tspan35"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Arial;-inkscape-font-specification:Arial;fill:#131313;fill-opacity:1">taskbox</tspan></text>
+    <text
+       x="108.48215"
+       y="123.01231"
+       fill="#000000"
+       font-family="sans-serif"
        font-size="7.6218px"
        stroke-width="0.292662"
-       id="tspan39"
-       style="font-size:7.45044px;fill:#222222;fill-opacity:1">A flowing way to manage your tasks.</tspan></text>
+       style="font-size:6.61465px;line-height:1.25;fill:#222222;fill-opacity:1"
+       xml:space="preserve"
+       id="text41"><tspan
+         x="108.48215"
+         y="123.01231"
+         font-size="7.6218px"
+         stroke-width="0.292662"
+         id="tspan39"
+         style="font-size:6.61465px;fill:#222222;fill-opacity:1">A flowing way to manage your tasks.</tspan></text>
+  </g>
   <g
      transform="matrix(.26458 0 0 .26458 257.8 40.03)"
      id="g49">
