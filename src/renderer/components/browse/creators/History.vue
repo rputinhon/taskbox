@@ -36,7 +36,7 @@
         </span>
       </v-col>
     </v-row>
-    <v-toolbar class="pa-0 pr-2 my-1" height="35px" elevation="0">
+    <v-toolbar class="pa-0 pr-2 my-1 mb-0" height="35px" elevation="0">
       <v-text-field class="ma-2" solo-inverted dense :hide-details="true" autofocus ref="textarea" placeholder="Write here your short history..." v-model="subject" @keydown.tab.prevent> </v-text-field>
       <v-btn class="mx-2" small right color="secondary" @click="$emit('close')"> cancel </v-btn>
       <v-btn small right color="primary" :loading="loading" @click="beforePost()"> post! </v-btn>
@@ -74,17 +74,10 @@ export default {
   },
   mounted() {
     this.subject = this.post.subject;
-    if (!this.post.data || !this.post.data.options) Object.assign(this.post, { data: { options: this.defaultOptions } });
   },
   watch: {
     align(value) {
       this.options.textalign = this.textalignTypes.find((t) => t.value == value).text;
-    },
-    post(value) {
-      if (!value.data) {
-        this.post.data = {};
-        Object.assign(this.post.data, { options: this.defaultOptions });
-      }
     },
   },
 
@@ -95,37 +88,37 @@ export default {
     }),
     capitalEffect: {
       get() {
-        return this.post.data.options.capitalEffect;
+        return this.options.capitalEffect;
       },
       set(value) {
-        this.post.data.options.capitalEffect = value;
+        this.options.capitalEffect = value;
         this.$store.commit('post/SET_DATA', this.post.data);
       },
     },
     backgroundColor: {
       get() {
-        return this.post.data.options.backgroundColor;
+        return this.options.backgroundColor;
       },
       set(value) {
-        this.post.data.options.backgroundColor = value;
+        this.options.backgroundColor = value;
         this.$store.commit('post/SET_DATA', this.post.data);
       },
     },
     fontColor: {
       get() {
-        return this.post.data.options.fontcolor || 'black';
+        return this.options.fontcolor || 'black';
       },
       set(value) {
-        this.post.data.options.fontcolor = value;
+        this.options.fontcolor = value;
         this.$store.commit('post/SET_DATA', this.post.data);
       },
     },
     fontSize: {
       get() {
-        return this.post.data.options.fontsize;
+        return this.options.fontsize;
       },
       set(value) {
-        this.post.data.options.fontsize = value;
+        this.options.fontsize = value;
         this.$store.commit('post/SET_DATA', this.post.data);
       },
     },
@@ -142,7 +135,8 @@ export default {
       return getPostTypeByValue(this.post.postType);
     },
     options() {
-      return this.post.data.options;
+      if(!this.post.data)this.$store.commit('post/SET_DATA', {options:this.defaultOptions});
+      return this.post.data && this.post.data.options || this.defaultOptions;
     },
   },
   methods: {

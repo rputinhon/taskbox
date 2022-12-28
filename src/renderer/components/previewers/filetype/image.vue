@@ -77,7 +77,7 @@ export default {
             .then((result) => {
               this.image = result;
               let size = nativeImage.createFromDataURL(`data:${this.mime};base64,${result}`).getSize().height;
-              this.maxheight = size < 610 ? size : 610;
+              this.maxheight = size;
               eventBus.$emit('previewLoaded', false);
               this.loading = false;
             })
@@ -150,6 +150,7 @@ export default {
 
         if (file.extension == '.png' || file.extension == '.jpg') {
           let clip = await nativeImage.createThumbnailFromPath(file.path, { width: 256, height: 256 });
+          this.maxheight
           entity.thumbnail = clip.toDataURL();
         }
         entity.value = { file: file };

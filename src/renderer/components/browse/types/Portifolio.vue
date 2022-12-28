@@ -1,7 +1,7 @@
 <template>
   <v-card v-if="post" height="fit-content" color="grey" flat @click.prevent rounded="0">
     <v-fade-transition hide-on-leave leave-absolute>
-      <v-carousel class="carossel" show-arrows-on-hover :show-arrows="imagesCount > 1" :hide-delimiters="imagesCount < 2" hide-delimiter-background max-height="512" height="auto" continuous>
+      <v-carousel class="carossel" show-arrows-on-hover :show-arrows="imagesCount > 1" :hide-delimiters="imagesCount < 2" hide-delimiter-background max-height="450" height="450" continuous>
         <template v-slot:prev="{ on, attrs }">
           <v-btn x-small fab v-on="on" v-bind="attrs" style="opacity: 0.5" color="black">
             <svg style="transform: rotate(90deg)" width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,9 @@
           </v-btn>
         </template>
         <v-carousel-item v-for="(image, i) in images" :key="i">
-          <v-img :src="image" class="my-auto" min-height="450px" max-height="450px"> </v-img>
+          <v-responsive width="100%" ref="image" height="100%" style="align-items: center" class="pa-0 ma-0">
+              <v-img :src="image.data" :max-height="image.height" contain class="my-auto"> </v-img>
+            </v-responsive>
         </v-carousel-item>
       </v-carousel>
     </v-fade-transition>

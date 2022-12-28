@@ -1,8 +1,8 @@
 <template>
-  <v-card v-if="creatingPost">
-    <v-card height="512" flat color="grey" @click.stop>
+  <v-card v-if="post">
+    <v-card height="478" flat color="grey" @click.stop>
       <v-fade-transition hide-on-leave leave-absolute>
-        <v-carousel show-arrows-on-hover :show-arrows="hasImages" :hide-delimiters="!hasImages" hide-delimiter-background height="512px" continuous>
+        <v-carousel show-arrows-on-hover :show-arrows="hasImages" :hide-delimiters="!hasImages" hide-delimiter-background height="478px" continuous>
           <template v-slot:prev="{ on, attrs }">
             <v-btn x-small fab v-on="on" v-bind="attrs" style="opacity: 0.5" color="black">
               <svg style="transform: rotate(90deg)" width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -17,50 +17,51 @@
               </svg>
             </v-btn>
           </template>
-            <v-carousel-item v-for="(image, i) in images" :key="i">
-              <v-img :src="image" class="my-auto" height="512"> </v-img>
+          <v-carousel-item v-for="(image, i) in images" :key="i">
+            <v-responsive width="100%" ref="image" height="100%" style="align-items: center" class="pa-0 ma-0">
+              <v-img :src="image.data" :max-height="image.height" contain class="my-auto" height="478"> </v-img>
+            </v-responsive>
+            <v-tooltip bottom transition="none" v-if="images.length < 10">
+              <template v-slot:activator="{ on }">
+                <v-fade-transition>
+                  <v-btn right top class="mt-6" style="margin-right: 80px !important" absolute v-on="on" fab x-small @click.stop="selectImages(true)">
+                    <svg width="28" height="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M 20.279297 9.6289062 L 20.279297 20.279297 L 9.6289062 20.279297 L 9.6289062 27.720703 L 20.279297 27.720703 L 20.279297 38.371094 L 27.720703 38.371094 L 27.720703 27.720703 L 38.371094 27.720703 L 38.371094 20.279297 L 27.720703 20.279297 L 27.720703 9.6289062 L 20.279297 9.6289062 z " fill="#252525" style="pointer-events: none" />
+                    </svg>
+                  </v-btn>
+                </v-fade-transition>
+              </template>
+              Add Images *max {{ 10 - imagesCount }}
+            </v-tooltip>
 
-              <v-tooltip bottom transition="none" v-if="images.length < 10">
-                <template v-slot:activator="{ on }">
-                  <v-fade-transition>
-                    <v-btn right top class="mt-6" style="margin-right: 80px !important" absolute v-on="on" fab x-small @click.stop="selectImages(true)">
-                      <svg width="28" height="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M 20.279297 9.6289062 L 20.279297 20.279297 L 9.6289062 20.279297 L 9.6289062 27.720703 L 20.279297 27.720703 L 20.279297 38.371094 L 27.720703 38.371094 L 27.720703 27.720703 L 38.371094 27.720703 L 38.371094 20.279297 L 27.720703 20.279297 L 27.720703 9.6289062 L 20.279297 9.6289062 z " fill="#252525" style="pointer-events: none" />
-                      </svg>
-                    </v-btn>
-                  </v-fade-transition>
-                </template>
-                Add Images *max {{ 10 - imagesCount }}
-              </v-tooltip>
+            <v-tooltip bottom transition="none">
+              <template v-slot:activator="{ on }">
+                <v-fade-transition>
+                  <v-btn right top class="mt-6 mr-10" absolute v-on="on" fab x-small @click.stop="changeImage(i)">
+                    <svg width="30" height="30" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                      <path d="m 5.3408124,5.7314895 c -1.226767,0 -2.2148737,0.98759 -2.2148737,2.214357 0.030197,6.1083365 0,12.0852235 0,18.2357595 0,2.38137 1.9176336,4.298488 4.2990047,4.298488 H 27.093703 c 2.381372,0 4.298487,-1.917118 4.298487,-4.298488 V 14.19824 c 0,-2.381372 -1.917115,-4.2984882 -4.298487,-4.2984882 H 15.500498 V 7.9458465 c 0,-1.226767 -0.987589,-2.214357 -2.214356,-2.214357 z" transform="translate(7 5)" fill="#252525" style="pointer-events: none" />
+                    </svg>
+                  </v-btn>
+                </v-fade-transition>
+              </template>
+              Change
+            </v-tooltip>
 
-              <v-tooltip bottom transition="none">
-                <template v-slot:activator="{ on }">
-                  <v-fade-transition>
-                    <v-btn right top class="mt-6 mr-10" absolute v-on="on" fab x-small @click.stop="changeImage(i)">
-                      <svg width="30" height="30" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="m 5.3408124,5.7314895 c -1.226767,0 -2.2148737,0.98759 -2.2148737,2.214357 0.030197,6.1083365 0,12.0852235 0,18.2357595 0,2.38137 1.9176336,4.298488 4.2990047,4.298488 H 27.093703 c 2.381372,0 4.298487,-1.917118 4.298487,-4.298488 V 14.19824 c 0,-2.381372 -1.917115,-4.2984882 -4.298487,-4.2984882 H 15.500498 V 7.9458465 c 0,-1.226767 -0.987589,-2.214357 -2.214356,-2.214357 z" transform="translate(7 5)" fill="#252525" style="pointer-events: none" />
-                      </svg>
-                    </v-btn>
-                  </v-fade-transition>
-                </template>
-                Change
-              </v-tooltip>
-
-              <v-tooltip bottom transition="none">
-                <template v-slot:activator="{ on }">
-                  <v-fade-transition>
-                    <v-btn right top class="mt-6" absolute v-on="on" fab x-small @click.stop="deleteImage(i)">
-                      <svg width="28" height="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                        <path d="m 22.697259,6.2148445 c -1.70345,0 -3.113282,1.4117847 -3.113282,3.1152344 v 1.2187501 h -7.261718 c -0.734301,0 -1.324219,0.591871 -1.324219,1.326172 v 3.921875 c 0,0.7343 0.589918,1.324218 1.324219,1.324218 h 0.578125 c -6.69e-4,0.02955 -0.0039,0.05818 -0.0039,0.08789 v 20.761719 c 0,2.113675 1.700778,3.814453 3.814454,3.814453 h 14.578124 c 2.113676,0 3.814454,-1.700778 3.814454,-3.814453 V 17.208986 c 0,-0.02972 -0.0032,-0.05834 -0.0039,-0.08789 h 0.578125 c 0.734301,0 1.324219,-0.589918 1.324219,-1.324219 v -3.921876 c 0,-0.734301 -0.589918,-1.326172 -1.324219,-1.326172 H 28.416023 V 9.3300789 C 28.416009,7.6266292 27.006177,6.2148445 25.302727,6.2148445 Z m 0,2.5 h 2.605468 c 0.361694,0 0.613282,0.2535403 0.613282,0.6152344 V 10.548829 H 22.083977 V 9.3300789 c 0,-0.3616941 0.251588,-0.6152344 0.613282,-0.6152344 z" fill="#ff5555" style="pointer-events: none" />
-                      </svg>
-                    </v-btn>
-                  </v-fade-transition>
-                </template>
-                Delete
-              </v-tooltip>
-            </v-carousel-item>
-          <v-carousel-item v-if="!hasImages" style="height: 512">
-            <v-card height="512" width="512" color="grey">
+            <v-tooltip bottom transition="none">
+              <template v-slot:activator="{ on }">
+                <v-fade-transition>
+                  <v-btn right top class="mt-6" absolute v-on="on" fab x-small @click.stop="deleteImage(i)">
+                    <svg width="28" height="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                      <path d="m 22.697259,6.2148445 c -1.70345,0 -3.113282,1.4117847 -3.113282,3.1152344 v 1.2187501 h -7.261718 c -0.734301,0 -1.324219,0.591871 -1.324219,1.326172 v 3.921875 c 0,0.7343 0.589918,1.324218 1.324219,1.324218 h 0.578125 c -6.69e-4,0.02955 -0.0039,0.05818 -0.0039,0.08789 v 20.761719 c 0,2.113675 1.700778,3.814453 3.814454,3.814453 h 14.578124 c 2.113676,0 3.814454,-1.700778 3.814454,-3.814453 V 17.208986 c 0,-0.02972 -0.0032,-0.05834 -0.0039,-0.08789 h 0.578125 c 0.734301,0 1.324219,-0.589918 1.324219,-1.324219 v -3.921876 c 0,-0.734301 -0.589918,-1.326172 -1.324219,-1.326172 H 28.416023 V 9.3300789 C 28.416009,7.6266292 27.006177,6.2148445 25.302727,6.2148445 Z m 0,2.5 h 2.605468 c 0.361694,0 0.613282,0.2535403 0.613282,0.6152344 V 10.548829 H 22.083977 V 9.3300789 c 0,-0.3616941 0.251588,-0.6152344 0.613282,-0.6152344 z" fill="#ff5555" style="pointer-events: none" />
+                    </svg>
+                  </v-btn>
+                </v-fade-transition>
+              </template>
+              Delete
+            </v-tooltip>
+          </v-carousel-item>
+          <v-carousel-item v-if="!hasImages" style="height: 470">
+            <v-card height="480" width="512" color="grey">
               <v-tooltip bottom transition="none">
                 <template v-slot:activator="{ on }">
                   <v-fade-transition>
@@ -73,14 +74,12 @@
                 </template>
                 Add Images *max 10
               </v-tooltip>
-
-              <empty :loading="loading" :extraClass="'mt-16'" :size="150" :icon="postType.icon" :text="' '" />
             </v-card>
           </v-carousel-item>
         </v-carousel>
       </v-fade-transition>
     </v-card>
-    <v-toolbar class="pa-0 pr-2 my-1" height="35px" elevation="0">
+    <v-toolbar class="pa-0 pr-2 my-1" height="40px" elevation="0">
       <v-spacer></v-spacer>
       <v-btn class="mx-2" small right color="secondary" @click="$emit('close')"> cancel </v-btn>
       <v-btn small right color="primary" :loading="loading" @click="beforePost()"> post! </v-btn>
@@ -94,28 +93,24 @@ import { mapState } from 'vuex';
 import { eventBus } from '../../../../main';
 import { getPostTypeByValue } from '../../../store/models/PostModel';
 import _ from 'lodash';
-import Empty from '../../dialogs/Empty.vue';
 
 export default {
-  components: { Empty },
   name: 'PostPortifolio',
   data() {
     return {
       loading: false,
-      creatingPost: null,
       refreshKey: 0,
+      maxheight: 'auto',
     };
   },
-  mounted() {
-    this.creatingPost = _.cloneDeep(this.post);
-  },
+  mounted() {},
   computed: {
     ...mapState({
       post: (state) => _.cloneDeep(state.post.creatingPost),
       member: (state) => state.user.profile,
     }),
     postType() {
-      return getPostTypeByValue(this.creatingPost.postType);
+      return getPostTypeByValue(this.post.postType);
     },
     hasImages() {
       this.refreshKey;
@@ -123,11 +118,11 @@ export default {
     },
     imagesCount() {
       this.refreshKey;
-      return this.creatingPost.data && this.creatingPost.data.images? this.creatingPost.data.images.length : 0;
+      return this.post.data && this.post.data.images ? this.post.data.images.length : 0;
     },
     images() {
       this.refreshKey;
-      return this.creatingPost.data && this.creatingPost.data['images'] ? this.creatingPost.data.images : [];
+      return this.post.data && this.post.data['images'] ? this.post.data.images : [];
     },
   },
   methods: {
@@ -136,18 +131,18 @@ export default {
     },
     deleteImage(index) {
       this.refreshKey++;
-      this.creatingPost.data['images'].splice(index, 1);
+      this.post.data['images'].splice(index, 1);
     },
     changeImage(index) {
       this.loading = true;
       ipcRenderer.invoke('app:selectImage', { multiple: false }).then(async (files) => {
-        if (!this.creatingPost.data || !this.creatingPost.data['images']) {
-          this.creatingPost.data = {};
-          this.creatingPost.data['images'] = [];
+        if (!this.post.data || !this.post.data['images']) {
+          this.post.data = {};
+          this.post.data['images'] = [];
         }
 
         nativeImage.createThumbnailFromPath(files[0], { width: 512, height: 512 }).then((clip) => {
-          this.creatingPost.data['images'][index] = clip.toDataURL();
+          this.post.data['images'][index] = {data:clip.toDataURL(),height:clip.getSize().height};
         });
 
         setTimeout(() => {
@@ -158,17 +153,21 @@ export default {
     selectImages() {
       this.loading = true;
       ipcRenderer.invoke('app:selectImage', { multiple: true }).then(async (files) => {
+        if (!files) {
+          this.loading = false;
+          return;
+        }
 
         files.splice(10 - this.imagesCount, files.length);
 
-        if (!this.creatingPost.data || !this.creatingPost.data['images']) {
-          this.creatingPost.data = {};
-          this.creatingPost.data['images'] = [];
+        if (!this.post.data || !this.post.data['images']) {
+          this.post.data = {};
+          this.post.data['images'] = [];
         }
 
         files.map(async (path) => {
           nativeImage.createThumbnailFromPath(path, { width: 512, height: 512 }).then((clip) => {
-            this.creatingPost.data['images'].push(clip.toDataURL());
+            this.post.data['images'].push({data:clip.toDataURL(),height:clip.getSize().height});
           });
         });
 
@@ -179,9 +178,9 @@ export default {
       });
     },
     beforePost() {
-      this.creatingPost.data.options = this.options;
-      // this.$store.commit('post/UPDATE_CREATING_POST', this.creatingPost);
-      this.$listeners.save(this.creatingPost);
+      this.post.data.options = this.options;
+      // this.$store.commit('post/UPDATE_CREATING_POST', this.post);
+      this.$listeners.save(this.post);
     },
   },
 };

@@ -224,7 +224,7 @@ const mutations = {
         state.creatingPost.subject = subject;
     },
     SET_DATA(state, data) {
-        Object.assign(state.creatingPost.data, data);
+        state.creatingPost.data= data;
     },
     UPDATE_CREATING_POST(state, post) {
         state.creatingPost = post;
