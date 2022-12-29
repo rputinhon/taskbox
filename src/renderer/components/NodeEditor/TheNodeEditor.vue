@@ -7,13 +7,14 @@
         :text="' '"
         :image="'img/logo_worm_128_flat.png'"
       />
-
-      <taskbox-transition v-if="!levelDown" hide-on-leave origin="center center 0px">
+      <v-lazy :transition="`scale-transition${!levelDown?'-reverse':''}`" width="100%" height="100%" v-show="!loading" >
         <div id="nodeview" dropzone="true" class="pa-0 ma-0" v-show="!loading" />
+      </v-lazy>
+      <!-- <taskbox-transition v-if="!levelDown" hide-on-leave origin="center center 0px">
       </taskbox-transition>
       <v-scale-transition hide-on-leave v-else origin="center center 0px">
         <div id="nodeview" dropzone="true" class="pa-0 ma-0" v-show="!loading" />
-      </v-scale-transition>
+      </v-scale-transition> -->
 
       <!-- modals -->
       <!-- inputs -->
@@ -333,8 +334,9 @@ export default {
 </script>
 
 <style>
-.taskbox-transition-enter-active,
-.taskbox-transition-leave-active {
+
+.scale-transition-reverse-enter-active,
+.scale-transition-reverse-leave-active {
   transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1) !important;
 }
 
@@ -342,12 +344,13 @@ export default {
   transition: transform 0.1s;
 }
 
-.taskbox-transition-enter,
-.taskbox-transition-leave,
-.taskbox-transition-leave-to {
+.scale-transition-reverse-enter,
+.scale-transition-reverse-leave,
+.scale-transition-reverse-leave-to {
   opacity: 0;
-  transform: scale(1.5) !important;
+  transform: scale(3) !important;
 }
+
 
 .disabled {
   pointer-events: none;

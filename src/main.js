@@ -7,11 +7,11 @@ import vuetify from './renderer/plugins/vuetify'
 import AppLayout from './renderer/layouts/AppLayout'
 import { createSimpleTransition } from 'vuetify/lib/components/transitions/createTransition'
 
-export const taskboxTransition = createSimpleTransition('taskbox-transition');
+export const VScaleTransitionReverse = createSimpleTransition('scale-transition-reverse');
 export const eventBus = new Vue();
 
 Vue.component('AppLayout', AppLayout)
-Vue.component('taskbox-transition', taskboxTransition)
+Vue.component('scale-transition-reverse', VScaleTransitionReverse)
 Vue.config.productionTip = false
 
   new Vue({

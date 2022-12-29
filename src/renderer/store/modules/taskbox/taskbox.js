@@ -242,6 +242,29 @@ const actions = {
 
     },
     // Delete all tasks in the id list
+    async CONFIRM_DELETE_TASKS({ commit}, nodes) {
+
+        // let taskList = [];
+
+        console.log(nodes);
+        // prepare lists
+        let taskboxesnodes = nodes.filter(n=>n.name=='TaskBox');
+
+        if(taskboxesnodes.length){
+            taskboxesnodes.forEach(item => {
+                taskboxRepository.getChildrenRecursive(item.id).then((response)=>{
+                    console.log(response,item);
+                    // taskList.concat(response.children);
+                })
+            });
+        }
+
+        console.log(commit);
+
+        //set list
+
+    },
+    // Delete all tasks in the id list
     async DELETE_TASKS({ commit, state }, list) {
         store.commit('SET_API_STATE', apistate.SAVING);
 

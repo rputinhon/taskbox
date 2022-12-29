@@ -526,7 +526,7 @@ class _nodeView extends TaskBox {
             }
             else {
                 if (!store.state.taskbox.deletingNodes)
-                    store.commit('taskbox/CONFIRM_DELETE_TASKS', selected.map(s => s.id))
+                    store.dispatch('taskbox/CONFIRM_DELETE_TASKS', selected)
             }
         }
         else{
