@@ -45,7 +45,7 @@ yarn lint
 ![Social](public/img/readme_social.png)
 
 ## To Do
-``
+```
 
 -Due system.
 -Increase the number of task types, including:
@@ -57,5 +57,5 @@ yarn lint
     - etc.
 -Implement the input/output system, allowing data to pass through the boxes.
 -Notification.
-``
+```
 
