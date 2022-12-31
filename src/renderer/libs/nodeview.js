@@ -930,6 +930,7 @@ class _nodeView extends TaskBox {
             clearTimeout(changing);
 
             changing = setTimeout(function () {
+                eventBus.$emit('updateTasks');
                 store.commit('taskbox/ADD_TO_CHANGE_STACK', editor.selected.list.map(n => n.id))
                 changing = false;
             }, 500);

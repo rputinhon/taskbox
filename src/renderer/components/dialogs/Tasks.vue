@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2" :color="analysing == false ? 'transparent' : 'workspace'">
+  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2 py-4" :color="analysing == false ? 'transparent' : 'workspace'">
     <v-fade-transition leave-absolute>
       <analisys :filtered="filteredList(tasks, 'title', { value: filter, field: 'status' })" v-if="analysing !== false" />
     </v-fade-transition>
@@ -27,7 +27,7 @@
             </v-list-item-subtitle>
           </v-btn>
         </v-card>
-        <v-btn rounded :color="hasChanges ? 'primary' : 'secondary'" :depressed="!hasChanges" :disabled="saving"  class="mx-1" x-small @click="saveTaskBox()"> Save </v-btn>
+        <v-btn rounded :color="hasChanges ? 'primary' : 'secondary'" :depressed="!hasChanges" :disabled="saving" class="mx-1" x-small @click="saveTaskBox()"> Save </v-btn>
         <v-btn rounded color="primary" style="z-index: 6" x-small @click="closeTaskBox()"> Close </v-btn>
         <v-spacer></v-spacer>
         <nav-menu style="z-index: 6" v-show="!searching" :options="['parent', 'home']" />
@@ -64,19 +64,19 @@
       </v-text-field>
       <v-list-item-content class="text-left" style="min-width: 180px; z-index: 6">
         <v-list-item-title class="my-0 py-0" style="min-height: 25px">
-        <svg width="20" height="20" style="margin-bottom:-5px" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="m 21.454744,3.5828806 c -3.388512,0.020648 -7.180933,1.1428628 -9.560387,2.9916171 L 5.8900701,11.239299 c -1.353807,1.051862 -2.0227686,2.163343 -2.0450875,3.170943 l -0.028064,-0.03353 0.017924,22.531078 h 0.01481 c 0.051109,1.292273 1.1832952,2.397213 3.3338936,2.954193 L 23.379756,44.05664 c 3.889349,1.007297 9.575098,-0.166401 12.747704,-2.631406 l 6.003513,-4.664804 c 1.336503,-1.038416 1.955865,-2.13121 2.001428,-3.124162 l 0.0156,-7.74e-4 0.03508,-22.460128 -0.0054,0.0063 C 44.177101,9.8505477 43.03812,8.7077146 40.837524,8.1377851 L 24.641314,3.9431282 C 23.668977,3.6913041 22.584282,3.576034 21.454778,3.5829173 Z M 21.640477,5.55286 c 0.881148,-0.00535 1.72707,0.084231 2.485608,0.280683 l 5.868296,1.5161893 -13.91,10.7510777 -6.8307416,-1.782339 C 7.7561209,15.930631 6.890686,15.202106 6.6931847,14.333415 6.8401002,13.649554 7.350863,12.922022 8.2447385,12.227511 L 14.181317,7.8864302 c 1.856259,-1.442247 4.815718,-2.3174606 7.45916,-2.3335702 z m 9.365143,2.0588434 7.805645,2.2060601 c 1.49195,0.3863975 2.35794,1.1105085 2.559676,1.9749195 -0.143911,0.686899 -0.62491,1.454782 -1.550775,2.116041 l -5.907769,4.219363 c -2.612659,1.731361 -6.910614,2.838698 -9.944768,2.052888 l -6.872008,-1.818194 z m 10.545713,8.1531766 0.06203,17.224694 c -0.120663,0.834939 -0.474675,1.555448 -1.569488,2.406081 l -5.89401,4.282681 c -2.475011,1.922998 -7.036989,2.785578 -10.068823,1.99086 L 9.0960934,37.741273 C 7.6214911,37.358386 6.7587125,36.647266 6.5442135,35.795982 6.5332755,35.481773 6.5223775,35.167563 6.5114795,34.853354 l 0.062027,-16.726227 c 0.0016,-0.399866 0.7736586,0.308211 1.2303287,0.426483 l 15.5759408,3.94655 c 3.889348,1.007296 9.575098,-0.166401 12.747704,-2.631406 z m -12.155588,8.398329 c -1.02595,0 -1.85173,0.825782 -1.85173,1.85173 v 12.760178 c 0,1.02595 0.82578,1.852511 1.85173,1.852511 1.025949,0 1.85173,-0.826561 1.85173,-1.852511 V 26.014939 c 0,-1.025948 -0.825781,-1.85173 -1.85173,-1.85173 z m -8.340974,3.007211 c -0.08912,2.18e-4 -0.177472,0.03172 -0.246378,0.092 l -0.0015,-0.03977 -5.422647,3.846922 -1.812746,-2.43181 c -0.115953,-0.155094 -0.3404,-0.191874 -0.504457,-0.08264 l -1.404197,0.933272 c -0.168288,0.11217 -0.208794,0.334735 -0.09044,0.494315 l 3.03138,4.078486 c 0.11748,0.158308 0.346956,0.194247 0.511468,0.07953 l 7.1699,-4.990706 c 0.165966,-0.11536 0.202683,-0.338638 0.08109,-0.495874 l -1.051003,-1.359755 -0.01248,0.01325 c -0.02295,-0.03978 -0.05353,-0.0753 -0.09044,-0.103698 -0.0502,-0.02301 -0.104023,-0.03366 -0.157495,-0.03353 z"
-            fill="#0187f3"
-          />
-        </svg>
+          <svg width="20" height="20" style="margin-bottom: -5px" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="m 21.454744,3.5828806 c -3.388512,0.020648 -7.180933,1.1428628 -9.560387,2.9916171 L 5.8900701,11.239299 c -1.353807,1.051862 -2.0227686,2.163343 -2.0450875,3.170943 l -0.028064,-0.03353 0.017924,22.531078 h 0.01481 c 0.051109,1.292273 1.1832952,2.397213 3.3338936,2.954193 L 23.379756,44.05664 c 3.889349,1.007297 9.575098,-0.166401 12.747704,-2.631406 l 6.003513,-4.664804 c 1.336503,-1.038416 1.955865,-2.13121 2.001428,-3.124162 l 0.0156,-7.74e-4 0.03508,-22.460128 -0.0054,0.0063 C 44.177101,9.8505477 43.03812,8.7077146 40.837524,8.1377851 L 24.641314,3.9431282 C 23.668977,3.6913041 22.584282,3.576034 21.454778,3.5829173 Z M 21.640477,5.55286 c 0.881148,-0.00535 1.72707,0.084231 2.485608,0.280683 l 5.868296,1.5161893 -13.91,10.7510777 -6.8307416,-1.782339 C 7.7561209,15.930631 6.890686,15.202106 6.6931847,14.333415 6.8401002,13.649554 7.350863,12.922022 8.2447385,12.227511 L 14.181317,7.8864302 c 1.856259,-1.442247 4.815718,-2.3174606 7.45916,-2.3335702 z m 9.365143,2.0588434 7.805645,2.2060601 c 1.49195,0.3863975 2.35794,1.1105085 2.559676,1.9749195 -0.143911,0.686899 -0.62491,1.454782 -1.550775,2.116041 l -5.907769,4.219363 c -2.612659,1.731361 -6.910614,2.838698 -9.944768,2.052888 l -6.872008,-1.818194 z m 10.545713,8.1531766 0.06203,17.224694 c -0.120663,0.834939 -0.474675,1.555448 -1.569488,2.406081 l -5.89401,4.282681 c -2.475011,1.922998 -7.036989,2.785578 -10.068823,1.99086 L 9.0960934,37.741273 C 7.6214911,37.358386 6.7587125,36.647266 6.5442135,35.795982 6.5332755,35.481773 6.5223775,35.167563 6.5114795,34.853354 l 0.062027,-16.726227 c 0.0016,-0.399866 0.7736586,0.308211 1.2303287,0.426483 l 15.5759408,3.94655 c 3.889348,1.007296 9.575098,-0.166401 12.747704,-2.631406 z m -12.155588,8.398329 c -1.02595,0 -1.85173,0.825782 -1.85173,1.85173 v 12.760178 c 0,1.02595 0.82578,1.852511 1.85173,1.852511 1.025949,0 1.85173,-0.826561 1.85173,-1.852511 V 26.014939 c 0,-1.025948 -0.825781,-1.85173 -1.85173,-1.85173 z m -8.340974,3.007211 c -0.08912,2.18e-4 -0.177472,0.03172 -0.246378,0.092 l -0.0015,-0.03977 -5.422647,3.846922 -1.812746,-2.43181 c -0.115953,-0.155094 -0.3404,-0.191874 -0.504457,-0.08264 l -1.404197,0.933272 c -0.168288,0.11217 -0.208794,0.334735 -0.09044,0.494315 l 3.03138,4.078486 c 0.11748,0.158308 0.346956,0.194247 0.511468,0.07953 l 7.1699,-4.990706 c 0.165966,-0.11536 0.202683,-0.338638 0.08109,-0.495874 l -1.051003,-1.359755 -0.01248,0.01325 c -0.02295,-0.03978 -0.05353,-0.0753 -0.09044,-0.103698 -0.0502,-0.02301 -0.104023,-0.03366 -0.157495,-0.03353 z"
+              fill="#0187f3"
+            />
+          </svg>
           {{ currentTaskBoxTask.title }}
         </v-list-item-title>
         <v-list-item-subtitle class="my-0 py-0" v-if="taskBoxInfo"> {{ taskBoxInfo.Done.value }} of {{ taskBoxInfo.Total.value - taskBoxInfo.Canceled.value }} tasks done </v-list-item-subtitle>
       </v-list-item-content>
       <v-spacer v-if="!searching"></v-spacer>
       <task-box-menu :extraStyle="'z-index:6'" :extraClass="'mx-1 ml-3'" :taskbox="currentTaskBoxTask" :options="['icon', 'template', 'pack']" />
-      <task-box-table-info  :taskbox="currentTaskBoxTask" :options="['status']" />
+      <task-box-table-info :taskbox="currentTaskBoxTask" :options="['status']" />
       <v-btn v-if="false" style="margin-right: -20px !important" class="mx-0" icon @click="selecting = !selecting">
         <svg width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="m10.754-3.4365e-8c-5.9037 0-10.754 4.8503-10.754 10.754v26.492c0 5.9037 4.8503 10.754 10.754 10.754h26.492c5.9037 0 10.754-4.8503 10.754-10.754v-26.492c1e-15 -5.9037-4.8503-10.754-10.754-10.754zm0 6.2495h26.492c2.5507 0 4.5045 1.9538 4.5045 4.5045v26.492c0 2.5507-1.9538 4.5045-4.5045 4.5045h-26.492c-2.5507 0-4.5045-1.9538-4.5045-4.5045v-26.492c0-2.5507 1.9538-4.5045 4.5045-4.5045z" color="#000000" fill="grey" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.67" style="-inkscape-stroke: none; paint-order: stroke fill markers" />
@@ -102,12 +102,7 @@
     <div key="1" v-else>
       <v-card color="#8e8e8e24" :loading="filtering || loading" loader-height="100%" v-for="t in tasks.length || 1" :key="t + 'empty'" class="my-1 mx-4 text-right" height="50px" flat style="opacity: 0.5; background-color: white" />
     </div>
-    <empty
-      v-if="isEmpty && !filtering"
-      :loading="filtering"
-      :text="' '"
-      :icon="'m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z'"
-    />
+    <empty v-if="isEmpty && !filtering" :loading="filtering" :text="' '" :icon="'m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z'" />
   </v-sheet>
 </template>
 
@@ -155,13 +150,13 @@ export default {
       sortModel: 2,
       searching: false,
       search: null,
-      refreshkey:0
+      refreshkey: 0,
     };
   },
-  created(){
-    eventBus.$on('updateTasks',()=>{
+  created() {
+    eventBus.$on('updateTasks', () => {
       this.refreshkey++;
-    })
+    });
   },
   watch: {
     selecting(value) {
@@ -194,7 +189,7 @@ export default {
     },
     tasks() {
       this.refreshkey;
-      return Object.values(this.root.tasks).filter(t=>Object.keys(this.currentTaskBox.data.nodes).includes(t.id));
+      return Object.values(this.root.tasks).filter((t) => Object.keys(this.currentTaskBox.data.nodes).includes(t.id));
     },
     isEmpty() {
       return this.tasks && this.tasks.length == 0 ? true : false;
@@ -240,43 +235,38 @@ export default {
       return this.selection.includes(id);
     },
     filteredList(list, field, filter) {
-      // let sort = this.sortModel;
+      console.log('sort');
+      this.refreshkey;
+      let sort = this.sortModel;
       let filtered = [];
       let searchResult = this.search ? list.filter((item) => item[field] && item[field].toLowerCase().includes(this.search)) : list;
       if (!filter) filtered = searchResult;
       else filtered = searchResult.filter((item) => filter.value.includes(item[filter.field]));
 
-      // let nodes = this.currentTaskBox ? this.currentTaskBox.data.nodes : {};
+      let nodes = this.currentTaskBox ? this.currentTaskBox.data.nodes : {};
+      let pos = 0;
+      return filtered.sort(function (a, b) {
+        if (!nodes[a.id] || !nodes[b.id]) return 0;
+        let na = nodes[a.id];
+        let nb = nodes[b.id];
+        switch (sort) {
+          case 0:
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+            return 0;
+          case 1:
+            if (a.title > b.title) return -1;
+            if (a.title < b.title) return 1;
+            return 0;
+          case 2:
+            if (na.position[1] / nb.position[1] < na.position[0] / nb.position[0] && 
+            (na.position[1] < nb.position[1] || na.position[0] > nb.position[0])) pos--;
+            else
+            pos++
 
-      return filtered
-      // .sort(function (a, b) {
-      //   if (!nodes[a.id] || !nodes[b.id]) return 0;
-      //   let na = nodes[a.id];
-      //   let nb = nodes[b.id];
-      //   switch (sort) {
-      //     case 0:
-      //       if (a.title < b.title) return -1;
-      //       if (a.title > b.title) return 1;
-      //       return 0;
-      //     case 1:
-      //       if (a.title > b.title) return -1;
-      //       if (a.title < b.title) return 1;
-      //       return 0;
-      //     case 2:
-      //       if (na.position[1] < nb.position[1]) return -1;
-      //       if (na.position[1] > nb.position[1]) return 1;
-      //       return 0;
-      //   }
-      // }).sort(function (a, b) {
-      //   if (!nodes[a.id] || !nodes[b.id]) return 0;
-      //   let na = nodes[a.id];
-      //   let nb = nodes[b.id];
-      //   switch (sort) {
-      //     case 2:
-      //       if (na.position[0] < nb.position[0]) return -1;
-      //   }
-      // })
-
+            return pos;
+        }
+      });
     },
     openRoot(id) {
       if (this.root && this.root.id == id) return;
@@ -289,11 +279,11 @@ export default {
     },
     saveTaskBox() {
       this.saving = true;
-      eventBus.$emit('setWorking',true)
+      eventBus.$emit('setWorking', true);
       NodeView.saveTaskBox(true);
       setTimeout(() => {
         this.saving = false;
-        eventBus.$emit('setWorking',false)
+        eventBus.$emit('setWorking', false);
       }, 700);
     },
     closeTaskBox() {

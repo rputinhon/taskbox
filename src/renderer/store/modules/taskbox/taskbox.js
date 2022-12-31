@@ -242,24 +242,35 @@ const actions = {
 
     },
     // Delete all tasks in the id list
-    async CONFIRM_DELETE_TASKS({ commit}, nodes) {
+    async CONFIRM_DELETE_TASKS({ state }, nodes) {
 
         // let taskList = [];
-
-        console.log(nodes);
-        // prepare lists
-        let taskboxesnodes = nodes.filter(n=>n.name=='TaskBox');
-
-        if(taskboxesnodes.length){
-            taskboxesnodes.forEach(item => {
-                taskboxRepository.getChildrenRecursive(item.id).then((response)=>{
-                    console.log(response,item);
-                    // taskList.concat(response.children);
-                })
-            });
+        let deleting = {
+            root:state.currentTaskBox.id,
+            // If more then one delete all?
+            yesToAll: false,
+            // If theres files in the taskbox files folder, delete it?
+            deleteFiles: false,
+            // All tasks including task of the taskboxes
+            tasks: [],
+            // When you press no to not delete.
+            keeping: [],
+            // Taskboxes
+            taskboxes: [],
         }
 
-        console.log(commit);
+        // prepare lists
+        nodes.map(async n => {
+            if (state.root.tasks[n.id] && n.name!=="TaskBox")
+                deleting.tasks.push(state.root.tasks[n.id]);
+            if (n.name == 'TaskBox')
+                taskboxRepository.getChildrenRecursive(n.id, {}).then((response) => {
+                    deleting.taskboxes.push(response.root);
+                    deleting.tasks = deleting.tasks.concat(Object.values(response.children).filter(t => t.taskType !== 'taskbox'))
+                })
+        });
+
+        console.log(deleting);
 
         //set list
 
@@ -281,16 +292,13 @@ const actions = {
                         })
                 }
                 else {
-                    taskRepository.find(id).then(async (task) => {
-                        if (task)
-                            taskRepository.delete(task).then(() => {
-                            })
-                                .catch((error) => {
-                                    console.log(error);
-                                })
-                    }).catch((error) => {
-                        console.log(error);
+
+                    taskRepository.delete({ id: id }).then(() => {
                     })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+
 
                 }
 
@@ -557,7 +565,7 @@ const mutations = {
                     store.commit('taskbox/RESET_CHANGE_STACK');
 
                     eventBus.$emit('OpenTaskbox', true);
-                    
+
                     store.commit('taskbox/LOADING', false);
                     store.commit('app/SET_MAIN_TAB', 0);
                     store.commit('SET_API_STATE', apistate.DONE);
@@ -574,10 +582,10 @@ const mutations = {
         nextTick(() => {
             store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                 // store.dispatch('taskbox/GET_TASKBOX_INPUTS',args.task.id).then(() => {
-                    store.dispatch('taskbox/GET_TASKBOX_INFO').then(() => {
+                store.dispatch('taskbox/GET_TASKBOX_INFO').then(() => {
 
-                    })
-                // })
+                })
+                    // })
                     .catch(() => { })
                     .finally(() => {
                         store.commit('taskbox/RESET_CHANGE_STACK');
@@ -628,11 +636,11 @@ const mutations = {
             nextTick(() => {
                 store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                     // store.dispatch('taskbox/GET_TASKBOX_INFO').then(() => {
-                        setTimeout(() => {
-                            store.commit('taskbox/SET_HAS_CHANGES', false);
-                            store.commit('SET_API_STATE', apistate.DONE);
-                            eventBus.$emit('setWorking', false)
-                        }, 700);
+                    setTimeout(() => {
+                        store.commit('taskbox/SET_HAS_CHANGES', false);
+                        store.commit('SET_API_STATE', apistate.DONE);
+                        eventBus.$emit('setWorking', false)
+                    }, 700);
                     // })
                 })
             })
@@ -675,8 +683,8 @@ const mutations = {
         list.forEach(id => {
             delete state.root.tasks[id];
             NodeView.deleteNode(id);
-            if(state.root.taskboxes[state.currentTaskBox.id].data.nodes[id])
-            delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
+            if (state.root.taskboxes[state.currentTaskBox.id].data.nodes[id])
+                delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
         })
 
         NodeView.saveTaskBox(true);
@@ -685,7 +693,7 @@ const mutations = {
             store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                 store.dispatch('taskbox/GET_TASKBOX_INFO').then((info) => {
                     store.dispatch('taskbox/UPDATE_TASKBOX_PROGRESS', info).then(() => {
-                    
+
                         setTimeout(() => {
                             store.commit('SET_API_STATE', apistate.DONE);
                             eventBus.$emit('updateTasks');
@@ -711,9 +719,9 @@ const mutations = {
 
         if (state.root) {
 
-            if (state.root.tasks[task.id]) 
+            if (state.root.tasks[task.id])
                 state.root.tasks[task.id] = task;
-            
+
 
             if (task.id == state.currentTaskBox.id)
                 state.currentTaskBox = task;

@@ -391,6 +391,7 @@ class TaskboxRepository extends Repository {
     async getChildrenRecursive(id, children, root, fields, onlyTaskBoxes) {
 
         let current = await this.getTaskBoxWithChildren(id, [], fields, onlyTaskBoxes);
+        if(children)
         current.children.forEach(async item => {
             children[item.id] = item;
         })
