@@ -445,7 +445,7 @@ const mutations = {
     },
     SET_PROFILE(state, profile) {
         state.profile = profile;
-        store.commit('SET_API_STATE', apistate.DONE);
+        // store.commit('SET_API_STATE', apistate.DONE);
     },
     SUCCESS_UPDATE_USER() {
     },
@@ -470,6 +470,10 @@ const mutations = {
                         await store.dispatch('templates/FETCH_ALL');
                         store.commit('post/CLEAR');
                         store.commit('post/CLEAR_PERSONAL');
+                    }).catch(error=>{
+                        console.log(error);
+                    }).finally(()=>{
+                        store.commit('SET_API_STATE', apistate.DONE);
                     })
                 })
             })

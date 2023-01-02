@@ -11,7 +11,7 @@
             </svg>
           </v-btn>
         </template>
-        <v-card flat class="mx-auto" max-width="400" color="grey lighten-2">
+        <v-card flat class="mx-auto" max-width="400" color="background">
           <review :task="task" />
         </v-card>
       </v-menu>

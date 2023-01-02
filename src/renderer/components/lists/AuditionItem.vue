@@ -1,6 +1,6 @@
 <template>
   <v-list-item :disabled="options.includes('readOnly')" class="pa-0 ma-0" color="transparent" style="max-width: 100%" v-if="task">
-    <v-card width="100%" flat :color="!open ? 'white' : 'grey lighten-3'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
+    <v-card width="100%" flat :color="!open ? 'white' : 'background'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
       <v-progress-linear class="progressbar" :color="color" background-opacity="0.7" :buffer-value="analysing == false ? value : 100" />
       <v-list-item class="px-3" style="z-index: 10">
         <task-subject v-show="options.includes('subject') && analysing == false" :status="status" :task="task" :options="['popup']" />

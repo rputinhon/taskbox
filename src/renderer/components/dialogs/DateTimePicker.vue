@@ -17,7 +17,7 @@
       </v-tooltip>
     </template>
 
-    <v-card color="grey lighten-2" class="pa-0">
+    <v-card color="background" class="pa-0">
       <v-fade-transition leave-absolute hide-on-leave>
         <v-date-picker v-if="!istime" locale="pt" v-model="datepicker" @change="istime = true" />
         <v-time-picker v-else format="24hr" ampm-in-title scrollable v-model="timepicker" />

@@ -23,7 +23,7 @@
           <template v-slot:activator="{ on: menu }">
             <v-btn tile class="px-0" height="48px" min-width="48px" v-on="{ ...tooltip, ...menu }" depressed :style="reviewStatus.value == 2 && 'border:2px solid #f7ab39'" :color="reviewStatus.color"> rev </v-btn>
           </template>
-          <v-card flat class="mx-auto" max-width="400" color="grey lighten-2">
+          <v-card flat class="mx-auto" max-width="400" color="background">
             <review :task="task" :allowAddReview="true" />
           </v-card>
         </v-menu>

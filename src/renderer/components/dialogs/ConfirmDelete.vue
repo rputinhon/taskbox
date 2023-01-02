@@ -35,16 +35,14 @@
 
       <v-card-text style="min-height: 100px">
         <v-progress-linear rounded height="13" v-if="deleting" indeterminate> <small> deleting ... </small> </v-progress-linear>
-        <span class="error--text" v-if="file && !fileExistInFilesFolder">
-        Deleting only the task. Files outside the taskbox files folder are not deleted.
-        </span>
+        <span class="error--text" v-if="file && !fileExistInFilesFolder"> Deleting only the task. Files outside the taskbox files folder are not deleted. </span>
         <v-switch class="ml-8" v-if="fileExistInFilesFolder" :disabled="deleting" inset color="error" v-model="deleteFiles" dense label="Delete also the task file" :messages="'*This task have a file in the taskbox files folder'" />
       </v-card-text>
       <v-card-actions class="mt-3">
         <v-row class="py-3" align="center" justify="center" style="width: 100%">
           <v-btn :disabled="deleting" small class="mx-1" color="secondary" @click="next()"> no </v-btn>
           <v-btn :disabled="deleting" small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="deleteItem(false)"> yes </v-btn>
-          <v-btn v-show="deletingNodes.length > 1" :disabled="deleting" small class="mx-1" color="error" @click="deleteItem(true)"> yes to all </v-btn>
+          <v-btn v-show="deleting.length > 1" :disabled="deleting" small class="mx-1" color="error" @click="deleteItem(true)"> yes to all </v-btn>
         </v-row>
       </v-card-actions>
     </v-card>
@@ -73,7 +71,7 @@ export default {
     file(value) {
       this.checkfileExistInFilesFolder(value);
     },
-    deletingNodes(value) {
+    deletingTasks(value) {
       if (value) {
         this.isOpen = true;
         this.index = 0;
@@ -87,18 +85,17 @@ export default {
     ...mapState({
       library: (state) => state.library.library,
       currentTaskBox: (state) => state.taskbox.currentTaskBox,
-      deletingNodes: (state) => state.taskbox.deletingNodes,
+      deletingTasks: (state) => state.taskbox.deleting,
+      taskList: (state) => state.taskbox.root.tasks
     }),
-    hasToDelete() {
-      if (!this.dataReady) return false;
-      return this.index <= this.deletingNodes.length - 1 ? true : false;
-    },
     dataReady() {
-      return this.library && this.deletingNodes ? true : false;
+      return this.library && this.deleting ? true : false;
     },
     deletingItem() {
-      if (!this.deletingNodes || !this.deletingNodes.length || !this.hasToDelete) return this.next();
-      return this.deletingNodes[this.index];
+      if (this.deletingTasks && this.taskList[this.deletingTasks.idList[this.deletingTasks.index]])
+        return this.taskList[this.deletingTasks.idList[this.deletingTasks.index]];
+      else
+        return this.next();
     },
     createdAt() {
       return moment(this.deletingItem.createdAt).format('DD/MM/YY HH:mm:ss');
@@ -121,10 +118,7 @@ export default {
       return type.meta.typeicon;
     },
     next() {
-      if (this.hasToDelete) {
-        this.index++;
-        if (!this.deletingItem) this.next();
-      } else this.close();
+      this.$store.commit('taskbox/DELETE_NEXT_TASK');
     },
     async deleteNode() {
       return new Promise((res) => {

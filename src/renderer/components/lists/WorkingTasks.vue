@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="mx-0 overflow-auto" color="grey lighten-2" :style="`width:100%;max-height:calc(100vh - 40px)`">
+  <v-sheet class="mx-0 overflow-auto" color="background" :style="`width:100%;max-height:calc(100vh - 40px)`">
     <v-layout align-start justify-start row class="overflow-auto pa-8" style="min-height:100vh;width: max-content !important">
         <roots/>
         <tasks-pannel v-if="authenticated" key="1" class="mr-5"  :taskList="offlineTasks" :title="'Colaborations'" />

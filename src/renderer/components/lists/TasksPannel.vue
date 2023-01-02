@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="transparent" width="100%" :height="height || 'calc(100vh - 40px)'">
+  <v-card flat color="background" width="100%" :height="height || 'calc(100vh - 40px)'">
     <v-card-title class="text-subtitle-1 py-0 my-0" v-if="!searching">
       <v-list-item class="ma-0 pa-0" style="min-height: 30px; width: 100%">
         <v-list-item-icon v-if="false" class="pa-0 mr-1">
@@ -63,7 +63,7 @@
     <v-fade-transition hide-on-leave leave-absolute group>
     <div key="1" v-if="filtering">
       <v-card color="#8e8e8e24" v-for="t in 1" :key="t + 'empty'"  class="my-1 mx-3 text-right overflow-hidden" height="50px" flat style="opacity: 0.5; background-color: white">
-        <v-card width="100%" color="grey lighten-1" class="loading"  height="100%" />
+        <v-card width="100%" color="background" class="loading"  height="100%" />
       </v-card>
     </div>
     <div  key="0" v-else class="pb-4">
@@ -87,8 +87,8 @@
               </svg>
             </template>
           </v-expansion-panel-header>
-          <v-expansion-panel-content color="grey lighten-2">
-            <v-sheet class="px-3 pt-2" color="grey lighten-2">
+          <v-expansion-panel-content color="background">
+            <v-sheet class="px-3 pt-2" color="background">
               <v-fade-transition hide-on-leave leave-absolute group>
                 <div v-for="(task, t) in getTasks(taskbox.id)" :key="`${t}_${task.id}`" class="my-1">
                   <task-item :task="task" :options="['status', 'worker']" />

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet width="100%" class="windowbar-button overflow-hidden" color="grey lighten-2">
+  <v-sheet width="100%" class="windowbar-button overflow-hidden" color="background">
     <v-card-title class="text-subtitle-1 py-0" v-if="!searching">
       <v-list-item class="ma-0 pa-0" style="min-height: 40px; width: 100%">
         <v-list-item-content class="text-left" style="min-width: 180px">
@@ -248,7 +248,7 @@ export default {
 
 <style scoped>
 .mytasks {
-  background-color: #e0e0e0;
+  background-color: #eeeeee;
   overflow-y: auto;
   overflow-x: hidden;
 }

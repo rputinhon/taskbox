@@ -1,7 +1,7 @@
 <template>
-  <v-tabs v-model="messageTab" height="0px">
-    <v-tab-item tabindex="01">
-      <v-card-text style="min-height: 540px; height: 610px" class="pa-2 py-4 overflow-x-hidden">
+  <v-tabs v-model="messageTab" height="0px" background-color="#eeeeee">
+    <v-tab-item tabindex="01" >
+      <v-card-text style="min-height: 540px; height: 610px;background-color:#eeeeee" class="pa-2 py-4 overflow-x-hidden">
         <v-list v-for="(member, m) in members" :key="m" class="my-0 py-0" color="transparent">
           <v-list-item link style="text-align: left" @click="selectedMember = member">
             <v-badge dot color="warning" left offset-x="35" offset-y="10" :value="hasUnreadMessages(member.lastMessage)">
@@ -34,7 +34,7 @@
           <member-item :id="selectedMember.member" :align="'center'" :options="['reversed', 'username']" />
         </v-list-item>
       </v-app-bar>
-      <v-layout column align-center justify-start style="height: 510px">
+      <v-layout column align-center justify-start style="height: 510px;">
         <v-card-text style="width: 100%; height: auto; height: 100%" ref="messages" class="pa-3 overflow-y-auto">
           <v-fade-transition hide-on-leave leave-absolute>
             <div v-if="!loading" key="0">

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet width="100%" color="transparent">
+  <v-sheet width="100%" color="background">
     <v-card-title class="text-subtitle-1 py-0">
       <v-list-item class="ma-0 pa-0" style="min-height: 40px; width: 100%">
         <v-list-item-icon class="pa-0 mr-1">

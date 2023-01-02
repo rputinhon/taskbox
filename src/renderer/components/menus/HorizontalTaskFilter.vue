@@ -1,6 +1,6 @@
 <template>
   <v-toolbar flat height="30px" color="transparent" class="my-0 windowbar-button">
-      <v-btn-toggle v-model="filter"  multiple group  color="grey lighten-2" @change="updateFilter()">
+      <v-btn-toggle v-model="filter"  multiple group  color="background" @change="updateFilter()">
         <v-tooltip bottom transition="none" v-for="(item, t) in filterTypes" :key="t">
           <template v-slot:activator="{ on: onTooltip }">
             <v-btn fab width="26" height="24" icon v-on="{ ...onTooltip }" x-small class="pa-0  ma-0" @click.stop>

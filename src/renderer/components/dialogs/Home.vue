@@ -1,6 +1,6 @@
 <template>
-  <v-sheet class="windowbar-button" :color="analysing == false ? 'transparent' : 'workspace'">
-    <v-tabs hide-slider vertical v-model="tabIndex" class="main">
+  <v-sheet class="windowbar-button" :color="analysing == false ? 'background' : 'workspace'">
+    <v-tabs hide-slider vertical v-model="tabIndex" class="main" background-color="#eeeeee">
       <v-tab v-for="(tab, t) in tabs" :key="t" v-show="!tab.disabled && ((tab.auth && authenticated) || !tab.auth)" :class="tab.c" :style="`min-width: ${tab.w || 50}px; height: ${tab.w || 50}px;max-width: ${tab.w || 50}px;`">
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on, attrs }">
@@ -21,7 +21,7 @@
         </v-tooltip>
       </v-tab>
       <v-tab-item tabindex="0">
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px)`">
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);background-color:#eeeeee;!important;`">
           <v-layout align-center justify-start column>
             <tasks v-if="currentTaskBox" />
             <roots v-else :sm="4" :md="4" :lg="4" :xl="4" :options="['recent']" @newProject="$emit('newProject')" />
@@ -230,7 +230,7 @@ export default {
   height: 100vh;
 }
 .home {
-  background-color: #e0e0e0;
+  background-color: #eeeeee;
   overflow-y: scroll;
   overflow-x: hidden;
 }

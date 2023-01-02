@@ -1,6 +1,6 @@
 <template>
   <v-list-item :disabled="options.includes('readOnly')" class="pa-0 ma-0" color="transparent" v-if="task">
-    <v-card width="100%" flat :color="!open ? 'white' : 'grey lighten-3'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
+    <v-card width="100%" flat :color="!open ? 'white' : 'background'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
       <v-progress-linear class="progressbar" :color="color" background-opacity="0.7" :buffer-value="analysing == false ? value : 100" />
       <v-list-item class="px-2" style="z-index: 10">
         <task-subject v-show="options.includes('subject') && analysing == false" :status="status" :task="task" :options="['popup']" />
@@ -39,7 +39,7 @@
               <template v-slot:activator="{ on: menu }">
                 <v-btn tile class="px-0 white--text" height="48px" min-width="48px" v-on="{ ...tooltip, ...menu }" depressed :style="reviewStatus.value == 2 && 'border:2px solid #f7ab39'" :color="reviewStatus.color"> rev </v-btn>
               </template>
-              <v-card flat class="mx-auto" max-width="400" color="grey lighten-2">
+              <v-card flat class="mx-auto" max-width="400" color="background">
                 <review :task="task" :allowAddReview="true" />
               </v-card>
             </v-menu>

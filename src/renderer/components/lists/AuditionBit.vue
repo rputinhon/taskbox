@@ -168,6 +168,6 @@ export default {
 
 .auditing {
   margin-left: 15px;
-  border-left: 1px dashed #e0e0e0 !important;
+  border-left: 1px dashed #eeeeee !important;
 }
 </style>

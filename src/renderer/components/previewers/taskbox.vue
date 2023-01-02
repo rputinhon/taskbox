@@ -1,5 +1,5 @@
 <template>
-  <!-- <v-sheet height="100%" width="100%" color="grey lighten-2" class="pa-0"> -->
+  <!-- <v-sheet height="100%" width="100%" color="background" class="pa-0"> -->
   <tasks-pannel style="background-color: red" 
   :taskList="filteredList(tasks || [], { value: filter, field: 'status' })" 
   :height="'calc(100% - 40px)'" 

@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on: tooltip }">
       <v-menu rounded="0" ref="bragmenu" bottom offset-y light>
         <template v-slot:activator="{ on: menu }">
-          <v-btn  right class="mx-1" fab v-on="{ ...tooltip, ...menu }" icon x-small elevation="0" color="#e0e0e0">
+          <v-btn  right class="mx-1" fab v-on="{ ...tooltip, ...menu }" icon x-small elevation="0" color="#eeeeee">
             <svg width="23" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path
                 v-if="hasPost"

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="100%" class="overflow-y-auto"  color="grey lighten-2" v-if="task">
+  <v-sheet height="100%" class="overflow-y-auto"  color="background" v-if="task">
     <v-responsive width="100%" ref="image"  style="align-items: center" class="pa-0 ma-0" >
       <v-progress-linear absolute top color="primary" indeterminate v-if="loading" />
       <v-card v-if="file && fileExist" class="mt-10 mx-auto my-7" :width="page.w" min-height="700px" height="fit-content" elevation="8">
@@ -13,7 +13,7 @@
       Opening in the default external app...
       <v-btn x-small color="accent" @click="getData()">back</v-btn>
     </v-overlay>
-    <v-toolbar v-show="!loading && fileExist" color="grey lighten-2" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 40%; bottom: 50px" rounded="pill">
+    <v-toolbar v-show="!loading && fileExist" color="background" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 40%; bottom: 50px" rounded="pill">
       <v-tooltip bottom transition="none">
         <template v-slot:activator="{ on: onTooltip }">
           <v-btn elevation="0" class="mr-1" color="primary" v-on="onTooltip" rounded x-small @click="saveFile()" v-text="'save'"> </v-btn>

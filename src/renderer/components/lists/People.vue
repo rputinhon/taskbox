@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="pa-3" width="100%" color="overflow-y-auto grey lighten-2">
+  <v-sheet class="pa-3" width="100%" color="background">
     <v-card-title>
       <svg class="mr-2" style="pointer-events: none" width="23" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <path
@@ -173,11 +173,11 @@ export default {
 }
 
 .theme--light.v-tabs-items {
-  background-color: #e0e0e0 !important;
+  background-color: #eeeeee !important;
   overflow-x: visible !important;
 }
 .people {
-  background-color: #e0e0e0;
+  background-color: #eeeeee;
   padding: 10px 20px 10px 20px;
   overflow-y: auto;
   overflow-x: hidden;

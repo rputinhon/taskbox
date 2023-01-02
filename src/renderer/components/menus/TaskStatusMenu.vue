@@ -43,7 +43,7 @@
               <template v-slot:activator="{ on: menu }">
                 <v-btn v-on="{ ...menu }" depressed x-small class="auditionBit auditing" :color="reviewStatus.color"> rev </v-btn>
               </template>
-              <v-card flat class="mx-auto" max-width="400" color="grey lighten-2">
+              <v-card flat class="mx-auto" max-width="400" color="background">
                 <review :task="task" :allowAddReview="false" />
               </v-card>
             </v-menu>
@@ -65,7 +65,7 @@
             <v-list-item-content class="pb-0">
               <!-- <small class="primary--text mr-2" style="text-transform: lowercase"> workers </small> -->
               <v-list-item-title style="height: 45px">
-                <v-btn class="pl-2 pr-0" color="grey lighten-3" depressed block rounded @click.prevent>
+                <v-btn class="pl-2 pr-0" color="background" depressed block rounded @click.prevent>
                   <small v-if="workers.length == 0" style="margin-left:80px;color: grey">select task workers</small>
                   <avatar-list :size="30" :concat="3" :max="8" :list="workers" />
                   <v-tooltip bottom transition="fade">

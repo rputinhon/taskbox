@@ -1,5 +1,5 @@
 <template>
-  <v-card width="210" max-height="400px" min-height="300" class="overflow-y-auto" color="grey lighten-2">
+  <v-card width="210" max-height="400px" min-height="300" class="overflow-y-auto" color="background">
     <v-app-bar absolute height="30">
       <v-btn x-small class="mx-2" width="93px" color="secondary" @click="(many = []), (single = null)"> clear </v-btn>
       <v-btn x-small color="primary" width="93px" @click="setWorkers()"> ok </v-btn>

@@ -1,5 +1,5 @@
 <template>
-  <v-card flat color="transparent" width="100%" :height="height || 'calc(100vh - 40px)'">
+  <v-card flat color="background" width="100%" :height="height || 'calc(100vh - 40px)'">
     <v-card-title class="text-subtitle-1 py-0 my-0" v-if="!searching">
       <v-list-item class="ma-0 pa-0" style="min-height: 30px; width: 100%">
         <v-list-item-icon v-if="false" class="pa-0 mr-1">
@@ -187,11 +187,11 @@ export default {
 }
 
 .theme--light.v-tabs-items {
-  background-color: #e0e0e0 !important;
+  background-color: #eeeeee !important;
   overflow-x: visible !important;
 }
 .people {
-  background-color: #e0e0e0;
+  background-color: #eeeeee;
   padding: 10px 20px 10px 20px;
   overflow-y: auto;
   overflow-x: hidden;

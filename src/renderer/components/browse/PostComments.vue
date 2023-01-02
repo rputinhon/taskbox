@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on: tooltip }">
       <v-menu rounded="0" ref="bragmenu" right light :close-on-content-click="false" min-width="350">
         <template v-slot:activator="{ on: menu }">
-          <v-btn right class="mx-1 mr-3" fab v-on="{ ...tooltip, ...menu }" icon x-small elevation="0" color="#e0e0e0">
+          <v-btn right class="mx-1 mr-3" fab v-on="{ ...tooltip, ...menu }" icon x-small elevation="0" color="#eeeeee">
             <v-badge color="transparent" left offset-x="10" bottom offset-y="25" :value="hasComments" :content="commentsCount" />
             <svg version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -15,13 +15,13 @@
         </template>
         <v-card v-if="post" class="overflow-y-hidden">
           <v-layout fill-height column align-center justify-end style="height: 300px">
-            <v-card color="grey lighten-1" height="100%" width="100%" ref="messages" class="pa-3 overflow-y-auto">
+            <v-card color="background" height="100%" width="100%" ref="messages" class="pa-3 overflow-y-auto">
               <v-fade-transition hide-on-leave leave-absolute>
                 <div v-if="!loading" key="0">
                   <v-list v-for="(message, i) in post.messages" :key="i" class="py-0 my-0" color="transparent">
                     <v-list-item :key="i" class="mt-0 pb-0 py-0 px-0 message" style="min-height: 15px !important; align-items: flex-end" :style="!isGuest(message.member) ? 'direction:ltr' : 'direction:rtl'">
                       <member-item v-show="chunkMessage(i, message.member)" :id="message.member" :size="25" :options="['onlyAvatar']" />
-                      <v-card hover class="message" color="grey lighten-2" width="fit-content" max-width="200px" :class="!chunkMessage(i, message.member) ? 'mx-8' : 'root mx-2 mb-3'" @mouseenter="hovering = i" @mouseleave="hovering = null">
+                      <v-card hover class="message" color="background" width="fit-content" max-width="200px" :class="!chunkMessage(i, message.member) ? 'mx-8' : 'root mx-2 mb-3'" @mouseenter="hovering = i" @mouseleave="hovering = null">
                         <v-list-item-content class="py-0">
                           <v-card-text class="text-caption px-2 text-left" style=" padding: 5px 5px; direction: ltr">
                             {{ message.text }}

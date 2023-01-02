@@ -3,7 +3,7 @@
     <v-dialog :scrollable="true" v-if="dataReady" :fullscreen="fullscreen" overlay-opacity="0.9" width="900px" style="overflow: hidden !important; min-width: auto" max-width="80vw" v-model="dataReady" persistent light>
       <v-card height="630px" class="overflow-hidden">
         <preview-main-bar :task="auditingTask || previewingTask" :disabled="false" :allowfullscreen="allowfullscreen" :fullscreen="fullscreen" @toggleFullScreen="fullscreen = !fullscreen" @maximize="fullscreen = !fullscreen" @showReviews="showReviews = true" />
-        <!-- <v-card-text class="ma-0 px-0 py-0"  style="height:100%;overflow-y:scroll;background-color:#e0e0e0!important" :style="!fullscreen && 'min-height: 610px;max-height: 640px;max-width:100%'"> -->
+        <!-- <v-card-text class="ma-0 px-0 py-0"  style="height:100%;overflow-y:scroll;background-color:#eeeeee!important" :style="!fullscreen && 'min-height: 610px;max-height: 640px;max-width:100%'"> -->
           <v-fade-transition leave-absolute hide-on-leave>
             <component v-if="dataReady" v-show="!loading" v-bind:is="componentType" :showToolsBar="true" :userProfile="userProfile" :fullscreen="fullscreen" :status="status" @toggleMessages="showReviews = !showReviews" @ShowReviewDialog="review = true"> </component>
           </v-fade-transition>

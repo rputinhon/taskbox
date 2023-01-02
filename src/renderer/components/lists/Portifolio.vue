@@ -1,9 +1,9 @@
 <template>
-  <v-sheet class="portifolio" color="grey lighten-2">
+  <v-sheet class="portifolio" color="background">
     <v-progress-linear v-show="loading" indeterminate absolute style="margin-top: -20px" />
     <v-list v-if="creating" class="ma-0 pa-0 mb-5">
       <v-card outlined rounded="lg" hover width="100%" height="210px" v-if="editingPortifolio">
-        <v-sheet height="100%" rounded="lg" color="grey lighten-3">
+        <v-sheet height="100%" rounded="lg" color="background">
           <div v-if="editingPortifolio.images.length == 0">
             <v-btn :loading="loading" rounded small color="primary" class="mt-12" @click="SelectImages()"> select images </v-btn>
           </div>
@@ -50,7 +50,7 @@
         <v-tooltip right transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-card outlined :color="editingPortifolioID == portifolio.id ? 'accent' : ''" rounded="lg" hover width="100%" :height="hovering == p || editingPortifolioID == portifolio.id ? '205px' : '150px'" @mouseenter="hovering = p" @mouseleave="hovering = null" v-on="on" v-bind="attrs" @click="previewContent(portifolio)">
-              <v-sheet height="100%" rounded="lg" color="grey lighten-3">
+              <v-sheet height="100%" rounded="lg" color="background">
                 <v-carousel hide-delimiters show-arrows-on-hover height="148px" style="border-radius: 8px">
                   <template v-slot:prev="{ on, attrs }">
                     <v-btn x-small fab v-on="on" v-bind="attrs" style="opacity: 0.5" color="black">

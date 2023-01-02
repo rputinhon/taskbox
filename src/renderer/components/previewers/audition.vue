@@ -1,5 +1,5 @@
 <template>
-  <v-sheet height="100%" class="overflow-hidden" color="grey lighten-2">
+  <v-sheet height="100%" class="overflow-hidden" color="background">
     <v-row no-gutters align="center" justify="center" style="height: 100%">
       <component :inTask="auditingTask" v-bind:is="componentType" :fullscreen="false" :status="status"> </component>
       <audition-bar v-if="auditingTask" />

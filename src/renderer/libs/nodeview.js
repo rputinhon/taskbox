@@ -469,7 +469,9 @@ class _nodeView extends TaskBox {
     }
 
     clearSelection() {
+
         if (!editor) return;
+
         editor.selected.clear();
         commentsSelected.forEach(cm => {
             cm.el.classList.remove('selected')
@@ -486,16 +488,16 @@ class _nodeView extends TaskBox {
     async deleteNode(id) {
         self.findNode(id).then(async (node) => {
             if (!node) return;
-            changing=true;
+            changing = true;
             await editor.removeNode(node);
-            changing=false;
+            changing = false;
             self.process();
         });
     }
-    
+
 
     async deleteSelected(force, list) {
-        changing=true;
+        changing = true;
         let selected = editor.selected.list;
 
         if (list)
@@ -513,14 +515,14 @@ class _nodeView extends TaskBox {
                 editor.removeNode(s);
                 selected.pop(s);
             }
-            if(s.name=='TasBox')
-            console.log(s.data);
+            if (s.name == 'TasBox')
+                console.log(s.data);
         })
 
-        if(selected.length>0){
+        if (selected.length > 0) {
             if (force) {
                 store.dispatch('taskbox/DELETE_TASKS', selected.map(s => s.id)).then(() => {
-                    changing=false;
+                    changing = false;
                     self.saveTaskBox(true);
                 })
             }
@@ -529,8 +531,8 @@ class _nodeView extends TaskBox {
                     store.dispatch('taskbox/CONFIRM_DELETE_TASKS', selected)
             }
         }
-        else{
-            changing=false;
+        else {
+            changing = false;
             self.saveTaskBox(true);
         }
 

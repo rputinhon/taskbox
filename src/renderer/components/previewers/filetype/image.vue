@@ -11,7 +11,7 @@
       Opening in the default external app...
       <v-btn x-small color="accent" @click="working = false">back</v-btn>
     </v-overlay>
-    <v-toolbar v-if="showToolsBar" v-show="!loading" color="grey lighten-2" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 43.5%; bottom: 50px" rounded="pill">
+    <v-toolbar v-if="showToolsBar" v-show="!loading" color="background" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 43.5%; bottom: 50px" rounded="pill">
       <v-tooltip bottom transition="none">
         <template v-slot:activator="{ on: onTooltip }">
           <v-btn elevation="0" class="mr-1" color="primary" v-on="onTooltip" rounded x-small @click="selectFile()" v-text="'change file'"> </v-btn>

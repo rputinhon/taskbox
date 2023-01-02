@@ -13,7 +13,7 @@
       </v-badge>
     </template>
 
-    <v-card min-width="300px" max-width="300px" max-height="350px" min-height="350px" height="350px" color="grey lighten-2" style="overflow: hidden">
+    <v-card min-width="300px" max-width="300px" max-height="350px" min-height="350px" height="350px" color="background" style="overflow: hidden">
       <v-progress-linear v-if="loading" absolute top indeterminate />
       <v-layout fill-height column align-center justify-end style="height: 305px">
         <v-card-text style="width: 100%; height: auto; max-height: 480px" ref="messages" class="pa-3 overflow-y-auto">

@@ -9,7 +9,7 @@
             </svg>
           </v-btn>
         </template>
-        <v-card flat class="mx-auto" max-width="400" color="grey lighten-2">
+        <v-card flat class="mx-auto" max-width="400" color="background">
           <v-list-item v-if="!approved">
             <v-btn v-if="types[3]" rounded small>
               <v-list-item-title class="text-center grey--text text-subtitle-2 multiply" v-text="types[3].text"></v-list-item-title>

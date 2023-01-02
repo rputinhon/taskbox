@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="taskboxList" :height="`calc(100vh - ${authenticated ? '160px' : '40px'})`" color="grey lighten-3">
+  <v-sheet class="taskboxList" :height="`calc(100vh - ${authenticated ? '160px' : '40px'})`" color="background">
     <v-card-title style="height: 80px" v-if="!searching">
       <v-list-item-icon class="mx-2">
         <svg style="pointer-events: none" width="30" height="30" version="1.1" viewBox="0 0 40 55" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">

@@ -38,7 +38,7 @@ yarn lint
 ## Pack your project in a zip file
 ![Pack it](public/img/readme_pack.png)
 
-## Membership with personal tasks and messages.
+## Membership with personal tasks, members manager and messages.
 ![Membership](public/img/readme_membership.png)
 
 ## Social area to publicate templates, tasks, histories and portifolios.

@@ -1,9 +1,9 @@
 <template>
-  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" style="margin-top: 40px; overflow: hidden" :color="analysing == false ? 'grey lighten-2' : 'workspace'">
+  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" style="margin-top: 40px; overflow: hidden" :color="analysing == false ? 'background' : 'workspace'">
     <v-app-bar fixed height="40" flat :color="analysing == false ? 'transparent' : 'workspace'">
-      <v-img class="mx-3" v-if="!authenticated" contain :style="memberTab !== 0 && 'filter: grayscale(1)!important;'" src="img/logo_worm_32_flat.png" max-width="32px"/>
+      <v-img class="ml-2" v-if="!authenticated" contain :style="memberTab !== 0 && 'filter: grayscale(1)!important;'" src="img/logo_worm_32_flat.png" max-width="32px"/>
       <v-spacer> </v-spacer>
-      <v-tabs v-if="authenticated" class="mr-1" hide-slider v-model="memberTab" height="40" background-color="transparent">
+      <v-tabs v-if="authenticated" class="mr-1" hide-slider v-model="memberTab" height="40">
         <v-tab :style="`min-width: 50px;`" class="pa-1 windowbar-button" @click="showTaskBox()">
           <v-img contain :style="memberTab !== 0 && 'filter: grayscale(1)!important;'" src="img/logo_worm_32_flat.png" max-width="32px"  />
         </v-tab>
@@ -34,8 +34,8 @@
       <v-progress-linear v-if="working" indeterminate top fixed class="mt-10" />
     </v-app-bar>
 
-    <v-tabs v-model="memberTab" height="0">
-      <v-tab-item tabindex="0" style="overflow: hidden !important">
+    <v-tabs v-model="memberTab" height="0" color="grey">
+      <v-tab-item tabindex="0" style="overflow: hidden !important" >
         <home @newProject="$emit('newProject')" />
       </v-tab-item>
       <!-- <v-tab-item tabindex="0" eager v-if="authenticated">

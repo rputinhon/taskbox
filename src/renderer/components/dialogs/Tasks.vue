@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2 py-4" :color="analysing == false ? 'transparent' : 'workspace'">
+  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2 py-4" :color="analysing == false ? 'background' : 'workspace'">
     <v-fade-transition leave-absolute>
       <analisys :filtered="filteredList(tasks, 'title', { value: filter, field: 'status' })" v-if="analysing !== false" />
     </v-fade-transition>
@@ -11,7 +11,7 @@
           </svg>
         </v-btn>
         <v-divider class="py-2 mx-2 mr-1 mb-2" vertical inset></v-divider>
-        <v-card v-if="showRoots" class="text-left pa-1 pt-5" style="top: 35px; position: absolute; z-index: 10; overflow-x: auto; overflow-y: hidden; display: flex" height="90" width="95%" color="grey lighten-3">
+        <v-card v-if="showRoots" class="text-left pa-1 pt-5" style="top: 35px; position: absolute; z-index: 10; overflow-x: auto; overflow-y: hidden; display: flex" height="90" width="95%" color="background">
           <small style="position: absolute; top: -5px; margin-left: 2px">roots</small>
           <v-btn v-for="(root, r) in roots" :key="r" :elevation="isOpen(root.id) ? 3 : 0" :color="isOpen(root.id) ? 'primary lighten-1' : 'transparent'" height="100%" width="80" @click="openRoot(root.id)">
             <svg version="1.1" class="mb-5" viewBox="0 0 50 45" xmlns="http://www.w3.org/2000/svg" style="overflow: visible">
@@ -235,7 +235,6 @@ export default {
       return this.selection.includes(id);
     },
     filteredList(list, field, filter) {
-      console.log('sort');
       this.refreshkey;
       let sort = this.sortModel;
       let filtered = [];
@@ -245,28 +244,30 @@ export default {
 
       let nodes = this.currentTaskBox ? this.currentTaskBox.data.nodes : {};
       let pos = 0;
-      return filtered.sort(function (a, b) {
-        if (!nodes[a.id] || !nodes[b.id]) return 0;
-        let na = nodes[a.id];
-        let nb = nodes[b.id];
-        switch (sort) {
-          case 0:
-            if (a.title < b.title) return -1;
-            if (a.title > b.title) return 1;
-            return 0;
-          case 1:
-            if (a.title > b.title) return -1;
-            if (a.title < b.title) return 1;
-            return 0;
-          case 2:
-            if (na.position[1] / nb.position[1] < na.position[0] / nb.position[0] && 
-            (na.position[1] < nb.position[1] || na.position[0] > nb.position[0])) pos--;
-            else
-            pos++
+      return filtered
+        .sort(function (a, b) {
+          if (!nodes[a.id] || !nodes[b.id]) return 0;
+          let na = nodes[a.id];
+          let nb = nodes[b.id];
+          switch (sort) {
+            case 0:
+              if (a.title < b.title) return -1;
+              if (a.title > b.title) return 1;
+              return 0;
+            case 1:
+              if (a.title > b.title) return -1;
+              if (a.title < b.title) return 1;
+              return 0;
+            case 2:
+              if (na.position[0] < nb.position[0] && na.position[1] < nb.position[1]) pos-=2;
+              else
+              if (na.position[1] < nb.position[1]) pos-=1;
+              else pos++;
 
-            return pos;
-        }
-      });
+              return pos;
+          }
+        })
+       
     },
     openRoot(id) {
       if (this.root && this.root.id == id) return;
@@ -331,6 +332,6 @@ export default {
 <style scoped>
 .audition {
   border-radius: 0 25px 25px 0 !important;
-  border-left: 3px dashed #e0e0e0 !important;
+  border-left: 3px dashed #eeeeee !important;
 }
 </style>

@@ -15,7 +15,7 @@
       </v-tooltip>
     </template>
 
-    <v-card min-width="450px" max-width="450px" min-height="450px" height="650px" color="grey lighten-2" style="overflow: hidden">
+    <v-card min-width="450px" max-width="450px" min-height="450px" height="650px" color="background" style="overflow: hidden">
       <v-app-bar class="pa-0 ma-0" height="40" flat color="white">
         <v-tabs class="pa-0 ma-0" hide-slider v-model="memberTab" height="40">
           <v-tab :style="`min-width: 50px;max-width:50px;`" class="pa-3 windowbar-button">
@@ -57,7 +57,7 @@
         <v-progress-linear v-if="working" indeterminate top fixed class="mt-10" />
       </v-app-bar>
 
-      <v-tabs hide-slider v-model="memberTab" height="0">
+      <v-tabs hide-slider v-model="memberTab" height="0" background-color="#eeeeee">
         <v-tab-item tabindex="0" eager style="overflow: hidden !important">
           <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;`">
             <v-layout align-center justify-start column fill-height>
@@ -73,7 +73,7 @@
           </div>
         </v-tab-item>
         <v-tab-item tabindex="2" style="overflow: hidden !important">
-          <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;`">
+          <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;background-color:#eeeeee`">
             <v-layout align-center justify-start column>
               <v-app-bar  elevation="2" height="100" width="100%" :src="profile.coverPicture" class="pa-0 ma-0">
                 <member-item  :size="90" :options="['bordered']" :align="'left'" :id="profile.id" :subtitle="session.text" :extraClass="'ma-6'" />

@@ -3,7 +3,7 @@
 
     <window-bar />
 
-    <v-main style="height: 100vh; bakcground-color: rgb(33, 33, 33)">
+    <v-main style="height: 100vh; background-color: transparent">
       <v-tabs v-model="mainTab" height="0">
         <v-tab-item eager style="min-height: calc(100vh - 40px) !important">
           <task-box />
@@ -15,7 +15,7 @@
       </v-tabs>
     </v-main>
 
-    <v-navigation-drawer v-model="showMemberArea" app  hide-overlay width="550" style="z-index: 5">
+    <v-navigation-drawer v-model="showMemberArea" app   hide-overlay width="550" style="z-index: 5">
       <member-area />
     </v-navigation-drawer>
     <login />

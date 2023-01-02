@@ -1,5 +1,5 @@
 <template>
-  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" class="overflow-y-auto" color="grey lighten-1" @scroll="scroll">
+  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" class="overflow-y-auto" color="background" @scroll="scroll">
     <v-tooltip bottom transition="none">
       <template v-slot:activator="{ on }">
         <v-fade-transition>

@@ -48,6 +48,7 @@ export default new Vuetify({
         success: '#81e68b',
         warning: '#f7ab39',
         workspace: '#262629',
+        background:'#ebedf5',
 
         unstarted: '#888',
         unstarted_lighter: colors.grey.lighten1,
@@ -78,6 +79,7 @@ export default new Vuetify({
         success: '#81e68b',
         warning: '#f7ab39',
         workspace: '#262629',
+        background:'#ebedf5',
 
         unstarted: '#888',
         unstarted_lighter: colors.grey.lighten1,

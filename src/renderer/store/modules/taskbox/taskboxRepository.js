@@ -391,6 +391,7 @@ class TaskboxRepository extends Repository {
     async getChildrenRecursive(id, children, root, fields, onlyTaskBoxes) {
 
         let current = await this.getTaskBoxWithChildren(id, [], fields, onlyTaskBoxes);
+
         if(children)
         current.children.forEach(async item => {
             children[item.id] = item;
@@ -403,7 +404,6 @@ class TaskboxRepository extends Repository {
         )
         return { root: current, children: children };
     }
-
 
     async getPath(rootId, current) {
         let pathArr = [];
@@ -426,7 +426,6 @@ class TaskboxRepository extends Repository {
 
             pathArr.push(current.title);
         }
-
 
         pathArr.reverse();
         let path = '';

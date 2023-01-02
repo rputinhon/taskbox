@@ -1,5 +1,5 @@
 <template>
-  <v-card :loading="true" v-if="recent.lastModifiedTasks.length" width="100%" max-height="320" height="fit-content" color="grey lighten-3" class="overflow-y-auto overflow-x-hidden px-3 pb-3 my-2" rounded="lg">
+  <v-card :loading="true" v-if="recent.lastModifiedTasks.length" width="100%" max-height="320" height="fit-content" color="background" class="overflow-y-auto overflow-x-hidden px-3 pb-3 my-2" rounded="lg">
     <v-card-title class="py-2">
       <small class="text-caption grey--text mr-3">Recent Tasks:</small>
     </v-card-title>
