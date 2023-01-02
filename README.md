@@ -10,12 +10,12 @@ npm install
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve or npm run electron:serve
+npm run electron:serve
 ```
 
 ### Compiles and minifies for production
 ```
-yarn build
+npm run electron:build
 ```
 
 ### Lints and fixes files
@@ -45,7 +45,7 @@ yarn lint
 ![Social](public/img/readme_social.png)
 
 ## To Do
-``
+```
 
 -Due system.
 -Increase the number of task types, including:
@@ -57,5 +57,5 @@ yarn lint
     - etc.
 -Implement the input/output system, allowing data to pass through the boxes.
 -Notification.
-``
+```
 
