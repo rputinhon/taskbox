@@ -57,7 +57,7 @@ const state = () => {
         changingStatus: null,
         newStatus: null,
 
-        deletingNodes: null,
+        deleting: null,
 
         changingWorker: null,
         toTemplate: null,
@@ -242,37 +242,34 @@ const actions = {
 
     },
     // Delete all tasks in the id list
-    async CONFIRM_DELETE_TASKS({ state }, nodes) {
+    async CONFIRM_DELETE_TASKS({ commit, state }, nodes) {
 
-        // let taskList = [];
         let deleting = {
-            root:state.currentTaskBox.id,
+            root: state.currentTaskBox.id,
             // If more then one delete all?
             yesToAll: false,
             // If theres files in the taskbox files folder, delete it?
             deleteFiles: false,
-            // All tasks including task of the taskboxes
-            tasks: [],
+            // List of all delecting items.
+            idList: [],
             // When you press no to not delete.
             keeping: [],
-            // Taskboxes
-            taskboxes: [],
+            // Index of current deleting task.
+            index: 0
         }
 
         // prepare lists
         nodes.map(async n => {
-            if (state.root.tasks[n.id] && n.name!=="TaskBox")
-                deleting.tasks.push(state.root.tasks[n.id]);
+            deleting.idList.push(n.id);
+
             if (n.name == 'TaskBox')
                 taskboxRepository.getChildrenRecursive(n.id, {}).then((response) => {
-                    deleting.taskboxes.push(response.root);
-                    deleting.tasks = deleting.tasks.concat(Object.values(response.children).filter(t => t.taskType !== 'taskbox'))
+                    deleting.idList.concat(Object.keys(response.children));
                 })
         });
 
         console.log(deleting);
-
-        //set list
+        commit("SET_DELETING_TASKS", deleting);
 
     },
     // Delete all tasks in the id list
@@ -292,16 +289,12 @@ const actions = {
                         })
                 }
                 else {
-
                     taskRepository.delete({ id: id }).then(() => {
                     })
                         .catch((error) => {
                             console.log(error);
                         })
-
-
                 }
-
             });
 
             resolve(commit("SUCCESS_DELETE_TASKS", list));
@@ -670,13 +663,25 @@ const mutations = {
                         setTimeout(() => {
                             store.commit('SET_API_STATE', apistate.DONE);
                             eventBus.$emit('updateTasks');
-
                         }, 700);
                     })
                 })
             })
         })
 
+    },
+    SET_DELETING_TASKS: (state, deleting) => {
+        state.deleting = deleting;
+    },
+    DELETE_NEXT_TASK: (state) => {
+        if (state.deleting && state.deleting.index < state.deleting.idList.length - 1)
+            state.deleting.index++;
+        else
+            store.commit('taskbox/SET_DELETING_TASKS', null);
+    },
+    KEEP_DELETING_TASK: (state, index) => {
+        state.deleting.keeping.push(index);
+        store.commit('taskbox/DELETE_NEXT_TASK')
     },
     SUCCESS_DELETE_TASKS: (state, list) => {
 
