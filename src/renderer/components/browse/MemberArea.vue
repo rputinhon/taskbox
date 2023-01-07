@@ -1,5 +1,5 @@
 <template>
-  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" style="margin-top: 40px; overflow: hidden" :color="analysing == false ? 'background' : 'workspace'">
+  <v-sheet ref="feed" width="100%" height="calc(100vh - 40px)" style="margin-top: 40px; overflow: hidden" :color="analysing == false ? 'transparent' : 'workspace'">
     <v-app-bar fixed height="40" flat :color="analysing == false ? 'transparent' : 'workspace'">
       <v-img class="ml-2" v-if="!authenticated" contain :style="memberTab !== 0 && 'filter: grayscale(1)!important;'" src="img/logo_worm_32_flat.png" max-width="32px"/>
       <v-spacer> </v-spacer>

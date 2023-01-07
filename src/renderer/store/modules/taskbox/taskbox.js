@@ -242,34 +242,58 @@ const actions = {
 
     },
     // Delete all tasks in the id list
-    async CONFIRM_DELETE_TASKS({ commit, state }, nodes) {
+    async CONFIRM_DELETE_TASKS({ commit }, nodes) {
 
-        let deleting = {
-            root: state.currentTaskBox.id,
-            // If more then one delete all?
-            yesToAll: false,
-            // If theres files in the taskbox files folder, delete it?
-            deleteFiles: false,
-            // List of all delecting items.
-            idList: [],
-            // When you press no to not delete.
-            keeping: [],
-            // Index of current deleting task.
-            index: 0
-        }
+        commit("SET_DELETING_TASKS", await taskboxRepository.getDeletingTree(nodes))
 
-        // prepare lists
-        nodes.map(async n => {
-            deleting.idList.push(n.id);
+    },
+    // Delete task
+    async DELETE_TASK({ commit }, task) {
+        store.commit('SET_API_STATE', apistate.SAVING);
 
-            if (n.name == 'TaskBox')
-                taskboxRepository.getChildrenRecursive(n.id, {}).then((response) => {
-                    deleting.idList.concat(Object.keys(response.children));
+        return new Promise((resolve) => {
+
+            taskRepository.delete(task).then(async () => {
+
+                if (task.taskType == 'taskbox') {
+                    taskboxRepository.delete(task).then(() => {
+                        commit("SUCCESS_DELETE_TASK", task)
+                        resolve();
+                    })
+                        .catch((error) => {
+                            console.error(error);
+                        })
+                }
+                else {
+                    commit("SUCCESS_DELETE_TASK", task)
+                    resolve();
+                }
+            })
+                .catch((error) => {
+                    console.log(error);
                 })
         });
 
-        console.log(deleting);
-        commit("SET_DELETING_TASKS", deleting);
+    },
+    // Delete task
+    async REMOVE_NODES({ commit }, args) {
+        store.commit('SET_API_STATE', apistate.SAVING);
+
+        return new Promise((resolve) => {
+            taskboxRepository.find(args.taskbox).then(response => {
+                let taskbox = _.cloneDeep(response);
+                args.nodes.forEach(id => {
+                    if (taskbox.data.nodes[id])
+                        delete taskbox.data.nodes[id]
+                });
+                taskRepository.saveOrUpdate(taskbox).then(() => {
+                    resolve(commit("SUCCESS_REMOVE_NODES", args.nodes));
+                })
+            })
+                .catch((error) => {
+                    console.error(error);
+                })
+        })
 
     },
     // Delete all tasks in the id list
@@ -281,20 +305,18 @@ const actions = {
             list.forEach(async (id) => {
                 if (!state.root.tasks[id]) return
 
-                if (state.root.tasks[id].taskType == 'taskbox') {
-                    taskboxRepository.deleteTaskBox(id).then(() => {
-                    })
-                        .catch((error) => {
-                            console.error(error);
+                taskRepository.delete({ id: id }).then(() => {
+                    if (state.root.tasks[id].taskType == 'taskbox') {
+                        taskboxRepository.delete({ id: id }).then(() => {
                         })
-                }
-                else {
-                    taskRepository.delete({ id: id }).then(() => {
+                            .catch((error) => {
+                                console.error(error);
+                            })
+                    }
+                })
+                    .catch((error) => {
+                        console.log(error);
                     })
-                        .catch((error) => {
-                            console.log(error);
-                        })
-                }
             });
 
             resolve(commit("SUCCESS_DELETE_TASKS", list));
@@ -673,23 +695,32 @@ const mutations = {
     SET_DELETING_TASKS: (state, deleting) => {
         state.deleting = deleting;
     },
-    DELETE_NEXT_TASK: (state) => {
-        if (state.deleting && state.deleting.index < state.deleting.idList.length - 1)
-            state.deleting.index++;
-        else
-            store.commit('taskbox/SET_DELETING_TASKS', null);
+    SUCCESS_REMOVE_NODES: (state, nodes) => {
+        nodes.forEach(id => {
+            if (state.root.taskboxes[state.currentTaskBox.id].data.nodes[id])
+                delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
+        })
     },
-    KEEP_DELETING_TASK: (state, index) => {
-        state.deleting.keeping.push(index);
-        store.commit('taskbox/DELETE_NEXT_TASK')
+    SUCCESS_DELETE_TASK: () => {
+
     },
     SUCCESS_DELETE_TASKS: (state, list) => {
 
         list.forEach(id => {
-            delete state.root.tasks[id];
-            NodeView.deleteNode(id);
+
             if (state.root.taskboxes[state.currentTaskBox.id].data.nodes[id])
                 delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
+
+            if (state.root.tasks[id] && state.root.taskboxes[state.root.tasks[id].taskbox].data.nodes[id])
+                delete state.root.taskboxes[state.root.tasks[id].taskbox].data.nodes[id];
+
+            if (state.root.tasks[id] && state.root.tasks[id].taskType == 'taskbox')
+                delete state.root.taskboxes[id];
+
+            if (state.root.tasks[id])
+                delete state.root.tasks[id];
+
+            NodeView.deleteNode(id);
         })
 
         NodeView.saveTaskBox(true);
@@ -701,6 +732,7 @@ const mutations = {
 
                         setTimeout(() => {
                             store.commit('SET_API_STATE', apistate.DONE);
+                            store.dispatch('user/GET_TASKS', { member: null });
                             eventBus.$emit('updateTasks');
 
                         }, 700);

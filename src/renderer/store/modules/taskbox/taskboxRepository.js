@@ -11,6 +11,7 @@ import { isTaskCanceled, isTaskDone, isTaskPaused, isTaskStarted, isTaskWorking 
 import { NodeView } from '../../../libs/nodeview'
 import { taskModel } from '../../models/TaskModel'
 import { arrayToKeyValue } from '../../../libs/utils'
+import { deletingstatus } from '../../../enums/deletingstatus'
 
 class TaskboxRepository extends Repository {
     constructor() {
@@ -156,7 +157,7 @@ class TaskboxRepository extends Repository {
 
     async deleteTaskBox(id) {
 
-        let root = await this.db.rel.find('task',id);
+        let root = await this.db.rel.find('task', id);
         const search = await this.getChildrenRecursive(id, {});
         let tasks = Object.values(search.children);
         tasks.push(root.tasks[0]);
@@ -392,10 +393,10 @@ class TaskboxRepository extends Repository {
 
         let current = await this.getTaskBoxWithChildren(id, [], fields, onlyTaskBoxes);
 
-        if(children)
-        current.children.forEach(async item => {
-            children[item.id] = item;
-        })
+        if (children)
+            current.children.forEach(async item => {
+                children[item.id] = item;
+            })
 
         await Promise.all(
             current.children.filter(c => c.taskType == 'taskbox').map(async (item) => {
@@ -438,6 +439,38 @@ class TaskboxRepository extends Repository {
         return path;
     }
 
+    async getDeletingTaskBox(id, tree) {
+
+        tree[id] = {id:id, status: deletingstatus.WAITING, children: {} };
+        let children = await this.getChildrenTasks(id)
+
+        if (children.length)
+            children.forEach(async task => {
+                if (task.taskType !== 'taskbox')
+                    tree[id].children[task.id] = {id:task.id, status: deletingstatus.WAITING };
+                else
+                    tree[id].children[task.id] = {id:task.id, status: deletingstatus.WAITING, children: await this.getDeletingTaskBox(task.id, {}) };
+
+            });
+
+        return tree
+    }
+
+    async getDeletingTree(nodes) {
+
+        let tree = {};
+
+        nodes.map(async n => {
+
+            if (n.name !== 'TaskBox')
+                tree[n.id] = {id:n.id, status: deletingstatus.WAITING }
+            else
+                await this.getDeletingTaskBox(n.id, tree)
+
+        })
+
+        return tree;
+    }
 
     async packTaskBox(id) {
 

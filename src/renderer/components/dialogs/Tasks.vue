@@ -189,7 +189,7 @@ export default {
     },
     tasks() {
       this.refreshkey;
-      return Object.values(this.root.tasks).filter((t) => Object.keys(this.currentTaskBox.data.nodes).includes(t.id));
+      return Object.values(this.root.tasks).filter((t) => this.currentTaskBox ? Object.keys(this.currentTaskBox.data.nodes).includes(t.id):null);
     },
     isEmpty() {
       return this.tasks && this.tasks.length == 0 ? true : false;

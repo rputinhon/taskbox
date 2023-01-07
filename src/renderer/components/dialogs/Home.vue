@@ -1,5 +1,5 @@
 <template>
-  <v-sheet class="windowbar-button" :color="analysing == false ? 'background' : 'workspace'">
+  <v-sheet class="windowbar-button" :color="analysing == false ? 'transparent' : 'workspace'">
     <v-tabs hide-slider vertical v-model="tabIndex" class="main" background-color="#eeeeee">
       <v-tab v-for="(tab, t) in tabs" :key="t" v-show="!tab.disabled && ((tab.auth && authenticated) || !tab.auth)" :class="tab.c" :style="`min-width: ${tab.w || 50}px; height: ${tab.w || 50}px;max-width: ${tab.w || 50}px;`">
         <v-tooltip bottom transition="none">
@@ -230,7 +230,6 @@ export default {
   height: 100vh;
 }
 .home {
-  background-color: #eeeeee;
   overflow-y: scroll;
   overflow-x: hidden;
 }

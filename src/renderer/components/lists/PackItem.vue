@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card hover>
     <v-list-item class="mx-0 mt-1">
       <v-list-item-icon class="mx-3 my-0 ml-0 pt-3">
         <svg width="35" height="35" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">

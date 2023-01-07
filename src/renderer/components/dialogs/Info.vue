@@ -1,5 +1,5 @@
 <template>
-  <v-sheet color="background" class="py-8" min-width="100%">
+  <v-sheet color="transparent" class="py-8" min-width="100%">
     <v-card-title>
       <v-list-item-icon class="mx-auto">
         <svg  width="70" height="70" version="1.1" viewBox="-5 -6 48 48" xmlns="http://www.w3.org/2000/svg">

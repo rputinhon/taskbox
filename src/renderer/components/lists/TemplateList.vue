@@ -1,5 +1,5 @@
 <template>
-  <v-sheet width="100%" height="calc(100vh - 60px)" class="pb-3" color="background">
+  <v-sheet width="100%" height="calc(100vh - 60px)" class="pb-3" color="transparent">
     <v-card-title height="40px" class="text-subtitle-1" v-if="!searching">
       <v-list-item class="ma-0 pa-0" style="min-height: 30px; width: 100%">
         <v-list-item-icon class="pa-0 mr-1">
