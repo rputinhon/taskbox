@@ -69,7 +69,7 @@ export default {
       }
     },
     isTaskBox(value) {
-      if (value) this.loading = true;
+      if (value && this.childIndex == 0) this.loading = true;
     },
   },
   computed: {
@@ -83,6 +83,7 @@ export default {
       return this.library && this.deletingTasks ? true : false;
     },
     isTaskBox() {
+      if(!this.dataReady || !this.deletingChild)return false;
       return this.deletingTasks[this.deletingChild].children ? true : false;
     },
     hasToDelete() {

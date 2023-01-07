@@ -1,7 +1,7 @@
 <template>
   <v-card flat v-if="dataReady">
-    <deleting-item v-if="!isTaskBox" :parent="parent" :deleteFiles="deleteFiles" :task="deletingItem" @done="next()" @loaded="undefined" />
-    <deleting-task-box-item v-else-if="taskboxChild" :deleteFiles="false" :list="taskboxChild" @done="next()" @loaded="undefined" />
+    <deleting-item v-if="!isTaskBox" :parent="parent" :deleteFiles="deleteFiles" :task="deletingItem" @done="next()" @loaded="loading=false" />
+    <deleting-task-box-item v-else-if="taskboxChild" :deleteFiles="false" :list="taskboxChild" @done="next()" @loaded="loading=false" />
     <v-card-actions class="mt-3" v-if="!isTaskBox">
       <v-row class="py-3" align="center" justify="center" style="width: 100%">
         <v-btn rounded :disabled="deleting" small class="mx-1" color="secondary" @click="next(true)"> no </v-btn>
@@ -32,7 +32,6 @@ export default {
     };
   },
   mounted() {
-    console.log(this.list);
     this.childIndex = 0;
     this.loading=true;
     setTimeout(() => {
@@ -40,13 +39,6 @@ export default {
         this.$listeners.loaded();
 
     }, 1000);
-  },
-  watch: {
-    list(value) {
-      console.log(value);
-      this.childIndex = 0;
-      this.refreshKey++;
-    },
   },
   computed: {
     ...mapState({
@@ -77,7 +69,6 @@ export default {
     },
     taskboxChild() {
       this.refreshKey;
-      console.log(Object.values(this.taskbox.children)[this.childIndex]);
       return Object.values(this.taskbox.children)[this.childIndex];
     },
     parent() {
@@ -86,7 +77,6 @@ export default {
     },
     deletingItem() {
       this.refreshKey;
-      console.log(this.children);
       return this.taskList[this.children[this.childIndex]];
     },
   },
