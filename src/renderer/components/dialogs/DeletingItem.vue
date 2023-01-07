@@ -14,7 +14,7 @@
       </v-list-item-content>
     </v-list-item>
     <v-list-item v-if="fileExistInFilesFolder">
-      <v-switch class="mx-auto" :disabled="deleting" inset color="error" v-model="yesToFile" dense label="Delete also the file?" :messages="'Deletes only files in taskbox files folder.'" @change="$emit('toggleAllFiles',yesToFile)" />
+      <v-switch class="mx-auto" :disabled="deleting" inset color="error" v-model="yesToFile" dense label="Delete also the file?" :messages="'*It Deletes only files in the taskbox folder.'" @change="$emit('toggleAllFiles',yesToFile)" />
     </v-list-item>
 
   </v-card>
@@ -39,6 +39,7 @@ export default {
   },
   mounted(){
     this.refreshkey++;
+    this.$listeners.loaded();
   },
   watch: {
     file(value) {
