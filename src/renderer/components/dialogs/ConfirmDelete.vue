@@ -1,7 +1,7 @@
 <template>
-  <v-dialog v-if="dataReady && isOpen" v-model="isOpen" max-width="400" persistent @keydown.escape="close()" @keydown.enter="yes()">
-    <v-card rounded="0" class="pa-5 transition pb-13" min-height="300" min-width="400" v-if="deletingItem">
-      <v-app-bar flat absolute height="40" class="px-4" color="transparent">
+  <v-dialog v-if="dataReady && isOpen" close-delay="500" v-model="isOpen" max-width="400" persistent @keydown.escape="close()" @keydown.enter="yes()">
+    <v-card rounded="0" class="pa-3 transition" min-height="80" min-width="400" v-if="deletingItem">
+      <v-app-bar flat height="30" class="px-4 py-0" color="transparent">
         Delete
         <v-spacer> </v-spacer>
         <v-tooltip bottom transition="none">
@@ -16,18 +16,9 @@
         </v-tooltip>
       </v-app-bar>
 
-      <deleting-item v-if="!isTaskBox" :deleteFiles="deleteFiles" :task="deletingItem" @loaded="loading = false" @done="next()" @toggleAllFiles="toggleAllFiles" />
-      <deleting-task-box-item v-else :deleteFiles="deleteFiles" :list="deletingItem" @loaded="loading = false" @done="next()" />
+      <deleting-task-box-item v-show="!loading" :deleteFiles="deleteFiles" :list="deletingItem" @loaded="loading = false" @done="close()" />
 
-      <v-card-actions class="mt-3" v-if="!isTaskBox">
-        <v-row class="py-3" align="center" justify="center" style="width: 100%">
-          <v-btn :disabled="deleting" rounded small class="mx-1" color="secondary" @click="next(true)"> no </v-btn>
-          <v-btn :disabled="deleting" rounded small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="deleteItem(false)"> yes </v-btn>
-          <v-btn v-show="children.length > 1 && hasToDelete" rounded :disabled="deleting" small class="mx-1" color="error" @click="deleteItem(true)"> yes to all </v-btn>
-        </v-row>
-      </v-card-actions>
-
-      <v-app-bar bottom flat absolute color="transparent">
+      <v-app-bar class="mt-2" bottom flat color="transparent">
         <v-list-item>
           <v-progress-linear :color="deleting || loading ? 'primary' : 'transparent'" rounded height="13" :indeterminate="loading || deleting"> <small v-text="deleting ? 'deleting ...' : !loading ? 'Delete this task?' : 'loading ...'"> </small> </v-progress-linear>
         </v-list-item>
@@ -41,11 +32,11 @@ import { ipcRenderer } from 'electron';
 import { mapState } from 'vuex';
 import { getFileType } from '../../fixtures/fileTypes';
 import DeletingTaskBoxItem from './DeletingTaskBoxItem.vue';
-import DeletingItem from './DeletingItem.vue';
 import _ from 'lodash';
+import { NodeView } from '../../libs/nodeview';
 
 export default {
-  components: { DeletingTaskBoxItem, DeletingItem },
+  components: { DeletingTaskBoxItem },
   name: 'ConfirmDelete',
   data() {
     return {
@@ -66,10 +57,10 @@ export default {
         this.isOpen = false;
         this.childIndex = 0;
         this.loading = true;
+        setTimeout(() => {
+          this.deleting = false;
+        }, 500);
       }
-    },
-    isTaskBox(value) {
-      if (value && this.childIndex == 0) this.loading = true;
     },
   },
   computed: {
@@ -82,76 +73,11 @@ export default {
     dataReady() {
       return this.library && this.deletingTasks ? true : false;
     },
-    isTaskBox() {
-      if(!this.dataReady || !this.deletingChild)return false;
-      return this.deletingTasks[this.deletingChild].children ? true : false;
-    },
-    hasToDelete() {
-      let index = this.childIndex + 1;
-      return index < this.children.length ? true : false;
-    },
-    children() {
-      if (!this.deletingTasks) return;
-      return Object.keys(this.deletingTasks);
-    },
-    deletingChild() {
-      if (!this.deletingTasks) return;
-      return this.children[this.childIndex];
-    },
     deletingItem() {
-      return !this.isTaskBox ? this.taskList[this.deletingChild] : _.clone(this.deletingTasks[this.deletingChild]);
+      return _.clone(this.deletingTasks);
     },
   },
   methods: {
-    toggleAllFiles(value) {
-      this.deleteFiles = value;
-    },
-    next() {
-      let index = this.childIndex + 1;
-      if (index < this.children.length) {
-        // this.$nextTick(() => {
-        this.childIndex = index;
-        // });
-      } else this.close();
-    },
-    async deleteNode(node) {
-      let item = node || this.deletingItem;
-      return new Promise((res) => {
-        if (this.deleteFiles == true && this.file) {
-          ipcRenderer
-            .invoke('app:deleteFile', this.file.path)
-            .then(() => {})
-            .catch((error) => console.log(error))
-            .finally(async () => {
-              if (item) {
-                this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-                  //  NodeView.deleteNode(this.deletingItem.id);
-                });
-              }
-              setTimeout(res, 10);
-            });
-        } else {
-          if (item) {
-            this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-              //  NodeView.deleteNode(this.deletingItem.id);
-            });
-          }
-          setTimeout(res, 10);
-        }
-      });
-    },
-    async deleteItem(all) {
-      this.deleting = true;
-      this.deleteNode().then(async () => {
-        if (all) {
-          await this.deleteItem(true);
-        } else {
-          this.deleting = false;
-          this.deleteFiles = false;
-        }
-        this.next();
-      });
-    },
     async checkfileExistInFilesFolder(file) {
       if (file == null) return false;
       ipcRenderer.invoke('app:existInFilesFolder', file.path).then((response) => {
@@ -165,12 +91,13 @@ export default {
       return type.meta.typeicon;
     },
     async close() {
-      this.keeping = [];
-      this.deleting = false;
-      this.deleteFiles = false;
+        this.deleteFiles = false;
 
-      await this.$store.dispatch('taskbox/GET_FILE_LIST');
-      this.$store.commit('taskbox/SET_DELETING_TASKS', null);
+        this.$store.commit('taskbox/SET_DELETING_TASKS', null);
+        this.$store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
+        this.$store.dispatch('taskbox/GET_FILE_LIST').then(()=>{
+          NodeView.saveTaskBox(true);
+        })
     },
   },
 };

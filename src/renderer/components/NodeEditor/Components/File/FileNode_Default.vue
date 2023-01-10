@@ -22,8 +22,8 @@
               </linearGradient>
             </defs>
             <rect x="0" y=".52899" width="47" height="51.5" ry="5" :fill="`url(#${node.id})`" stroke-width="1.7" :stroke="(!hasOpenItens && status.color) || 'orange'" />
-            <path class="multiply" transform="scale(0.45) translate(28 35)" style="pointer-events:none!important;" :d="fileIcon" :fill="'grey'" />
-            <LOD :lod="LODTYPE.MEDIUM" style="pointer-events:none!important;">
+            <path class="multiply noevents" transform="scale(0.45) translate(28 35)" :d="fileIcon" :fill="'grey'" />
+            <LOD :lod="LODTYPE.MEDIUM">
               <text v-if="task.value && task.value.file" x="0" y="0" fill="#d3bc5f" font-family="sans-serif" font-size="10.396px" stroke-width=".4" style="line-height: 1.25" xml:space="preserve">
                 <tspan class="multiply" x="23.5" y="45" :fill="'grey'" font-family="sans-serif" font-size="6px" font-weight="bold" text-align="center" text-anchor="middle" style="pointer-events: none; line-height: 1.5" xml:space="preserve">
                   {{ task.value.file.extension }}

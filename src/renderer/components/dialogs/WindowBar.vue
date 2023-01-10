@@ -2,7 +2,7 @@
   <v-app-bar app :flat="analysing !== false" width="auto" style="z-index: 2" height="40px" :dark="analysing !== false && mainTab == 0" :color="analysing == false ? 'white' : 'dark'" class="windowbar px-1" @dblclick="restoreSize()">
     <v-tooltip bottom transition="none">
       <template v-slot:activator="{ on }">
-        <v-btn v-show="!showMemberArea" fab left x-small icon v-on="on" class="ml-2 windowbar-button" @dblclick.stop @click.stop="showTaskBox()">
+        <v-btn v-show="!showMemberArea" fab left x-small icon v-on="on" class="ml-1 windowbar-button" @dblclick.stop @click.stop="showTaskBox()">
           <v-img style="filter: brightness(1.1) !important" contain :style="mainTab !== 0 && 'filter: grayscale(1)!important;'" src="img/logo_worm_32_flat.png" max-width="32px" />
         </v-btn>
       </template>

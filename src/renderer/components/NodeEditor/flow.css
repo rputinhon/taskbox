@@ -167,6 +167,9 @@ input {
   font-weight: 600;
   font-size: 26px;
 }
+.noevents{
+  pointer-events: none!important;
+}
 
 #textareaNode{
   color: #080808;

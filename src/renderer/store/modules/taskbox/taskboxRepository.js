@@ -325,6 +325,8 @@ class TaskboxRepository extends Repository {
 
         let breadData = [];
 
+        if(!current) return breadData;
+
         let last = {
             id: current.id,
             root: current.root,
@@ -458,14 +460,14 @@ class TaskboxRepository extends Repository {
 
     async getDeletingTree(nodes) {
 
-        let tree = {};
+        let tree = {children:{}};
 
         nodes.map(async n => {
 
             if (n.name !== 'TaskBox')
-                tree[n.id] = {id:n.id, status: deletingstatus.WAITING }
+                tree.children[n.id] = {id:n.id, status: deletingstatus.WAITING }
             else
-                await this.getDeletingTaskBox(n.id, tree)
+                await this.getDeletingTaskBox(n.id, tree.children)
 
         })
 

@@ -1,5 +1,5 @@
 <template>
-  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2 py-4" :color="analysing == false ? 'background' : 'workspace'">
+  <v-sheet v-if="dataReady" width="100%" height="100%" class="pa-2 py-4" :color="analysing == false ? 'transparent' : 'workspace'">
     <v-fade-transition leave-absolute>
       <analisys :filtered="filteredList(tasks, 'title', { value: filter, field: 'status' })" v-if="analysing !== false" />
     </v-fade-transition>

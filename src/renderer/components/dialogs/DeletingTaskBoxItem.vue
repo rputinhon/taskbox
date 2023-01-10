@@ -1,12 +1,12 @@
 <template>
   <v-card flat v-if="dataReady">
-    <deleting-item v-if="!isTaskBox" :parent="parent" :deleteFiles="deleteFiles" :task="deletingItem" @done="next()" @loaded="loading=false" />
-    <deleting-task-box-item v-else-if="taskboxChild" :deleteFiles="false" :list="taskboxChild" @done="next()" @loaded="loading=false" />
-    <v-card-actions class="mt-3" v-if="!isTaskBox">
+    <deleting-item v-if="!isTaskBox" :parent="parent" :deleteFiles="deleteFiles" :task="deletingItem" @delete="deleteItem()" @files="setDeleteFiles" />
+    <deleting-task-box-item v-else-if="taskboxChild" :deleteFiles="false" :list="taskboxChild" @done="next(skipped)" @loaded="loading = false" />
+    <v-card-actions v-if="!isTaskBox" class="mt-2">
       <v-row class="py-3" align="center" justify="center" style="width: 100%">
         <v-btn rounded :disabled="deleting" small class="mx-1" color="secondary" @click="next(true)"> no </v-btn>
         <v-btn rounded :disabled="deleting" small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="deleteItem(false)"> yes </v-btn>
-        <v-btn rounded v-show="count > 1" :disabled="deleting" small class="mx-1" color="error" @click="deleteItem(true)"> yes to all </v-btn>
+        <v-btn rounded :disabled="deleting" small class="mx-1" color="error" @click="deleteItem(true)"> yes to all </v-btn>
       </v-row>
     </v-card-actions>
   </v-card>
@@ -22,22 +22,24 @@ import DeletingTaskBoxItem from './DeletingTaskBoxItem.vue';
 export default {
   name: 'DeletingTaskBoxItem',
   components: { DeletingItem, DeletingTaskBoxItem },
-  props: { list: Object, deleteFiles: Boolean },
+  props: { list: Object },
   data() {
     return {
       childIndex: 0,
       deleting: false,
+      deleteFiles: false,
+      yesForAll: false,
+      skipped: false,
       refreshKey: 0,
-      loading:false,
+      loading: false,
     };
   },
   mounted() {
     this.childIndex = 0;
-    this.loading=true;
+    this.loading = true;
     setTimeout(() => {
-        this.refreshKey++;
-        this.$listeners.loaded();
-
+      this.refreshKey++;
+      this.$listeners.loaded();
     }, 1000);
   },
   computed: {
@@ -48,13 +50,14 @@ export default {
     }),
     dataReady() {
       this.refreshKey;
-      let ready = this.library && this.list && this.children.length ? true : false
+      let ready = this.library && this.list ? true : false;
       return ready;
     },
-    count(){
-        return this.children.length;
+    hasToDelete() {
+      this.refreshKey;
+      return this.childIndex < this.children.length - 1 ? true : false;
     },
-    taskbox(){
+    taskbox() {
       this.refreshKey;
       return this.list;
     },
@@ -65,6 +68,7 @@ export default {
     },
     children() {
       this.refreshKey;
+      if (!this.dataReady) return;
       return Object.keys(this.taskbox.children);
     },
     taskboxChild() {
@@ -81,14 +85,48 @@ export default {
     },
   },
   methods: {
-    next() {
-      let index = this.childIndex + 1;
-      if (index < this.children.length) {
-        this.childIndex = index;
-      } else this.$listeners.done();
+    setDeleteFiles(value) {
+      this.deleteFiles = value;
     },
-    async deleteNode(node) {
-      let item = node || this.deletingItem;
+    setDeleting(value) {
+      this.$listeners.setDeleting(value);
+    },
+    next(skipped) {
+      this.skipped = skipped;
+      if (this.hasToDelete) {
+        this.refreshKey++;
+        this.childIndex++;
+      } else this.setDone();
+    },
+    async deleteItem(all) {
+      this.deleting = true;
+      this.yesForAll = all;
+      this.deleteNode().then(async () => {
+        if (this.yesForAll && this.deleteFiles) {
+          await this.deleteItem(true);
+        } else {
+          this.deleting = false;
+          this.deleteFiles = false;
+          this.yesForAll = false;
+        }
+        this.next();
+      });
+    },
+    setDone() {
+      this.refreshKey++;
+      if (this.skipped == true) {
+        // if is not current task box remove nodes and save;
+        this.$listeners.done();
+      }
+      else{
+        // await delete taskbox and next
+          // this.deleteNode(this.parent).then(() => {
+            this.$listeners.done();
+          // });
+      }
+    },
+    async deleteNode(task) {
+      let item = task || this.deletingItem;
       return new Promise((res) => {
         if (this.deleteFiles == true && this.file) {
           ipcRenderer
@@ -98,33 +136,20 @@ export default {
             .finally(async () => {
               if (item) {
                 this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-                  //  NodeView.deleteNode(this.deletingItem.id);
+                  setTimeout(res, 10);
                 });
               }
-              setTimeout(res, 10);
             });
         } else {
           if (item) {
             this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-              //  NodeView.deleteNode(this.deletingItem.id);
+              setTimeout(res, 10);
             });
           }
-          setTimeout(res, 10);
         }
       });
     },
-    async deleteItem(all) {
-      this.deleting = true;
-      this.deleteNode().then(async () => {
-        if (all) {
-          await this.deleteItem(true);
-        } else {
-          this.deleting = false;
-          this.deleteFiles = false;
-        }
-        this.next();
-      });
-    },
+
     getIcon(name) {
       if (!name) return;
       if (name == 'file' && this.file) return getFileType(this.file.extension).info.icon;
