@@ -1,5 +1,6 @@
 <template>
-  <v-toolbar absolute style="flex-wrap: wrap !important" class="my-2 ml-4 mr-2" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
+  <v-toolbar absolute style="flex-wrap: wrap !important" class="my-2 ml-2 mr-2" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
+    <task-subject :color="'grey'" :task="taskbox" :options="['popup', 'statistics', 'status']" />
     <nav-menu :options="['menu', 'home', 'parent']" />
     <!-- <v-autocomplete class="mt-6 mr-6" solo-inverted v-show="searching" :items="items" :search-input.sync="search" hide-no-data autofocus dense placeholder="search" rounded> </v-autocomplete> -->
     <v-list class="pl-1 bread" color="transparent" v-for="(bread, i) in breadCrumb" :key="i">
@@ -36,11 +37,13 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { getStatusTypeByValue } from '../../enums/taskstate';
+import TaskSubject from '../lists/TaskSubject.vue';
 import NavMenu from './NavMenu.vue';
 export default {
   name: 'BreadCrumb',
   components: { 
     NavMenu,
+    TaskSubject,
     },
   data: () => ({
     editingTitle: false,
@@ -49,6 +52,7 @@ export default {
     ...mapState({
       breadCrumb: (state) => state.taskbox.breadCrumb,
       profile: (state) => state.user.profile,
+      taskbox: (state) => state.taskbox.currentTaskBox,
     }),
     ...mapGetters({
       root: ['taskbox/currentRootId'],

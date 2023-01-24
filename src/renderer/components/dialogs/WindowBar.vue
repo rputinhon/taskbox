@@ -34,11 +34,11 @@
         </v-responsive>
       </v-list-item>
       <v-list-item v-if="analysing == false && mainTab == 0 && dataReady" class="mx-0 px-0 windowbar" style="min-height: 40px; height: 40px">
-        <component-types v-if="dataReady && analysing == false" :disabled="paused || canceled" />
+        <task-box-menu v-if="analysing == false" :taskbox="currentTaskBox" :extraClass="'mx-3'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
         <task-box-title v-if="false" :options="['info']" v-show="analysing == false" />
         <v-spacer></v-spacer>
-        <task-box-menu v-if="analysing == false" :taskbox="currentTaskBox" :extraClass="'mr-1'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
-        <task-subject :color="'grey'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" />
+        <component-types v-if="dataReady && analysing == false" :disabled="paused || canceled" />
+        
       </v-list-item>
 
       <v-list-item v-if="mainTab !== 0" class="windowbar">
@@ -123,7 +123,6 @@ import Search from '../browse/Search.vue';
 import TaskBoxMenu from '../menus/TaskBoxMenu.vue';
 import AnalalisisMenu from '../menus/AnalalisisMenu.vue';
 import Profile from './Profile.vue';
-import TaskSubject from '../lists/TaskSubject.vue';
 
 export default {
   name: 'WindowBar',
@@ -135,7 +134,6 @@ export default {
     Profile,
     Search,
     TaskBoxMenu,
-    TaskSubject,
     TaskBoxTitle,
   },
   data() {

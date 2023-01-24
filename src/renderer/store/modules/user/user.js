@@ -473,7 +473,7 @@ const mutations = {
                     }).catch(error=>{
                         console.log(error);
                     }).finally(()=>{
-                        store.commit('SET_API_STATE', apistate.DONE);
+                        // store.commit('SET_API_STATE', apistate.DONE);
                     })
                 })
             })

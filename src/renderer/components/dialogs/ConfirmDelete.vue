@@ -16,7 +16,19 @@
         </v-tooltip>
       </v-app-bar>
 
-      <deleting-task-box-item v-show="!loading" :deleteFiles="deleteFiles" :list="deletingItem" @loaded="loading = false" @done="close()" />
+      <deleting-item :task="deletingTask" />
+
+      <v-list-item v-if="fileExistInFilesFolder">
+        <v-switch class="mx-auto" :disabled="deleting" inset color="error" v-model="deleteFiles" dense label="Delete also the file?" :messages="'*It Deletes only files in the taskbox folder.'" />
+      </v-list-item>
+
+      <v-card-actions class="mt-2">
+        <v-row class="py-3" align="center" justify="center" style="width: 100%">
+          <v-btn rounded :disabled="deleting" small class="mx-1" color="secondary" @click="(skipped = true), next(false)"> no </v-btn>
+          <v-btn rounded :disabled="deleting" small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="next(false)"> yes </v-btn>
+          <v-btn rounded :disabled="deleting" small class="mx-1" color="error" @click="next(true)"> yes to all </v-btn>
+        </v-row>
+      </v-card-actions>
 
       <v-app-bar class="mt-2" bottom flat color="transparent">
         <v-list-item>
@@ -28,35 +40,56 @@
 </template>
 
 <script>
+import DeletingItem from './DeletingItem.vue';
+
 import { ipcRenderer } from 'electron';
 import { mapState } from 'vuex';
 import { getFileType } from '../../fixtures/fileTypes';
-import DeletingTaskBoxItem from './DeletingTaskBoxItem.vue';
-import _ from 'lodash';
 import { NodeView } from '../../libs/nodeview';
+// import _ from 'lodash';
 
 export default {
-  components: { DeletingTaskBoxItem },
+  components: { DeletingItem },
   name: 'ConfirmDelete',
   data() {
     return {
       isOpen: false,
+      loading: false,
       deleting: false,
       deleteFiles: false,
+      yesForAll: false,
+      skipped: false,
+      fileExistInFilesFolder: false,
+      parentIndex: [],
       childIndex: 0,
       refreshkey: 0,
-      loading: true,
+      parent: [],
+      closedParents: [],
+      processed: [],
     };
   },
   watch: {
+    // isTaskBox(value) {
+    //   if (value) this.next();
+    // },
+    // index(value) {
+    //   if (!value.length) this.close();
+    // },
+    // file(value) {
+    //   this.$nextTick(() => {
+    //     this.checkfileExistInFilesFolder(value);
+    //   });
+    // },
     deletingTasks(value) {
       if (value) {
+        this.parent = Object.values(this.deletingTasks.children);
         this.isOpen = true;
-        this.childIndex = 0;
+        // this.childIndex = 0;
       } else {
         this.isOpen = false;
-        this.childIndex = 0;
-        this.loading = true;
+        // this.childIndex = 0;
+        this.loading = false;
+        this.parent = [];
         setTimeout(() => {
           this.deleting = false;
         }, 500);
@@ -66,18 +99,113 @@ export default {
   computed: {
     ...mapState({
       library: (state) => state.library.library,
-      currentTaskBox: (state) => state.taskbox.currentTaskBox,
+      currentTaskBox: (state) => state.taskbox.root.task,
       deletingTasks: (state) => state.taskbox.deleting,
       taskList: (state) => state.taskbox.root.tasks,
     }),
     dataReady() {
       return this.library && this.deletingTasks ? true : false;
     },
+    file() {
+      this.refreshkey;
+      return this.deletingTask && this.deletingTask.value && this.deletingTask.value.file;
+    },
+    lastParent() {
+      this.refreshkey;
+      return this.closedParents.length ? this.closedParents[this.closedParents.length - 1] : null;
+    },
+    parentTask() {
+      this.refreshkey;
+      return this.taskList[this.deletingTask.taskbox] || this.currentTaskBox;
+    },
     deletingItem() {
-      return _.clone(this.deletingTasks);
+      this.refreshkey;
+      return this.parent && this.parent[this.childIndex];
+    },
+    deletingTask() {
+      this.refreshkey;
+      if (!this.deletingItem) return;
+      return this.taskList[this.deletingItem.id];
+    },
+    isNextTaskBox() {
+      this.refreshkey;
+      return this.parent && this.parent[this.childIndex + 1] ? true : false;
+    },
+    isTaskBox() {
+      this.refreshkey;
+      return this.deletingItem && this.deletingItem.children ? true : false;
+    },
+    hasToDelete() {
+      this.refreshkey;
+      return this.parent && this.childIndex < this.parent.length - 1 ? true : false;
+    },
+    lastIndex() {
+      this.refreshkey;
+      return this.parentIndex.length - 1;
     },
   },
   methods: {
+    async openTaskBox() {
+      this.closedParents.push(this.parent);
+      this.parent = Object.values(this.parent[this.childIndex].children);
+      this.parentIndex.push(this.childIndex);
+      this.childIndex = 0;
+    },
+    async closeTaskBox() {
+      this.parent = this.lastParent;
+
+      this.parentIndex.splice(this.parentIndex.length - 1, 1);
+      this.closedParents.splice(this.closedParents.length - 1, 1);
+
+      this.childIndex = this.lastIndex+1;
+
+      this.refreshkey++;
+
+      this.next(true);
+    },
+    async next(closing) {
+      if (this.isTaskBox && !closing) return await this.openTaskBox();
+      if (this.hasToDelete) {
+        this.childIndex++;
+        if (this.isTaskBox) await this.openTaskBox();
+        // else this.childIndex++;
+      } else {
+        if (this.lastParent) {
+          await this.closeTaskBox();
+        } else this.close();
+      }
+
+      this.refreshkey++;
+    },
+    async deleteNode(task) {
+      let item = task || this.deletingItem;
+      this.deleting = true;
+      return new Promise((res) => {
+        if (this.deleteFiles == true && this.file) {
+          ipcRenderer
+            .invoke('app:deleteFile', this.file.path)
+            .then(() => {})
+            .catch((error) => console.log(error))
+            .finally(async () => {
+              if (item) {
+                // this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
+                console.log('deleted:', { task: item.id, parent: item.taskbox, files: this.deleteFiles });
+                this.deleting = false;
+                setTimeout(res(this.next()), 1000);
+                // });
+              }
+            });
+        } else {
+          if (item) {
+            console.log('deleted:', { task: item.id, parent: item.taskbox, files: this.deleteFiles });
+            this.deleting = false;
+            // this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
+            setTimeout(res(this.next()), 1000);
+            // });
+          }
+        }
+      });
+    },
     async checkfileExistInFilesFolder(file) {
       if (file == null) return false;
       ipcRenderer.invoke('app:existInFilesFolder', file.path).then((response) => {
@@ -90,14 +218,18 @@ export default {
       let type = this.library.blockLibrary.blocktypes.find((t) => t.name.toLowerCase() == name);
       return type.meta.typeicon;
     },
-    async close() {
-        this.deleteFiles = false;
-
-        this.$store.commit('taskbox/SET_DELETING_TASKS', null);
-        this.$store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
-        this.$store.dispatch('taskbox/GET_FILE_LIST').then(()=>{
-          NodeView.saveTaskBox(true);
-        })
+    close() {
+      this.deleteFiles = false;
+      this.yesForAll = false;
+      this.skipped = false;
+      this.parentIndex = [];
+      this.closedParents = [];
+      this.childIndex = 0;
+      this.$store.commit('taskbox/SET_DELETING_TASKS', null);
+      this.$store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
+      this.$store.dispatch('taskbox/GET_FILE_LIST').then(() => {
+        NodeView.saveTaskBox(true);
+      });
     },
   },
 };

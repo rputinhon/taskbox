@@ -1,5 +1,5 @@
 <template>
-  <v-menu class="windowbar-button" rounded="0" bottom left offset-y light :close-on-content-click="true" v-if="task">
+  <v-menu class="windowbar-button" rounded="0" bottom right offset-y light :close-on-content-click="true" v-if="task">
     <template v-slot:activator="{ on: menu }">
       <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
         <v-btn :style="extraStyle && extraStyle" v-show="!hide" :class="extraClass && extraClass" slot-scope="allow" :loading="working" :absolute="options.includes('absolute')" :right="options.includes('right')" :disabled="!allow.value" v-on="{ ...menu }" :elevation="options.includes('icon') ? 0 : 5" fab x-small :icon="options.includes('icon')" class="windowbar-button px-0 my-auto">
@@ -11,7 +11,7 @@
         </v-btn>
       </RULE>
     </template>
-    <v-card max-width="400" class="windowbar-button pb-2">
+    <v-card max-width="400" class="windowbar-button pb-1">
       <v-list>
         <v-list-item class="my-3" v-if="options.includes('thumbnail') && task.thumbnail">
           <thumbnail v-if="task.thumbnail" :task="task" :options="['edit']" :size="200" />
@@ -53,7 +53,7 @@
           <v-list-item-title>Save As Template</v-list-item-title>
         </v-list-item>
 
-        <v-list-item v-if="options.includes('save')" class="mt-2" style="min-height: 30px; height: 30px">
+        <v-list-item v-if="options.includes('save')" class="mb-1 mt-2" style="min-height: 30px; height: 30px">
           <v-btn rounded :disabled="disabled" block :color="hasChanges ? 'primary' : 'secondary'" small @click="saveTaskBox()"> Save </v-btn>
         </v-list-item>
 

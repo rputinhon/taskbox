@@ -464,10 +464,13 @@ class TaskboxRepository extends Repository {
 
         nodes.map(async n => {
 
-            if (n.name !== 'TaskBox')
+            if (n.name !== 'TaskBox'){
                 tree.children[n.id] = {id:n.id, status: deletingstatus.WAITING }
-            else
+            }
+            else{
                 await this.getDeletingTaskBox(n.id, tree.children)
+
+            }
 
         })
 

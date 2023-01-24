@@ -256,6 +256,7 @@ const actions = {
             taskRepository.delete(task).then(async () => {
 
                 if (task.taskType == 'taskbox') {
+
                     taskboxRepository.delete(task).then(() => {
                         commit("SUCCESS_DELETE_TASKBOX", task)
                         resolve(true);
@@ -263,6 +264,7 @@ const actions = {
                         .catch((error) => {
                             console.error(error);
                         })
+                        
                 }
                 else {
                     commit("SUCCESS_DELETE_TASK", task)
@@ -847,6 +849,9 @@ const mutations = {
                 state.root.taskboxes[state.currentTaskBox.id].data = args.to.data;
 
         store.commit('SET_API_STATE', apistate.DONE);
+    },
+    CHANGE_DELETING_STATUS(state,args){
+        args.item.status = args.status
     },
     CONFIRM_DELETE_TASKS(state, selection) {
         if (state.previewingTask) return;

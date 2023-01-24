@@ -5,7 +5,7 @@ import Vuetify from 'vuetify/lib/framework';
 
 Vue.use(Vuetify);
 
-const taskBoxPrimaryColor = "#0187f3";
+const taskBoxPrimaryColor = "#0a90ff";
 
 export default new Vuetify({
   breakpoint: {
