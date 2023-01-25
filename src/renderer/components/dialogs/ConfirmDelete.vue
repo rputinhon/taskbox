@@ -24,15 +24,15 @@
 
       <v-card-actions class="mt-2">
         <v-row class="py-3" align="center" justify="center" style="width: 100%">
-          <v-btn rounded :disabled="deleting" small class="mx-1" color="secondary" @click="(skipped = true), next(false)"> no </v-btn>
-          <v-btn rounded :disabled="deleting" small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="next(false)"> yes </v-btn>
-          <v-btn rounded :disabled="deleting" small class="mx-1" color="error" @click="next(true)"> yes to all </v-btn>
+          <v-btn rounded :disabled="deleting || checking" small class="mx-1" color="secondary" @click="skip()"> no </v-btn>
+          <v-btn rounded :disabled="deleting || checking" small class="mx-1" :color="!deleteFiles ? 'primary' : 'error'" @click="deleteNode()"> yes </v-btn>
+          <v-btn rounded :disabled="deleting || checking" small class="mx-1" color="error" @click="deleteAll()"> yes to all </v-btn>
         </v-row>
       </v-card-actions>
 
       <v-app-bar class="mt-2" bottom flat color="transparent">
         <v-list-item>
-          <v-progress-linear :color="deleting || loading ? 'primary' : 'transparent'" rounded height="13" :indeterminate="loading || deleting"> <small v-text="deleting ? 'deleting ...' : !loading ? 'Delete this task?' : 'loading ...'"> </small> </v-progress-linear>
+          <v-progress-linear :color="loading || deleting ? 'primary' : 'transparent'" rounded height="13" :indeterminate="loading || deleting"> <small v-text="deleting ? 'deleting ...' : !loading ? 'Delete this task?' : 'loading ...'"> </small> </v-progress-linear>
         </v-list-item>
       </v-app-bar>
     </v-card>
@@ -46,26 +46,26 @@ import { ipcRenderer } from 'electron';
 import { mapState } from 'vuex';
 import { getFileType } from '../../fixtures/fileTypes';
 import { NodeView } from '../../libs/nodeview';
+import { deletingstatus } from '../../enums/deletingstatus';
 // import _ from 'lodash';
 
 export default {
-  components: { DeletingItem },
   name: 'ConfirmDelete',
+  components: { DeletingItem },
   data() {
     return {
       isOpen: false,
       loading: false,
       deleting: false,
+      checking: false,
       deleteFiles: false,
       yesForAll: false,
-      skipped: false,
       fileExistInFilesFolder: false,
       parentIndex: [],
       childIndex: 0,
       refreshkey: 0,
       parent: [],
       closedParents: [],
-      processed: [],
     };
   },
   watch: {
@@ -75,14 +75,14 @@ export default {
     // index(value) {
     //   if (!value.length) this.close();
     // },
-    // file(value) {
-    //   this.$nextTick(() => {
-    //     this.checkfileExistInFilesFolder(value);
-    //   });
-    // },
+    file(value) {
+      // this.$nextTick(() => {
+      if (value) this.checkfileExistInFilesFolder(value);
+      else this.fileExistInFilesFolder = false;
+      // });
+    },
     deletingTasks(value) {
       if (value) {
-        
         this.parent = Object.values(this.deletingTasks.children);
 
         this.isOpen = true;
@@ -145,6 +145,9 @@ export default {
       this.refreshkey;
       return this.parentIndex.length - 1;
     },
+    progress() {
+      return 0;
+    },
   },
   methods: {
     async openTaskBox() {
@@ -152,33 +155,57 @@ export default {
       this.parent = Object.values(this.parent[this.childIndex].children);
       this.parentIndex.push(this.childIndex);
       this.childIndex = 0;
+      if (this.yesForAll) if ((this.fileExistInFilesFolder && this.deleteFiles) || !this.fileExistInFilesFolder) await this.deleteNode();
     },
     async closeTaskBox() {
+      let skipCount = this.parent.filter((p) => p.status == deletingstatus.KEPT).length;
+
+      // Delete TaskBox
+      if (skipCount == 0) {
+        let taskbox = this.taskList[this.deletingTask.taskbox];
+        if (taskbox)
+          await this.$store.dispatch('taskbox/DELETE_TASK', taskbox).then(() => {
+            this.setItemStatus(deletingstatus.DELETED);
+            this.deleting = false;
+            setTimeout((this.deleting = false), 10);
+          });
+      } else this.setItemStatus(deletingstatus.KEPT);
+
       this.parent = this.lastParent;
+      this.childIndex = this.parentIndex[this.lastIndex];
       this.closedParents.pop();
-      this.childIndex = this.lastIndex + 1;
       this.parentIndex.pop();
       this.refreshkey++;
     },
+    skip() {
+      this.setItemStatus(deletingstatus.KEPT);
+      this.next();
+    },
     async next(closing) {
       if (this.isTaskBox && !closing) return await this.openTaskBox();
-      
+
       if (this.hasToDelete) {
         this.childIndex++;
         if (this.isTaskBox && !closing) await this.openTaskBox();
-        // else this.childIndex++;
+        else {
+          if (this.yesForAll) await this.deleteNode();
+        }
       } else {
         if (this.lastParent) {
           await this.closeTaskBox().then(() => {
-             this.next(true);
+            this.next(true);
           });
         } else this.close();
       }
 
       this.refreshkey++;
     },
+    deleteAll() {
+      this.yesForAll = true;
+      this.deleteNode();
+    },
     async deleteNode(task) {
-      let item = task || this.deletingItem;
+      let item = task ? task : this.deletingTask;
       this.deleting = true;
       return new Promise((res) => {
         if (this.deleteFiles == true && this.file) {
@@ -188,28 +215,40 @@ export default {
             .catch((error) => console.log(error))
             .finally(async () => {
               if (item) {
-                // this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-                console.log('deleted:', { task: item.id, parent: item.taskbox, files: this.deleteFiles });
-                this.deleting = false;
-                setTimeout(res(this.next()), 1000);
-                // });
+                this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
+                  this.setItemStatus(deletingstatus.DELETED);
+                  this.deleting = false;
+                  setTimeout(res(this.next()), 10);
+                });
               }
             });
         } else {
           if (item) {
-            console.log('deleted:', { task: item.id, parent: item.taskbox, files: this.deleteFiles });
-            this.deleting = false;
-            // this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
-            setTimeout(res(this.next()), 1000);
-            // });
+            this.$store.dispatch('taskbox/DELETE_TASK', item).then(() => {
+              this.setItemStatus(this.deleteFiles == true && this.file ? deletingstatus.FILEKEPT : deletingstatus.DELETED);
+              this.deleting = false;
+              setTimeout(res(this.next()), 10);
+            });
           }
         }
       });
     },
+    setItemStatus(status) {
+      this.$store.commit('taskbox/CHANGE_DELETING_STATUS', { item: this.deletingItem, status: status });
+      // var result = _.chain(data)
+      //   .map('elements') // pluck all elements from data
+      //   .flatten() // flatten the elements into a single array
+      //   .filter({ status: status }) // exatract elements with a prop of 'foo'
+      //   .sumBy('val') // sum all the val properties
+      //   .value();
+      // console.log(result);
+    },
     async checkfileExistInFilesFolder(file) {
       if (file == null) return false;
+      this.checking = true;
       ipcRenderer.invoke('app:existInFilesFolder', file.path).then((response) => {
         this.fileExistInFilesFolder = response;
+        this.checking = false;
       });
     },
     getIcon(name) {
@@ -221,7 +260,7 @@ export default {
     close() {
       this.deleteFiles = false;
       this.yesForAll = false;
-      this.skipped = false;
+      this.fileExistInFilesFolder = false;
       this.parentIndex = [];
       this.closedParents = [];
       this.childIndex = 0;

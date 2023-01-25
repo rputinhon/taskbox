@@ -738,10 +738,6 @@ const mutations = {
     },
     SUCCESS_DELETE_TASK: (state,task) => {
 
-        // remove from root tasks list
-        if(state.root.tasks[task.id])
-            delete state.root.tasks[task.id];
-
         // remove node from current taskbox
         if(state.root.tasks[task.id].taskbox == state.currentTaskBox.id){
             if(state.root.taskboxes[state.currentTaskBox.id].data.nodes[task.id])
@@ -749,6 +745,11 @@ const mutations = {
             // try to delete the node in the node view
             NodeView.deleteNode(task.id);
         }
+        
+        // remove from root tasks list
+        if(state.root.tasks[task.id])
+            delete state.root.tasks[task.id];
+
         
     },
     SUCCESS_DELETE_TASKS: (state, list) => {
