@@ -82,7 +82,9 @@ export default {
     // },
     deletingTasks(value) {
       if (value) {
+        
         this.parent = Object.values(this.deletingTasks.children);
+
         this.isOpen = true;
         // this.childIndex = 0;
       } else {
@@ -153,25 +155,23 @@ export default {
     },
     async closeTaskBox() {
       this.parent = this.lastParent;
-
-      this.parentIndex.splice(this.parentIndex.length - 1, 1);
-      this.closedParents.splice(this.closedParents.length - 1, 1);
-
-      this.childIndex = this.lastIndex+1;
-
+      this.closedParents.pop();
+      this.childIndex = this.lastIndex + 1;
+      this.parentIndex.pop();
       this.refreshkey++;
-
-      this.next(true);
     },
     async next(closing) {
       if (this.isTaskBox && !closing) return await this.openTaskBox();
+      
       if (this.hasToDelete) {
         this.childIndex++;
-        if (this.isTaskBox) await this.openTaskBox();
+        if (this.isTaskBox && !closing) await this.openTaskBox();
         // else this.childIndex++;
       } else {
         if (this.lastParent) {
-          await this.closeTaskBox();
+          await this.closeTaskBox().then(() => {
+             this.next(true);
+          });
         } else this.close();
       }
 
