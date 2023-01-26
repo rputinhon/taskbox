@@ -264,7 +264,7 @@ const actions = {
                         .catch((error) => {
                             console.error(error);
                         })
-                        
+
                 }
                 else {
                     commit("SUCCESS_DELETE_TASK", task)
@@ -424,12 +424,12 @@ const actions = {
         });
 
     },
-    async UPDATE_TASKBOX({ commit }, taskbox){
-        taskboxRepository.saveOrUpdate(taskbox).then(()=>{
+    async UPDATE_TASKBOX({ commit }, taskbox) {
+        taskboxRepository.saveOrUpdate(taskbox).then(() => {
             commit('SUCCESS_UPDATE_TASKBOX');
         })
     },
-    async UPDATE_TASKBOX_PROGRESS({ state, dispatch }, value) {
+    async UPDATE_TASKBOX_PROGRESS({ state, commit }, value) {
         let info = value || state.taskBoxInfo || null;
         if (!info) return;
         new Promise((resolve) => {
@@ -483,7 +483,9 @@ const actions = {
                     });
                     copy.progress = info.Progress;
                     copy.taskInfo = res;
-                    resolve(dispatch('UPDATE_TASK', copy));
+
+                    commit("SUCCESS_UPDATE_TASKBOX_TASK", copy);
+
                 }
                 else (resolve())
 
@@ -668,10 +670,12 @@ const mutations = {
             })
         }
     },
-    SUCCESS_UPDATE_TASKBOX(){
-
+    SUCCESS_UPDATE_TASKBOX() {
     },
-    SUCCESS_UPDATE_TASKS_INFO(){
+    SUCCESS_UPDATE_TASKBOX_TASK(state, task) {
+        Object.assign(state.currentTaskBox, task);
+    },
+    SUCCESS_UPDATE_TASKS_INFO() {
         nextTick(() => {
             store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                 store.dispatch('taskbox/GET_TASKBOX_INFO').then((info) => {
@@ -702,7 +706,7 @@ const mutations = {
         Object.assign(state.root.tasks, arrayToKeyValue([task]))
         NodeView.saveTaskBox(true);
         store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
-      
+
     },
     SET_DELETING_TASKS: (state, deleting) => {
         state.deleting = deleting;
@@ -713,44 +717,49 @@ const mutations = {
                 delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[id];
         })
     },
-    SUCCESS_DELETE_TASKBOX: (state,task) => {
+    SUCCESS_DELETE_TASKBOX: (state, task) => {
 
-        if(state.root.taskboxes[task.id])
+        if (state.root.taskboxes[task.id])
             delete state.root.taskboxes[task.id];
 
         // remove node from current taskbox
-        if(state.root.taskboxes[state.root.tasks[task.id].taskbox].data.nodes[task.id]){
+        if (state.root.taskboxes[state.root.tasks[task.id].taskbox].data.nodes[task.id]) {
             delete state.root.taskboxes[state.root.tasks[task.id].taskbox].data.nodes[task.id];
 
-            if(state.root.tasks[task.id].taskbox !== state.currentTaskBox.id)
-            store.dispatch('taskbox/UPDATE_TASKBOX',state.root.taskboxes[state.root.tasks[task.id].taskbox])
+            if (state.root.tasks[task.id].taskbox !== state.currentTaskBox.id)
+                store.dispatch('taskbox/UPDATE_TASKBOX', state.root.taskboxes[state.root.tasks[task.id].taskbox])
             // save taskbox
         }
 
         // remove from root tasks list
-        if(state.root.tasks[task.id])
+        if (state.root.tasks[task.id])
             delete state.root.tasks[task.id];
 
         // try to delete the node in the node view
         NodeView.deleteNode(task.id);
 
-        
-    },
-    SUCCESS_DELETE_TASK: (state,task) => {
 
-        // remove node from current taskbox
-        if(state.root.tasks[task.id].taskbox == state.currentTaskBox.id){
-            if(state.root.taskboxes[state.currentTaskBox.id].data.nodes[task.id])
+    },
+    SUCCESS_DELETE_TASK: (state, task) => {
+
+        // try to delete the node in the node view
+        if (task && task.taskbox == state.currentTaskBox.id) {
             delete state.root.taskboxes[state.currentTaskBox.id].data.nodes[task.id]
-            // try to delete the node in the node view
             NodeView.deleteNode(task.id);
         }
-        
+        else {
+            if (state.root.taskboxes[task.taskbox]) {
+                if (state.root.taskboxes[task.taskbox].data.nodes[task.id])
+                    delete state.root.taskboxes[task.taskbox].data.nodes[task.id]
+            }
+        }
+
+
         // remove from root tasks list
-        if(state.root.tasks[task.id])
+        if (state.root.tasks[task.id])
             delete state.root.tasks[task.id];
 
-        
+
     },
     SUCCESS_DELETE_TASKS: (state, list) => {
 
@@ -804,6 +813,7 @@ const mutations = {
             store.commit('user/SUCCESS_UPDATE_TASK', task)
             store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
 
+
         }
 
     },
@@ -851,7 +861,7 @@ const mutations = {
 
         store.commit('SET_API_STATE', apistate.DONE);
     },
-    CHANGE_DELETING_STATUS(state,args){
+    CHANGE_DELETING_STATUS(state, args) {
         args.item.status = args.status
     },
     CONFIRM_DELETE_TASKS(state, selection) {

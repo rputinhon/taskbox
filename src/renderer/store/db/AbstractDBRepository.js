@@ -186,7 +186,8 @@ export class Repository {
 
   async delete(entity) {
     const entityToDelete = await this.find(entity.id)
-    await this.db.rel.del(this.type, entity)
+
+    await this.db.rel.del(this.type, entityToDelete)
     return entityToDelete
   }
 

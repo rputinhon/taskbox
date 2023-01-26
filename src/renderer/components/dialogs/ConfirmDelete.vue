@@ -85,6 +85,9 @@ export default {
       if (value) {
         this.parent = Object.values(this.deletingTasks.children);
 
+        // if(this.isTaskBox)
+        //   this.openTaskBox();
+
         this.isOpen = true;
         // this.childIndex = 0;
       } else {
@@ -106,7 +109,7 @@ export default {
       taskList: (state) => state.taskbox.root.tasks,
     }),
     dataReady() {
-      return this.library && this.deletingTasks ? true : false;
+      return this.isOpen && this.library && this.deletingTasks ? true : false;
     },
     file() {
       this.refreshkey;
@@ -128,10 +131,6 @@ export default {
       this.refreshkey;
       if (!this.deletingItem) return;
       return this.taskList[this.deletingItem.id];
-    },
-    isNextTaskBox() {
-      this.refreshkey;
-      return this.parent && this.parent[this.childIndex + 1] ? true : false;
     },
     isTaskBox() {
       this.refreshkey;
@@ -155,20 +154,22 @@ export default {
       this.parent = Object.values(this.parent[this.childIndex].children);
       this.parentIndex.push(this.childIndex);
       this.childIndex = 0;
-      if (this.yesForAll) if ((this.fileExistInFilesFolder && this.deleteFiles) || !this.fileExistInFilesFolder) await this.deleteNode();
+      if ((this.yesForAll && this.deleteFiles) || (this.yesForAll && !this.deleteFiles && !this.fileExistInFilesFolder)) await this.deleteNode();
     },
     async closeTaskBox() {
-      let skipCount = this.parent.filter((p) => p.status == deletingstatus.KEPT).length;
+      let keptCount = this.parent.filter((p) => p.status == deletingstatus.KEPT);
 
       // Delete TaskBox
-      if (skipCount == 0) {
+      if (keptCount.length == 0) {
         let taskbox = this.taskList[this.deletingTask.taskbox];
-        if (taskbox)
+        if (taskbox) {
+          console.log(taskbox);
           await this.$store.dispatch('taskbox/DELETE_TASK', taskbox).then(() => {
             this.setItemStatus(deletingstatus.DELETED);
             this.deleting = false;
             setTimeout((this.deleting = false), 10);
           });
+        }
       } else this.setItemStatus(deletingstatus.KEPT);
 
       this.parent = this.lastParent;
@@ -188,7 +189,7 @@ export default {
         this.childIndex++;
         if (this.isTaskBox && !closing) await this.openTaskBox();
         else {
-          if (this.yesForAll) await this.deleteNode();
+          if ((this.yesForAll && this.deleteFiles) || (this.yesForAll && !this.deleteFiles && !this.fileExistInFilesFolder)) await this.deleteNode();
         }
       } else {
         if (this.lastParent) {
@@ -258,14 +259,15 @@ export default {
       return type.meta.typeicon;
     },
     close() {
+      console.log('closed');
       this.deleteFiles = false;
       this.yesForAll = false;
       this.fileExistInFilesFolder = false;
       this.parentIndex = [];
       this.closedParents = [];
       this.childIndex = 0;
-      this.$store.commit('taskbox/SET_DELETING_TASKS', null);
       this.$store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
+      this.$store.commit('taskbox/SET_DELETING_TASKS', null);
       this.$store.dispatch('taskbox/GET_FILE_LIST').then(() => {
         NodeView.saveTaskBox(true);
       });
