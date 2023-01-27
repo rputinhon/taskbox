@@ -49,7 +49,7 @@
 
     <v-spacer></v-spacer>
 
-    <task-box-menu  :taskbox="mainTab == 0 && dataReady" :extraClass="'mx-2'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
+    <task-box-menu v-if="mainTab == 0 && dataReady"  :taskbox="currentTaskBox" :extraClass="'mx-2'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
 
     <v-tooltip v-if="mainTab == 0 && dataReady" bottom transition="none">
       <template v-slot:activator="{ on, attrs }">
