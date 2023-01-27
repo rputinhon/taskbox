@@ -26,19 +26,17 @@
       Feed
     </v-tooltip>
 
-
     <v-toolbar height="40" flat color="transparent" class="px-0 text-center windowbar">
+
       <v-list-item v-if="analysing !== false && mainTab == 0 && dataReady" class="windowbar">
         <v-responsive max-width="-webkit-fill-available" class="mx-2 windowbar-button overflow-visible">
           <analalisis-menu />
         </v-responsive>
       </v-list-item>
+
       <v-list-item v-if="analysing == false && mainTab == 0 && dataReady" class="mx-0 px-0 windowbar" style="min-height: 40px; height: 40px">
-        <task-box-menu v-if="analysing == false" :taskbox="currentTaskBox" :extraClass="'mx-3'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
+        <bread-crumb style="z-index:0" v-if="currentTaskBox" />
         <task-box-title v-if="false" :options="['info']" v-show="analysing == false" />
-        <v-spacer></v-spacer>
-        <component-types v-if="dataReady && analysing == false" :disabled="paused || canceled" />
-        
       </v-list-item>
 
       <v-list-item v-if="mainTab !== 0" class="windowbar">
@@ -46,9 +44,12 @@
           <search :dark="false" :refresh="refresh" :local="!userFeed ? 'in Taskbox' : 'in Feed'" :isFilter="!userFeed == null" :options="['profile', userFeed == null && 'post']" />
         </v-responsive>
       </v-list-item>
+
     </v-toolbar>
 
     <v-spacer></v-spacer>
+
+    <task-box-menu  :taskbox="mainTab == 0 && dataReady" :extraClass="'mx-2'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
 
     <v-tooltip v-if="mainTab == 0 && dataReady" bottom transition="none">
       <template v-slot:activator="{ on, attrs }">
@@ -66,10 +67,11 @@
       toggle analisis
     </v-tooltip>
 
+    <task-subject v-if="mainTab == 0 && dataReady" :color="'grey'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" />
+
     <v-list-item v-if="authenticated" style="max-width: fit-content" class="ma-0 pa-0 mx-1">
       <profile />
     </v-list-item>
-    <v-btn v-else-if="analysing == false" rounded small class="mx-1 windowbar-button" color="primary" @dblclick.stop @click.stop="signin()"> signin </v-btn>
 
     <v-divider vertical class="mx-2"></v-divider>
 
@@ -110,6 +112,7 @@
 <script>
 import ConfirmClose from './ConfirmClose.vue';
 import TaskBoxTitle from '../navigation/TaskBoxTitle.vue';
+import BreadCrumb from '../navigation/TheBreadMenu.vue';
 
 import { eventBus } from '../../../main';
 import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
@@ -118,23 +121,24 @@ import { mapState } from 'vuex';
 
 import store from '../../store';
 import { isTaskCanceled, isTaskDone, isTaskPaused } from '../../store/modules/task/task';
-import ComponentTypes from '../lists/ComponentTypes.vue';
 import Search from '../browse/Search.vue';
 import TaskBoxMenu from '../menus/TaskBoxMenu.vue';
 import AnalalisisMenu from '../menus/AnalalisisMenu.vue';
 import Profile from './Profile.vue';
+import TaskSubject from '../lists/TaskSubject.vue';
 
 export default {
   name: 'WindowBar',
   props: { canBack: Boolean },
   components: {
     AnalalisisMenu,
+    BreadCrumb,
     ConfirmClose,
-    ComponentTypes,
     Profile,
     Search,
     TaskBoxMenu,
     TaskBoxTitle,
+    TaskSubject,
   },
   data() {
     return {
@@ -246,9 +250,6 @@ export default {
     },
   },
   methods: {
-    signin() {
-      this.$store.commit('app/TOGGLE_LOGIN_WINDOW', true);
-    },
     toggleAnalisis() {
       this.$store.commit('taskbox/CHANGE_ANALISIS', this.analysing == false ? 'progress' : false);
       this.$store.commit('taskbox/ANALISE');

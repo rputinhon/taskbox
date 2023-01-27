@@ -8,7 +8,8 @@
         :image="'img/logo_worm_128_flat.png'"
       />
       <v-lazy :transition="`scale-transition${!levelDown?'-reverse':''}`" width="100%" height="100%" v-show="!loading" >
-        <div id="nodeview" dropzone="true" class="pa-0 ma-0" v-show="!loading" />
+        <div id="nodeview" dropzone="true" class="pa-0 ma-0" v-show="!loading" >
+        </div>
       </v-lazy>
       <!-- <taskbox-transition v-if="!levelDown" hide-on-leave origin="center center 0px">
       </taskbox-transition>
@@ -38,7 +39,8 @@
 
     <div v-if="dataReady">
       <v-overlay v-if="paused || canceled" absolute color="white" :style="`color:${status.color}`" class="text-h4"> {{ status.text }} </v-overlay>
-      <display-menu v-if="dataReady" @frameAll="frameAll()" />
+      <component-types v-if="analysing == false" />
+      <display-menu  @frameAll="frameAll()" />
       <choose-connection :open="chooseConnection" :droppingConn="droppingConn" @close="closeChooseConnection()" @choose="ChooseSelected()" />
       <modal-color-picker v-if="editingframe" :show="pickColor" :frame="editingframe" @closePickColor="closePickColor()" />
       <confirm-delete />
@@ -64,6 +66,7 @@ import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
 import { mapGetters, mapState } from 'vuex';
 import _ from 'lodash';
 import Analisys from '../navigation/Analisys.vue';
+import ComponentTypes from '../lists/ComponentTypes.vue';
 
 export default {
   components: {
@@ -74,6 +77,7 @@ export default {
     ModalColorPicker,
     DisplayMenu,
     Analisys,
+    ComponentTypes,
   },
   data: () => ({
     loading: false,

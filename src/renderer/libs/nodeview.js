@@ -215,7 +215,7 @@ class _nodeView extends TaskBox {
         if (!editor) return;
         // force update the mouse position
         editor.view.area.pointermove(e);
-        let node = await self.createNode(name, [editor.view.area.mouse.x, editor.view.area.mouse.y]);
+        let node = await self.createNode(name, [editor.view.area.mouse.x+200, editor.view.area.mouse.y-100]);
         await self.addNode(node);
         self.saveTaskBox();
         store.dispatch('taskbox/ADD_TASK', { node: node, value: value }).then(() => {

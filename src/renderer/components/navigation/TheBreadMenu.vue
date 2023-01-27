@@ -1,11 +1,10 @@
 <template>
-  <v-toolbar absolute style="flex-wrap: wrap !important" class="my-2 ml-2 mr-2" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
-    <task-subject :color="'grey'" :task="taskbox" :options="['popup', 'statistics', 'status']" />
+  <v-toolbar absolute width="100%" style="flex-wrap: wrap !important" class="windowbar-button ml-2 mr-2" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
     <nav-menu :options="['menu', 'home', 'parent']" />
     <!-- <v-autocomplete class="mt-6 mr-6" solo-inverted v-show="searching" :items="items" :search-input.sync="search" hide-no-data autofocus dense placeholder="search" rounded> </v-autocomplete> -->
     <v-list class="pl-1 bread" color="transparent" v-for="(bread, i) in breadCrumb" :key="i">
       <v-list-item class="breadmenuitem">
-        <v-menu rounded="lg" offset-y transition="none" open-on-hover>
+        <v-menu class="windowbar-button" z-index="10" rounded="lg" offset-y transition="none" open-on-hover>
           <template v-slot:activator="{ on }">
             <v-toolbar-title class="breaditem" v-on="on" @click="openTaskBox(bread)">
               <span>
@@ -17,7 +16,7 @@
           </template>
           <v-list v-for="(breadChild, k) in bread.children" :key="k" class="py-0">
             <v-list-item class="listitem my-0" @click="openTaskBox(breadChild)">
-              <v-list-item-subtitle class="breaditem">
+              <v-list-item-subtitle class="breaditem windowbar-button">
                 {{ breadChild.title }}
                 - {{ breadChild.progress }}%
               </v-list-item-subtitle>
@@ -37,13 +36,13 @@
 <script>
 import { mapGetters, mapState } from 'vuex';
 import { getStatusTypeByValue } from '../../enums/taskstate';
-import TaskSubject from '../lists/TaskSubject.vue';
+// import TaskSubject from '../lists/TaskSubject.vue';
 import NavMenu from './NavMenu.vue';
 export default {
   name: 'BreadCrumb',
   components: { 
     NavMenu,
-    TaskSubject,
+    // TaskSubject,
     },
   data: () => ({
     editingTitle: false,
@@ -111,7 +110,8 @@ export default {
 }
 
 .breaditem {
-  color: aliceblue;
+  padding-top: 3px;
+  color: grey;
   font-size: 12px;
   font-weight: 600;
 }

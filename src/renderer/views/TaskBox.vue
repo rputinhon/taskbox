@@ -1,7 +1,6 @@
 <template>
   <v-sheet height="calc(100vh - 40px)" :color="root?'workspace':'#c2c2c2'" width="100%" class="taskbox pa-0 ma-0" v-if="dataReady">
     <node-editor />
-    <bread-crumb style="z-index:0" v-if="currentTaskBox" />
     <worker-list />
     <content-preview />
     <save-template :open="showSaveTemplate" :folder="folders && folders.templates" :taskbox="toTemplate" @close="closeModal()" />
@@ -14,7 +13,6 @@ import { mapState } from 'vuex';
 import { eventBus } from '../../main';
 import { ipcRenderer } from 'electron';
 
-import BreadCrumb from '../components/navigation/TheBreadMenu.vue';
 import ContentPreview from '../components/dialogs/ContentPreview.vue';
 import NodeEditor from '../components/NodeEditor/TheNodeEditor.vue';
 import PackProject from '../components/dialogs/PackProject.vue';
@@ -25,7 +23,6 @@ export default {
   name: 'TaskBox',
   props: { showTasks: Boolean },
   components: {
-    BreadCrumb,
     ContentPreview,
     NodeEditor,
     PackProject,

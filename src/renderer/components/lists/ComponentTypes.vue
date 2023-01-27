@@ -1,13 +1,14 @@
 <template>
-  <v-menu ref="addMenu" rounded="pill" z-index="1" offset-y nudge-top="60" light nudge-left="10">
+  <v-menu ref="addMenu" top rounded="pill" z-index="1" offset-y light nudge-left="8" nudge-bottom="65">
     <template v-slot:activator="{ on: menu, attrs }">
-      <v-btn icon fab elevation="0" color="background" v-bind="attrs" v-on="menu" x-small class="windowbar-button mx-2" :disabled="disabled">
+      <v-btn  fab left bottom absolute elevation="0" color="primary" v-bind="attrs" v-on="menu" x-small class="mb-9 ml-2 windowbar-button" :disabled="disabled">
         <svg width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path d="m 22.065319,8.3519448 c -0.704083,0 -1.27124,0.5666409 -1.27124,1.2707236 V 21.058663 H 9.8872518 c -0.7040827,0 -1.2707237,0.567157 -1.2707237,1.27124 v 2.965194 c 0,0.704083 0.566641,1.271239 1.2707237,1.271239 H 20.794079 v 10.906829 c 0,0.704082 0.567157,1.270722 1.27124,1.270722 h 2.965194 c 0.704083,0 1.27124,-0.56664 1.27124,-1.270722 V 26.566336 h 11.435995 c 0.704083,0 1.270722,-0.567156 1.270722,-1.271239 v -2.965194 c 0,-0.704083 -0.566639,-1.27124 -1.270722,-1.27124 H 26.301753 V 9.6226684 c 0,-0.7040827 -0.567157,-1.2707236 -1.27124,-1.2707236 z" :fill="disabled ? 'rgba(0,0,0,0.26)' : 'grey'" stop-color="#000000" style="paint-order: fill markers stroke" />
+          <path d="m 22.065319,8.3519448 c -0.704083,0 -1.27124,0.5666409 -1.27124,1.2707236 V 21.058663 H 9.8872518 c -0.7040827,0 -1.2707237,0.567157 -1.2707237,1.27124 v 2.965194 c 0,0.704083 0.566641,1.271239 1.2707237,1.271239 H 20.794079 v 10.906829 c 0,0.704082 0.567157,1.270722 1.27124,1.270722 h 2.965194 c 0.704083,0 1.27124,-0.56664 1.27124,-1.270722 V 26.566336 h 11.435995 c 0.704083,0 1.270722,-0.567156 1.270722,-1.271239 v -2.965194 c 0,-0.704083 -0.566639,-1.27124 -1.270722,-1.27124 H 26.301753 V 9.6226684 c 0,-0.7040827 -0.567157,-1.2707236 -1.27124,-1.2707236 z" 
+          :fill="disabled ? 'rgba(0,0,0,0.26)' : 'white'" stop-color="#000000" style="paint-order: fill markers stroke" />
         </svg>
       </v-btn>
     </template>
-    <v-card color="background" max-width="50px" class="py-3 mt-6">
+    <v-card color="background" max-width="47px" class="py-3 pb-13">
       <v-list-item class="px-0 ma-0" @click="addNode($event, { name: 'TaskBox' })">
         <v-list-item-content class="py-0">
           <svg class="categoryIcon" height="38" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">

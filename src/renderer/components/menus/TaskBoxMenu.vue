@@ -1,5 +1,5 @@
 <template>
-  <v-menu class="windowbar-button" rounded="0" bottom right offset-y light :close-on-content-click="true" v-if="task">
+  <v-menu class="windowbar-button" rounded="0" bottom left offset-y light :close-on-content-click="true" v-if="task">
     <template v-slot:activator="{ on: menu }">
       <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
         <v-btn :style="extraStyle && extraStyle" v-show="!hide" :class="extraClass && extraClass" slot-scope="allow" :loading="working" :absolute="options.includes('absolute')" :right="options.includes('right')" :disabled="!allow.value" v-on="{ ...menu }" :elevation="options.includes('icon') ? 0 : 5" fab x-small :icon="options.includes('icon')" class="windowbar-button px-0 my-auto">
