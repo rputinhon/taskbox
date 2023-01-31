@@ -7,7 +7,7 @@ A flowing way to manage your tasks.
 - Be node based by default and module architectured, in order to developers create their on workflows.
 - Ultimatelly create a taskbox node based OS for a dedicated personal device.
 
-If you like the concept and want support or colaborate to this project as a team, please get in touch.
+If you like the concept and want support or colaborate to this project as a team or investor, please get in touch.
 
 ## Project setup
 ```
