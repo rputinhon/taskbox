@@ -52,7 +52,8 @@ yarn lint
 
 ## To Do
 ```
-
+-Overall review of the system architecture. 
+-Implement the input/output system, allowing data to pass through the boxes.
 -Due system.
 -Increase the number of task types, including:
     - Text module (*nodes).
@@ -61,7 +62,6 @@ yarn lint
     - Code module.
     - 2d/3d graph module.
     - etc.
--Implement the input/output system, allowing data to pass through the boxes.
 -Notification.
 ```
 
