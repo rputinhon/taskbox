@@ -3,8 +3,8 @@
 #   taskbox
 A flowing way to manage your tasks.
 
-- The goal of the taskbox project is to create a tool for track, guide and facilitate small or complex tasks. Example: companies process workflows, digital assets creation, products, public actions like nature recovering, philanthropic actions, public patrimony recovering actions, etc.
-- Be node based by default and module architectured in order to developers create their on workflows.
+- The goal of the taskbox project is to create a tool for track, guide and facilitate small or complex tasks. Example: companies process workflows, digital assets creation, products development, public actions like philanthropy, nature recovering, public patrimony recovering, etc.
+- Be node based by default and module architectured in order to developers create their on workflows and system boxes.
 - Ultimatelly create a taskbox node based OS for a dedicated personal device.
 
 If you like the concept and want support or colaborate to this project as a team or investor, please get in touch.
