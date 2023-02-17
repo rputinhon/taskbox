@@ -29,7 +29,7 @@ npm run electron:build
 yarn lint
 ```
 
-## Add tasks
+## Add tasks and connect them
 ![Add Tasks](public/img/readme_addtasks.png)
 
 ## Work On Tasks
