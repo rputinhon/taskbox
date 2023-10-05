@@ -16,6 +16,8 @@ import NoteComponent from "./Note/NoteComponent";
 // FLOW
 import AuditionComponent from "./Audition/AuditionComponent";
 // import FlowWithReview from "./Flow/FlowWithReview";
+// SKETCH
+import ShapeComponent from "./sketch/ShapeComponent";
 
 
 export const anysocket = new Socket('Any Type');
@@ -26,6 +28,8 @@ export const filesocket = new Socket('File');
 filesocket.color = '#d3bc5f';
 export const textsocket = new Socket('Text');
 textsocket.color = '#0057ff';
+export const shapesocket = new Socket('Sketch_Shape');
+textsocket.color = '#1057ff';
 
 mathsocket.combineWith(anysocket);
 filesocket.combineWith(anysocket);
@@ -33,6 +37,7 @@ textsocket.combineWith(anysocket);
 anysocket.combineWith(mathsocket);
 anysocket.combineWith(filesocket);
 anysocket.combineWith(textsocket);
+anysocket.combineWith(shapesocket);
 
 const Sockets = {
     'TaskBox':anysocket,
@@ -44,7 +49,8 @@ const Sockets = {
     // 'FlowWithReview':anysocket,
     'File':filesocket,
     // 'Text':textsocket
-    'Audition':anysocket
+    'Audition':anysocket,
+    'Sketch_Shape':shapesocket
 };
 
 export function getSocketByNodeName(name){
@@ -68,9 +74,11 @@ const classes = {
     'TaskBoxComponent':TaskBoxComponent,
     'NoteComponent':NoteComponent,
     // FLOW
-    'AuditionComponent':AuditionComponent
+    'AuditionComponent':AuditionComponent,
     // 'SimpleFlow':SimpleFlow,
     // 'FlowWithReview':FlowWithReview
+    // SKETCH
+    'ShapeComponent':ShapeComponent
 
 };
 

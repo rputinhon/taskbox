@@ -74,15 +74,20 @@
         </v-list-item-title>
         <v-list-item-subtitle class="my-0 py-0" v-if="taskBoxInfo"> {{ taskBoxInfo.Done.value }} of {{ taskBoxInfo.Total.value - taskBoxInfo.Canceled.value }} tasks done </v-list-item-subtitle>
       </v-list-item-content>
+
       <v-spacer v-if="!searching"></v-spacer>
+
       <task-box-menu :extraStyle="'z-index:6'" :extraClass="'mx-1 ml-3'" :taskbox="currentTaskBoxTask" :options="['icon', 'template', 'pack']" />
       <task-box-table-info :taskbox="currentTaskBoxTask" :options="['status']" />
-      <v-btn v-if="false" style="margin-right: -20px !important" class="mx-0" icon @click="selecting = !selecting">
+
+      <!-- Select To Act -->
+      <!-- <v-btn v-if="!isEmpty" style="margin-right: -32px !important" class="mx-0" icon @click="selecting = !selecting">
         <svg width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="m10.754-3.4365e-8c-5.9037 0-10.754 4.8503-10.754 10.754v26.492c0 5.9037 4.8503 10.754 10.754 10.754h26.492c5.9037 0 10.754-4.8503 10.754-10.754v-26.492c1e-15 -5.9037-4.8503-10.754-10.754-10.754zm0 6.2495h26.492c2.5507 0 4.5045 1.9538 4.5045 4.5045v26.492c0 2.5507-1.9538 4.5045-4.5045 4.5045h-26.492c-2.5507 0-4.5045-1.9538-4.5045-4.5045v-26.492c0-2.5507 1.9538-4.5045 4.5045-4.5045z" color="#000000" fill="grey" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.67" style="-inkscape-stroke: none; paint-order: stroke fill markers" />
           <path v-if="selecting" d="m12.674 27.313 8.0132 6.6263 14.64-19.879" fill="none" stroke="grey" stroke-linecap="round" stroke-linejoin="round" stroke-width="5.4301" />
         </svg>
-      </v-btn>
+      </v-btn> -->
+      <!-- Select To Act -->
     </v-card-title>
 
     <v-overlay v-if="disabled" absolute color="grey" class="text-h4" :style="`color:${parentStatus.color}`"> {{ parentStatus.text }} </v-overlay>
@@ -189,7 +194,7 @@ export default {
     },
     tasks() {
       this.refreshkey;
-      return Object.values(this.root.tasks).filter((t) => this.currentTaskBox ? Object.keys(this.currentTaskBox.data.nodes).includes(t.id):null);
+      return Object.values(this.root.tasks).filter((t) => (this.currentTaskBox ? Object.keys(this.currentTaskBox.data.nodes).includes(t.id) : null));
     },
     isEmpty() {
       return this.tasks && this.tasks.length == 0 ? true : false;
@@ -243,31 +248,24 @@ export default {
       else filtered = searchResult.filter((item) => filter.value.includes(item[filter.field]));
 
       let nodes = this.currentTaskBox ? this.currentTaskBox.data.nodes : {};
-      let pos = 0;
-      return filtered
-        .sort(function (a, b) {
-          if (!nodes[a.id] || !nodes[b.id]) return 0;
-          let na = nodes[a.id];
-          let nb = nodes[b.id];
-          switch (sort) {
-            case 0:
-              if (a.title < b.title) return -1;
-              if (a.title > b.title) return 1;
-              return 0;
-            case 1:
-              if (a.title > b.title) return -1;
-              if (a.title < b.title) return 1;
-              return 0;
-            case 2:
-              if (na.position[0] < nb.position[0] && na.position[1] < nb.position[1]) pos-=2;
-              else
-              if (na.position[1] < nb.position[1]) pos-=1;
-              else pos++;
-
-              return pos;
-          }
-        })
-       
+      // let pos = 0;
+      return filtered.sort(function (a, b) {
+        if (!nodes[a.id] || !nodes[b.id]) return 0;
+        let na = nodes[a.id];
+        let nb = nodes[b.id];
+        switch (sort) {
+          case 0:
+            if (a.title < b.title) return -1;
+            if (a.title > b.title) return 1;
+            return 0;
+          case 1:
+            if (a.title > b.title) return -1;
+            if (a.title < b.title) return 1;
+            return 0;
+          case 2:
+            return Math.hypot(na.position[0], na.position[1]) - Math.hypot(nb.position[0], nb.position[1]);
+        }
+      });
     },
     openRoot(id) {
       if (this.root && this.root.id == id) return;

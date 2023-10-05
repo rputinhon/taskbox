@@ -134,6 +134,7 @@ export default {
   },
   mounted() {
     // this.priority = this.roots;
+    this.updateList();
   },
   watch: {
     apiState(value) {

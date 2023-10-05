@@ -54,7 +54,7 @@
           <v-list-item>
             <v-text-field :disabled="!serverSettings[1].value" rounded success hide-details="false" :loading="synking || retrying" label="url" type="url" placeholder="ex: http://localhost:5984" outlined dense v-model="url" :error="syncErrors.lenght > 0 || !serverReady ? true : false" :error-messages="syncErrors">
               <template v-slot:append>
-                <v-btn outlined rounded small color="primary" style="margin-top: -2px; margin-right: -16px" @click="retry()"> retry </v-btn>
+                <v-btn outlined rounded small color="primary" style="margin-top: -2px; margin-right: -16px" @click="retry()" v-text="!serverSettings[1].value?'retry':'ok'"></v-btn>
               </template>
             </v-text-field>
           </v-list-item>

@@ -46,15 +46,6 @@ export default {
       info: null,
     };
   },
-  mounted() {
-    // if (this.taskbox) this.getInfo(this.taskbox);
-  },
-  watch: {
-    // taskbox(value) {
-    //   // if (value) this.getInfo(value);
-    //   else this.info = null;
-    // },
-  },
   computed: {
     ...mapState({
       currentTaskBox: (state) => state.taskbox.currentTaskBox,

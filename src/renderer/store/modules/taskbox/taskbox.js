@@ -49,6 +49,7 @@ const state = () => {
         //MODALS
         packingTaskBox: null,
         previewingTask: null,
+        focusMode:false,
         auditingTask: null,
         taskInputs: [],
         taskOutputs: [],
@@ -967,6 +968,10 @@ const mutations = {
         let index = state.taskInputs.indexOf(state.auditingTask);
         if (index + 1 < state.taskInputs.length)
             state.auditingTask = state.taskInputs[index + 1];
+    },
+    async TOGGLE_FOCUS_MODE(state,value){
+        state.previewingTask = null;
+        state.focusMode = value || !state.focusMode;
     },
     PREVIEW_TASK(state, request) {
         let entity = null;

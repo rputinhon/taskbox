@@ -1,6 +1,6 @@
 <template>
   <v-sheet class="windowbar-button" :color="analysing == false ? 'transparent' : 'workspace'">
-    <v-tabs hide-slider vertical v-model="tabIndex" class="main" background-color="#eeeeee">
+    <v-tabs hide-slider vertical v-model="tabIndex" class="main" background-color="#ebedf5">
       <v-tab v-for="(tab, t) in tabs" :key="t" v-show="!tab.disabled && ((tab.auth && authenticated) || !tab.auth)" :class="tab.c" :style="`min-width: ${tab.w || 50}px; height: ${tab.w || 50}px;max-width: ${tab.w || 50}px;`">
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on, attrs }">
@@ -21,44 +21,44 @@
         </v-tooltip>
       </v-tab>
       <v-tab-item tabindex="0">
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);background-color:#eeeeee;!important;`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <tasks v-if="currentTaskBox" />
             <roots v-else :sm="4" :md="4" :lg="4" :xl="4" :options="['recent']" @newProject="$emit('newProject')" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="1" eager>
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px)`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <file-list :folder="folders && folders.files" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="2" eager>
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px)`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <template-list :folder="folders && folders.templates" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="3" eager>
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px)`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <pack-list :folder="folders && folders.packs" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="4">
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:100vh`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <settings />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="5">
-        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:100vh`">
-          <v-layout align-center justify-start column>
+        <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
+          <v-layout align-center justify-start column style="background-color:transparent!important;">
             <info />
           </v-layout>
         </div>

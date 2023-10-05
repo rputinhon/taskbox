@@ -75,8 +75,8 @@ class _nodeView extends TaskBox {
         let index = 0;
 
         library.blockLibrary.blocktypes.forEach(type => {
-
-            if (type.properties.isactive && library.categoryLibrary.find(t => t.name == type.meta.category).active) {
+//&& library.categoryLibrary.find(t => t.name == type.meta.category).active
+            if (type.properties.isactive) {
                 type.index = index;
                 let args = {
                     emitter: editor,

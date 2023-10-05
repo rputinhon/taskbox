@@ -5,7 +5,7 @@
         <template v-slot:activator="{ on: onMenu }">
           <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
             <v-btn v-on="{ ...onMenu, ...onTooltip }" :loading="loading" slot-scope="allow" :width="size || 'auto'" :height="size || '30px'" class="windowbar-button" rounded :disabled="!allow.value" :class="extraClass && extraClass" :left="options.includes('left')" :elevation="options.includes('flat') ? 0 : 2" :fab="options.includes('fab') && !reviewing" :icon="options.includes('icon') || loading" :absolute="options.includes('absolute')" :outlined="options.includes('outlined') && !taskDone && !reviewing" :color="loading ? 'primary' : 'transparent'" :right="options.includes('right')" :x-small="!options.includes('small')" :style="extraStyle && extraStyle" @mouseenter="hovering = true" @mouseleave="hovering = false">
-              <small class="mx-1" :style="`font-size:11px;color:${!options.includes('white') ? status.color : 'white'}`" v-if="started && !taskDone && !reviewing && !reproved">{{ task.progress }}%</small>
+              <small class="mx-1" :style="`font-size:11px;color:${!options.includes('white') ? status.color : 'white'}`" v-if="options.includes('progress') && started && !taskDone && !reviewing && !reproved">{{ task.progress }}%</small>
               <svg  :width="size ? size : 26" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                 <path  :d="workers.length || isTaskBox ? status.icon : noWorkersIcon" 
                 :fill="!options.includes('white') ? status.color : '#fafafa'" stop-color="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.1284" style="-inkscape-stroke: none; font-variation-settings: normal; paint-order: fill markers stroke" />
@@ -94,7 +94,7 @@
         </v-card>
       </v-menu>
     </template>
-    status
+    change status
   </v-tooltip>
 </template>
 

@@ -7,7 +7,7 @@
       Click to Remove Input
     </v-tooltip>
 
-    <task-subject :task="task" :options="['popup', 'icon']" class="mr-2" />
+    <!-- <task-subject :task="task" :options="['popup', 'icon']" class="mr-2" /> -->
     <task-icon :task="task" />
     <task-title :task="task" :options="['edit', 'progress']" />
     <v-spacer></v-spacer>
@@ -63,7 +63,7 @@
 import Review from '../forms/Review.vue';
 import TaskStatusMenu from '../menus/TaskStatusMenu.vue';
 import TaskIcon from '../lists/TaskIcon.vue';
-import TaskSubject from '../lists/TaskSubject.vue';
+// import TaskSubject from '../lists/TaskSubject.vue';
 import TaskTitle from '../lists/TaskTitle.vue';
 // import Worker from '../NodeEditor/Components/Worker.vue';
 
@@ -82,7 +82,7 @@ export default {
     // Worker,
     // TaskChat,
     TaskIcon,
-    TaskSubject,
+    // TaskSubject,
     TaskTitle,
     // AvatarList,
   },

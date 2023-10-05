@@ -1,6 +1,7 @@
 <template>
   <RULE :rule="rules.EDIT" :returnCondition="true" :doc="task">
     <v-list-item-title class="text-subtitle-2" slot-scope="allow" :class="extraClass || ''" style="width: fit-content" v-if="!editingTitle" @click.stop="allow.value && options.includes('edit') ? (editingTitle = true) : null">
+    <task-subject :status="status" :task="task" :options="['popup','right']" />
       {{ task.title }}
       <small v-if="options.includes('progress')"> | {{ task.progress }}% </small>
     </v-list-item-title>
@@ -12,10 +13,12 @@
 import RULES from '../../enums/rules';
 import RULE from '../navigation/Rule.vue';
 import _ from 'lodash';
+import TaskSubject from './TaskSubject.vue';
+import { getStatusTypeByValue } from '../../enums/taskstate';
 
 export default {
   name: 'TaskTitle',
-  components: { RULE },
+  components: { RULE,TaskSubject },
   props: { task: Object, options: Array, extraClass: String },
   data() {
     return {
@@ -37,6 +40,10 @@ export default {
       set(value) {
         this.updatedTitle = value.trim().length !== 0 ? value : this.task.title;
       },
+    },
+    status() {
+      this.refreshkey;
+      return getStatusTypeByValue(this.task.status || 0);
     },
   },
   methods: {

@@ -1,13 +1,13 @@
 <template>
   <RULE :rule="rules.EDIT" :returnCondition="true" v-if="currentTask">
-    <v-menu :disabled="!options.includes('popup')"  left bottom offset-y  z-index="1000" :close-on-content-click="false">
+    <v-menu :disabled="!options.includes('popup')"  :left="!options.includes('right')" :right="options.includes('right')" bottom offset-y  z-index="1000" :close-on-content-click="false">
       <template v-slot:activator="{ on: onHover }">
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on: onTooltip }">
-            <v-btn class="windowbar-button mx-1" icon :absolute="options.includes('absolute')" :x-large="options.includes('largeIcon')" :small="!options.includes('largeIcon')" v-on="{ ...onHover, ...onTooltip }" elevation="0" @click.stop="getTask(taskId);">
+            <v-btn class="windowbar-button ma-0" icon :absolute="options.includes('absolute')" :x-large="options.includes('largeIcon')" :small="!options.includes('largeIcon')" v-on="{ ...onHover, ...onTooltip }" elevation="0" @click.stop="getTask(taskId);">
               <svg :width="options.includes('largeIcon') ? 70 : 24" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <path
-                  d="m 23.813533,4.882906 c -10.435442,0 -18.930627,8.495185 -18.930627,18.930627 0,10.435443 8.495185,18.92856 18.930627,18.92856 10.435443,0 18.92856,-8.493117 18.92856,-18.92856 0,-10.435442 -8.493117,-18.930627 -18.92856,-18.930627 z m 0,3.2333943 c 8.687941,3e-7 15.695166,7.0092907 15.695166,15.6972327 0,8.687944 -7.007225,15.695166 -15.695166,15.695166 -8.687942,0 -15.6972327,-7.007222 -15.6972327,-15.695166 0,-8.687942 7.0092907,-15.6972327 15.6972327,-15.6972327 z m -3.089734,4.6767167 c -0.45541,-0.0087 -0.82971,0.357841 -0.830957,0.813387 l -0.01292,3.730005 h 5.534029 l 0.04548,-3.646806 c 0.0084,-0.462601 -0.272744,-0.790943 -0.799434,-0.823722 z m -0.853694,7.441923 -0.04392,13.060184 c -0.0019,0.452033 0.363954,0.819362 0.815971,0.819073 l 7.984008,0.0016 c 0.455518,-2.65e-4 0.822198,-0.374465 0.81442,-0.829924 l -0.06976,-3.796668 c -0.0078,-0.443889 -0.369432,-0.800256 -0.813387,-0.801502 l -3.286104,-0.01035 0.106454,-8.442379 z"
+                  d="m 23.813284,6.1423433 c -9.741057,0 -17.6709407,7.9298827 -17.6709407,17.6709407 0,9.741057 7.9298837,17.669373 17.6709407,17.669373 9.74106,0 17.669373,-7.928316 17.669373,-17.669373 0,-9.741058 -7.928313,-17.6709407 -17.669373,-17.6709407 z m 0,3.0183004 c 8.109833,0 14.651073,6.5427983 14.651073,14.6526403 0,8.109841 -6.54124,14.651073 -14.651073,14.651073 -8.109842,0 -14.6526403,-6.541232 -14.6526403,-14.651073 0,-8.109842 6.5427983,-14.6526403 14.6526403,-14.6526403 z m 6.893437,6.5504723 c -0.968943,0.0031 -1.898374,0.390866 -2.581401,1.078132 l -7.355538,7.403778 -2.386089,-2.297453 -0.0012,-0.0012 c -1.445161,-1.390499 -3.776293,-1.347109 -5.167899,0.09726 -1.392798,1.445257 -1.3486,3.778089 0.09726,5.170251 l 4.979646,4.793749 v 0.0012 c 1.429713,1.376179 3.728559,1.350574 5.127503,-0.05687 h 0.0012 l 9.893014,-9.954588 c 1.414023,-1.42303 1.405892,-3.755849 -0.01647,-5.170251 -0.687525,-0.683806 -1.620353,-1.067011 -2.590028,-1.064014 z m 0.0071,2.120968 c 0.407655,-0.0012 0.798501,0.158054 1.08676,0.446314 l 0.0012,0.0012 c 0.608298,0.608297 0.612169,1.559373 0.0059,2.169599 l -9.893051,9.954578 c -0.599344,0.602112 -1.540928,0.612803 -2.153127,0.02354 v 0.0012 l -4.97969,-4.793795 c -0.619856,-0.59683 -0.637497,-1.551185 -0.0404,-2.170776 0.596742,-0.619371 1.550501,-0.638185 2.169992,-0.04158 l 7.59e-4,0.0012 3.139094,3.021829 c 0.417286,0.40172 1.079681,0.394388 1.487972,-0.01647 l 8.09171,-8.143488 c 0.287147,-0.288929 0.675486,-0.452031 1.082838,-0.453372 z"
                   :fill="color || '#1070ff'"
                 />
               </svg>
@@ -20,12 +20,12 @@
         <v-row no-gutters justify="center" align="center">
           <v-col align-self="center" :cols="isTaskBox && taskBoxInfo && options.includes('statistics') ? 8 : 12" class="pr-3">
             <v-btn disabled icon fab left top>
-              <svg :width="24" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <path :d="status.icon" :fill="status.color" />
-              </svg>
               <small :style="`color:${status.color}`">
-                {{ status.text }}
+                {{task.title}} | {{ status.text }}
               </small>
+              <!-- <svg :width="24" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <path :d="status.icon" :fill="status.color" />
+              </svg> -->
             </v-btn>
             <subject :options="['edit']" :task="task" />
           </v-col>

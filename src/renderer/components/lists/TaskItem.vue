@@ -2,8 +2,8 @@
   <v-list-item :disabled="options.includes('readOnly')" class="pa-0 ma-0" color="transparent" v-if="task">
     <v-card width="100%" flat :color="!open ? 'white' : 'background'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
       <v-progress-linear class="progressbar" :color="color" background-opacity="0.7" :buffer-value="analysing == false ? value : 100" />
-      <v-list-item class="px-2" style="z-index: 10">
-        <task-subject v-show="options.includes('subject') && analysing == false" :status="status" :task="task" :options="['popup']" />
+      <v-list-item class="px-2" style="z-index: 10;">
+        <!-- <avatar-list  :concat="1" :max="1" :list="workers" :width="'20px'" :size="20"/> -->
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on: onTooltip }">
             <v-btn class="mx-1" v-show="hasPost || open" v-on="{ ...onTooltip }" small icon color="primary" @click.stop="hasPost ? goToPost() : createPost()">
@@ -30,7 +30,6 @@
             {{ analisisText }}
           </v-list-item-subtitle>
         </v-list-item-content>
-        <candidate-list v-if="open && hasCandidats" :task="task" :options="['avatarList']" />
         <task-status-menu v-if="options.includes('status')" :extraClass="'mx-3'" :options="[hasReviews && 'reviews', 'progress', 'workers', 'fab', 'icon', 'flat', completed || (hasReviews && progress==100) ? 'white' : '']" :task="task" />
         <task-menu v-if="false && options.includes('menu')" :extraClass="'mx-3'" :task="task" :options="['icon', 'fab']" />
         <v-tooltip bottom transition="none" v-if="hasReviews || reviewing">
@@ -61,7 +60,6 @@
 import DueControl from '../dialogs/DueControl.vue';
 import TaskStatusMenu from '../menus/TaskStatusMenu.vue';
 import TaskMenu from '../menus/TaskMenu.vue';
-import TaskSubject from './TaskSubject.vue';
 import TaskTitle from './TaskTitle.vue';
 import TaskIcon from './TaskIcon.vue';
 
@@ -69,26 +67,25 @@ import { eventBus } from '../../../main';
 import { taskModel } from '../../store/models/TaskModel';
 import { mapGetters, mapState } from 'vuex';
 import FlowTaskMenu from '../menus/FlowTaskMenu.vue';
-import CandidateList from '../browse/CandidateList.vue';
 import { postType } from '../../store/models/PostModel';
 import { postRepository } from '../../store/modules/post/postRepository';
 import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
 import Review from '../forms/Review.vue';
 import reviewstatus from '../../enums/reviewstatus';
+// import AvatarList from './AvatarList.vue';
 
 export default {
   name: 'TaskItem',
   props: { task: Object, options: Array, priority: Number, auditing: Boolean },
   components: {
-    CandidateList,
     DueControl,
     FlowTaskMenu,
     TaskStatusMenu,
     TaskMenu,
-    TaskSubject,
     TaskTitle,
     TaskIcon,
     Review,
+    // AvatarList,
   },
   data() {
     return {
@@ -209,11 +206,13 @@ export default {
     taskInfo() {
       return { taskCount: null };
     },
-
     lastReview() {
       if (!this.hasReviews) return false;
       return this.task.due.reviews[this.task.due.reviews.length - 1];
     },
+    workers(){
+      return this.task.workers.map(w=>w.profile);
+    }
   },
   methods: {
     createPost() {

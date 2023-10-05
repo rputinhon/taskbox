@@ -1,10 +1,9 @@
 <template>
   <v-menu ref="addMenu" top rounded="pill" z-index="1" offset-y light nudge-left="8" nudge-bottom="65">
     <template v-slot:activator="{ on: menu, attrs }">
-      <v-btn  fab left bottom absolute elevation="0" color="primary" v-bind="attrs" v-on="menu" x-small class="mb-9 ml-2 windowbar-button" :disabled="disabled">
+      <v-btn fab left bottom absolute elevation="0" color="primary" v-bind="attrs" v-on="menu" x-small class="mb-9 ml-2 windowbar-button" :disabled="disabled">
         <svg width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-          <path d="m 22.065319,8.3519448 c -0.704083,0 -1.27124,0.5666409 -1.27124,1.2707236 V 21.058663 H 9.8872518 c -0.7040827,0 -1.2707237,0.567157 -1.2707237,1.27124 v 2.965194 c 0,0.704083 0.566641,1.271239 1.2707237,1.271239 H 20.794079 v 10.906829 c 0,0.704082 0.567157,1.270722 1.27124,1.270722 h 2.965194 c 0.704083,0 1.27124,-0.56664 1.27124,-1.270722 V 26.566336 h 11.435995 c 0.704083,0 1.270722,-0.567156 1.270722,-1.271239 v -2.965194 c 0,-0.704083 -0.566639,-1.27124 -1.270722,-1.27124 H 26.301753 V 9.6226684 c 0,-0.7040827 -0.567157,-1.2707236 -1.27124,-1.2707236 z" 
-          :fill="disabled ? 'rgba(0,0,0,0.26)' : 'white'" stop-color="#000000" style="paint-order: fill markers stroke" />
+          <path d="m 22.065319,8.3519448 c -0.704083,0 -1.27124,0.5666409 -1.27124,1.2707236 V 21.058663 H 9.8872518 c -0.7040827,0 -1.2707237,0.567157 -1.2707237,1.27124 v 2.965194 c 0,0.704083 0.566641,1.271239 1.2707237,1.271239 H 20.794079 v 10.906829 c 0,0.704082 0.567157,1.270722 1.27124,1.270722 h 2.965194 c 0.704083,0 1.27124,-0.56664 1.27124,-1.270722 V 26.566336 h 11.435995 c 0.704083,0 1.270722,-0.567156 1.270722,-1.271239 v -2.965194 c 0,-0.704083 -0.566639,-1.27124 -1.270722,-1.27124 H 26.301753 V 9.6226684 c 0,-0.7040827 -0.567157,-1.2707236 -1.27124,-1.2707236 z" :fill="disabled ? 'rgba(0,0,0,0.26)' : 'white'" stop-color="#000000" style="paint-order: fill markers stroke" />
         </svg>
       </v-btn>
     </template>
@@ -48,6 +47,36 @@
             />
           </svg>
         </v-list-item-content>
+      </v-list-item>
+      <v-list-item class="px-0 mx-auto ma-0 py-0">
+        <v-menu nudge-top="30" offset-x open-on-hover light>
+          <template v-slot:activator="{ on: menu, attrs }">
+            <v-list-item-content v-on="menu" v-bind="attrs" class="py-0">
+              <svg class="categoryIcon" height="35" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="m 23.813533,3.1491618 c -11.39123,0 -20.6643712,9.2731412 -20.6643712,20.6643712 0,11.391232 9.2731412,20.662306 20.6643712,20.662306 11.391232,0 20.662306,-9.271074 20.662306,-20.662306 0,-11.39123 -9.271074,-20.6643712 -20.662306,-20.6643712 z m 0,3.5295004 c 9.483673,0 17.132804,7.6511958 17.132804,17.1348708 0,9.483678 -7.649131,17.132804 -17.132804,17.132804 -9.483675,0 -17.1348708,-7.649126 -17.1348708,-17.132804 0,-9.483675 7.6511958,-17.1348708 17.1348708,-17.1348708 z m 0.156063,4.4694948 c -4.187077,0 -7.615556,3.428472 -7.615556,7.615555 v 0.0021 c 0.002,1.565636 0.502398,3.044007 1.353406,4.28501 -3.278847,0.954866 -5.735567,3.869576 -5.735567,7.447607 v 2.230356 c 9e-5,0.900996 0.729919,1.631325 1.630908,1.631423 h 20.419425 c 0.900986,-9.8e-5 1.630812,-0.73043 1.630908,-1.631423 v -2.230356 c 0,-3.483152 -2.321904,-6.356773 -5.467882,-7.39283 0.87703,-1.252925 1.397881,-2.74861 1.399913,-4.339787 v -0.0021 c 0,-4.187081 -3.428468,-7.615553 -7.615555,-7.615555 z m 0,3.262333 v 5.29e-4 c 2.422956,0 4.351547,1.927987 4.352705,4.350639 -0.0019,1.736957 -1.025437,3.298254 -2.618961,3.98942 -1.618073,0.706362 -1.1175,3.121666 0.648023,3.126941 h 1.420584 c 2.586699,0 4.618323,2.033199 4.618323,4.62039 v 0.59893 H 15.234729 v -0.59893 c 0,-2.587191 2.031617,-4.62039 4.618322,-4.62039 h 1.735295 c 1.766701,-0.0027 2.269234,-2.420106 0.65009,-3.126941 -1.592871,-0.690892 -2.618494,-2.251252 -2.621546,-3.987353 v -0.0026 c 9e-4,-2.422656 1.929759,-4.350639 4.352706,-4.350639 z"
+                  fill="grey"
+                />
+              </svg>
+            </v-list-item-content>
+          </template>
+          <v-card color="background">
+            <v-list-item-group v-for="item in getcategoryItems('Sketch')" :key="item.name">
+              <v-list-item v-if="item.name !== 'TaskBox'" class="py-0" @click="addNode($event, item), closeMenu()">
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-icon>
+                  <v-img draggable="true" @dragstart="startDrag($event, item), (grabbing = true)" @dragend="grabbing = false" :class="grabbing && 'grabbing'">
+                    <svg class="categoryIcon pt-1" width="40" height="40" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                      <path :d="item.meta.typeicon" :fill="item.meta.color" />
+                    </svg>
+                  </v-img>
+                </v-list-item-icon>
+              </v-list-item>
+            </v-list-item-group>
+          </v-card>
+        </v-menu>
       </v-list-item>
       <!-- <v-list class="my-1 mt-0 pt-0" v-for="(category, c) in getcategoryActive()" :key="c" color="background">
           <v-menu nudge-top="30" offset-x open-on-hover light v-if="c>0">
