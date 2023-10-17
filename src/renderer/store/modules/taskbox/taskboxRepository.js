@@ -11,7 +11,7 @@ import { isTaskCanceled, isTaskDone, isTaskPaused, isTaskStarted, isTaskWorking 
 import { NodeView } from '../../../libs/nodeview'
 import { taskModel } from '../../models/TaskModel'
 import { arrayToKeyValue } from '../../../libs/utils'
-import { deletingstatus } from '../../../enums/deletingstatus'
+// import { deletingstatus } from '../../../enums/deletingstatus'
 
 class TaskboxRepository extends Repository {
     constructor() {
@@ -443,15 +443,15 @@ class TaskboxRepository extends Repository {
 
     async getDeletingTaskBox(id, tree) {
 
-        tree[id] = {id:id, status: deletingstatus.WAITING, children: {} };
+        tree.push(id);
         let children = await this.getChildrenTasks(id)
 
         if (children.length)
             children.forEach(async task => {
                 if (task.taskType !== 'taskbox')
-                    tree[id].children[task.id] = {id:task.id, status: deletingstatus.WAITING };
+                    tree.push(task.id)
                 else
-                    tree[id].children[task.id] = {id:task.id, status: deletingstatus.WAITING, children: await this.getDeletingTaskBox(task.id, {}) };
+                     await this.getDeletingTaskBox(task.id, tree);
 
             });
 
@@ -460,15 +460,15 @@ class TaskboxRepository extends Repository {
 
     async getDeletingTree(nodes) {
 
-        let tree = {children:{}};
+        let tree =[];
 
         nodes.map(async n => {
 
             if (n.name !== 'TaskBox'){
-                tree.children[n.id] = {id:n.id, status: deletingstatus.WAITING }
+                tree.push(n.id)
             }
             else{
-                await this.getDeletingTaskBox(n.id, tree.children)
+                await this.getDeletingTaskBox(n.id, tree)
 
             }
 

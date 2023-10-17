@@ -4,7 +4,7 @@
       <v-list-item v-if="analysing == false && hasSelection()" key="0" class="mr-0 pr-0">
         <v-tooltip v-if="!selecting" bottom transition="none">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn fab v-bind="attrs" v-on="on" icon @click="packInTaskBox()">
+            <v-btn fab v-bind="attrs" v-on="on" icon @click="boxit()">
               <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="m 23.999999,5.8916056 a 1.50015,1.50015 0 0 0 -0.507812,0.087891 L 6.5234372,12.077153 a 1.5,1.5 0 0 0 -0.875,0.873047 1.5,1.5 0 0 0 -0.029297,0.0332 1.5,1.5 0 0 0 0.00391,0.07226 1.5,1.5 0 0 0 -0.083984,0.41211 1.5,1.5 0 0 0 -0.00977,0.02148 V 34.5205 a 1.50015,1.50015 0 0 0 0.9941406,1.41211 l 16.9687502,6.097656 a 1.50015,1.50015 0 0 0 0.230469,0.03516 1.5,1.5 0 0 0 0.271484,0.04297 1.50015,1.50015 0 0 0 0.294922,-0.04492 1.5,1.5 0 0 0 0.21875,-0.0332 L 41.478515,35.93262 a 1.50015,1.50015 0 0 0 0.992188,-1.41211 V 13.48926 a 1.50015,1.50015 0 0 0 -0.0039,-0.03125 1.5,1.5 0 0 0 -0.02148,-0.224609 1.50015,1.50015 0 0 0 -0.0059,-0.04102 1.5,1.5 0 0 0 -0.191407,-0.486328 1.50015,1.50015 0 0 0 -0.04297,-0.06445 1.5,1.5 0 0 0 -0.154297,-0.193359 1.50015,1.50015 0 0 0 -0.0078,-0.0059 1.5,1.5 0 0 0 -0.208984,-0.179687 1.50015,1.50015 0 0 0 -0.0059,-0.002 1.5,1.5 0 0 0 -0.216797,-0.125 1.50015,1.50015 0 0 0 -0.06055,-0.02734 1.5,1.5 0 0 0 -0.07227,-0.03125 L 24.507812,5.9794962 a 1.50015,1.50015 0 0 0 -0.507813,-0.087891 z m 0,3.09375 4.154297,1.4921884 -12.18164,4.630859 -4.50586,-1.619141 z m 6.613282,2.3769534 5.919922,2.126953 -12.533204,4.50586 -5.568359,-2.001954 z M 8.5292962,15.622075 22.499999,20.643559 v 17.84375 L 8.5292962,33.465825 Z m 30.9414068,0 v 17.84375 L 25.499999,38.487309 V 20.641606 Z"
@@ -19,7 +19,7 @@
         </v-tooltip>
         <v-tooltip v-else bottom transition="none">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn fab v-bind="attrs" v-on="on" icon @click.stop="unpackTaskBox()" :disabled="!readyToUnpack">
+            <v-btn fab v-bind="attrs" v-on="on" icon @click.stop="unboxit()" :disabled="!readyToUnpack">
               <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M 24,5.8925781 C 21.669477,6.5192873 19.431256,7.4955304 17.13811,8.2637827 13.599886,9.5352302 10.061662,10.806678 6.5234375,12.078125 5.3762767,12.774835 5.2269296,14.260409 4.6193636,15.388966 3.679185,17.597849 2.7390063,19.806732 1.7988277,22.015615 1.2307054,24.50009 3.9425225,24.0394 5.3131135,23.417573 c 0.480666,0.06902 0.089379,1.326253 0.216183,1.877482 0,3.074822 0,6.149644 0,9.224466 0.2167716,1.641443 2.0545414,1.655374 3.2557615,2.224815 4.902377,1.76165 9.804753,3.523301 14.70713,5.284951 1.340299,0.190342 2.547407,-0.667693 3.815762,-1.004143 4.799999,-1.740961 9.623297,-3.425071 14.408705,-5.201632 1.197697,-0.800906 0.614946,-2.385073 0.754048,-3.590802 0,-1.993587 0,-3.987173 0,-5.98076 1.071992,-0.56014 2.384344,-0.771912 3.236449,-1.659598 0.695242,-1.230119 -0.33702,-2.488794 -0.624785,-3.699319 -0.859506,-2.480301 -1.817587,-4.942367 -2.615564,-7.434048 -0.04835,-1.494187 -1.776155,-1.561978 -2.81934,-2.040536 C 34.600913,9.6057887 29.554362,7.7931288 24.507812,5.9804688 Z m 0,3.09375 C 28.177734,10.48763 32.355469,11.988932 36.533203,13.490234 32.355469,14.992187 28.177734,16.494141 24,17.996094 24,14.992839 24,11.989583 24,8.9863281 Z M 8.5292969,15.623047 c 4.6100261,1.656901 9.2200521,3.313802 13.8300781,4.970703 0.31132,1.301579 0.05922,2.685196 0.140625,4.020252 0,4.624759 0,9.249519 0,13.874279 -4.656901,-1.673828 -9.313802,-3.347656 -13.9707031,-5.021484 0,-5.947917 0,-11.895833 0,-17.84375 z M 39.470703,27.537109 c 0,1.976563 0,3.953125 0,5.929688 -4.656901,1.673828 -9.313802,3.347656 -13.970703,5.021484 0,-2.453776 0,-4.907552 0,-7.361328 0.161036,1.525095 1.909784,1.876814 3.019617,1.098773 3.650362,-1.562872 7.300724,-3.125745 10.951086,-4.688617 z"
@@ -86,7 +86,6 @@
         <span>Mode (ctrl)</span>
       </v-tooltip>
     </v-list-item>
-    
   </v-toolbar>
 </template>
 
@@ -134,7 +133,6 @@ export default {
     },
   },
   methods: {
-    
     addGroup() {
       NodeView.addGroup();
     },
@@ -143,11 +141,11 @@ export default {
       if (!selected) return false;
       return selected.length == 1 && selected[0].name == 'TaskBox' ? true : false; //&& Object.keys(this.selected[0].data.nodes).length > 0
     },
-    async packInTaskBox() {
-      NodeView.packInTaskBox();
+    async boxit() {
+      NodeView.boxit();
     },
-    unpackTaskBox() {
-      NodeView.unpackTaskBox(this.selected[0]);
+    unboxit() {
+      NodeView.unboxit(this.selected[0]);
     },
     hasSelection() {
       let selected = this.selected;
@@ -159,8 +157,8 @@ export default {
       if (!selected) return false;
       return selected.length > 0 && this.comments.length == 0 ? true : false;
     },
-    deleteSelected() {
-      NodeView.deleteSelected(this.shift);
+    deleteSelected(shift) {
+      NodeView.deleteSelected(shift);
       this.comments.splice(0, this.comments.length);
     },
     keyup() {
@@ -179,7 +177,7 @@ export default {
         NodeView.ctrlKeyPressed(true);
         this.selecting = true;
         if (e.shiftKey) this.selecting = false;
-      }  
+      }
 
       if (e.key === 'd') {
         if (e.ctrlKey) {
@@ -198,6 +196,14 @@ export default {
         }
       }
 
+      if (e.key === 'b') {
+        if (e.ctrlKey) {
+          e.preventDefault();
+          // NodeView.boxit();
+          // if (e.shiftKey) NodeView.unboxit();
+        }
+      }
+
       if (e.key === 's') {
         if (e.ctrlKey) {
           e.preventDefault();
@@ -206,7 +212,9 @@ export default {
       }
 
       if (e.key === 'Delete') {
-        this.deleteSelected();
+        // e.preventDefault();
+        console.log('0');
+        this.deleteSelected(e.shiftKey);
       }
 
       if (e.key === 'f' && e.ctrlKey) eventBus.$emit('search');

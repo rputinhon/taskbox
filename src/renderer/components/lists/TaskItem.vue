@@ -2,7 +2,7 @@
   <v-list-item :disabled="options.includes('readOnly')" class="pa-0 ma-0" color="transparent" v-if="task">
     <v-card width="100%" flat :color="!open ? 'white' : 'background'" :ripple="false" style="z-index: 1" class="px-0 overflow-hidden" @click="showdetails = !showdetails" @mouseover="hovering = true" @mouseleave="hovering = false">
       <v-progress-linear class="progressbar" :color="color" background-opacity="0.7" :buffer-value="analysing == false ? value : 100" />
-      <v-list-item class="px-2" style="z-index: 10;">
+      <v-list-item class="px-2" style="z-index: 10">
         <!-- <avatar-list  :concat="1" :max="1" :list="workers" :width="'20px'" :size="20"/> -->
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on: onTooltip }">
@@ -24,16 +24,25 @@
           {{ hasPost ? 'Show Publication' : 'Publicate as Open Task' }}
         </v-tooltip>
         <task-icon :task="task" :color="completed || (analysing !== 'progress' && analysing !== false) ? 'white' : undefined" :extraClass="'my-auto'" />
-        <v-list-item-content class="px-0">
+            <task-subject  :status="status" :task="task" :options="['popup', 'right']" />
+        <v-list-item-content class="px-0 mx-2">
           <task-title v-show="analysing == false || hovering" :task="task" :options="['reviews', analysing !== false && 'progress', 'edit']" />
+          <v-list-item-subtitle class="text-left" style="max-width: 260px">
+            <v-tooltip bottom transition="none">
+              <template v-slot:activator="{ on: onTooltip }">
+                <small v-on="{ ...onTooltip }">{{ task.subject }}</small>
+              </template>
+              {{ task.subject }}
+            </v-tooltip>
+          </v-list-item-subtitle>
           <v-list-item-subtitle style="min-width: fit-content" class="text-left" v-show="analysing !== false && !hovering">
             {{ analisisText }}
           </v-list-item-subtitle>
         </v-list-item-content>
-        <task-status-menu v-if="options.includes('status')" :extraClass="'mx-3'" :options="[hasReviews && 'reviews', 'progress', 'workers', 'fab', 'icon', 'flat', completed || (hasReviews && progress==100) ? 'white' : '']" :task="task" />
+        <task-status-menu v-if="options.includes('status')" :extraClass="'mx-3'" :options="[hasReviews && 'reviews', 'progress', 'workers', 'fab', 'icon', 'flat', completed || (hasReviews && progress == 100) ? 'white' : '']" :task="task" />
         <task-menu v-if="false && options.includes('menu')" :extraClass="'mx-3'" :task="task" :options="['icon', 'fab']" />
         <v-tooltip bottom transition="none" v-if="hasReviews || reviewing">
-          <template  v-slot:activator="{ on: tooltip }">
+          <template v-slot:activator="{ on: tooltip }">
             <v-menu rounded="0" ref="revisionmenu" z-index="2000" top right offset-x light :close-on-content-click="false">
               <template v-slot:activator="{ on: menu }">
                 <v-btn tile class="px-0 white--text" height="48px" min-width="48px" v-on="{ ...tooltip, ...menu }" depressed :style="reviewStatus.value == 2 && 'border:2px solid #f7ab39'" :color="reviewStatus.color"> rev </v-btn>
@@ -46,8 +55,8 @@
           Show Reviews
         </v-tooltip>
       </v-list-item>
-      <v-list-item v-if="false" style="min-height:15px;margin-top:-5px!important;z-index:50" class="my-1">
-      <due-control  :showDetails="false" :task="task" />
+      <v-list-item v-if="false" style="min-height: 15px; margin-top: -5px !important; z-index: 50" class="my-1">
+        <due-control :showDetails="false" :task="task" />
       </v-list-item>
     </v-card>
     <v-list-item-icon v-if="authenticated && options.includes('audit')" :class="auditing && 'ml-3'" class="mx-0 px-0 my-0">
@@ -62,6 +71,7 @@ import TaskStatusMenu from '../menus/TaskStatusMenu.vue';
 import TaskMenu from '../menus/TaskMenu.vue';
 import TaskTitle from './TaskTitle.vue';
 import TaskIcon from './TaskIcon.vue';
+import TaskSubject from './TaskSubject.vue';
 
 import { eventBus } from '../../../main';
 import { taskModel } from '../../store/models/TaskModel';
@@ -84,6 +94,7 @@ export default {
     TaskMenu,
     TaskTitle,
     TaskIcon,
+    TaskSubject,
     Review,
     // AvatarList,
   },
@@ -189,7 +200,7 @@ export default {
       return this.task.candidats && this.task.candidats.length ? true : false;
     },
     open() {
-      return false// this.status.value == taskstate.OPEN.value ? true : false;
+      return false; // this.status.value == taskstate.OPEN.value ? true : false;
     },
     started() {
       return this.status.value > 0 ? true : false;
@@ -210,9 +221,9 @@ export default {
       if (!this.hasReviews) return false;
       return this.task.due.reviews[this.task.due.reviews.length - 1];
     },
-    workers(){
-      return this.task.workers.map(w=>w.profile);
-    }
+    workers() {
+      return this.task.workers.map((w) => w.profile);
+    },
   },
   methods: {
     createPost() {

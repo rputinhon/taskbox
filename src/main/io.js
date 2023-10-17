@@ -110,6 +110,14 @@ exports.packProject = async (request) => {
         })
 }
 
+exports.saveFileTemplate = async (args) => {
+
+    // ensure `filesDir` exists
+    fs.ensureDirSync(filesDir);
+
+    return fs.copyFileSync(args.file.path, path.resolve(path.join(filesDir, args.name + args.file.extension)));
+};
+
 exports.importTemplate = async () => {
     // ensure `packDir` exists
 
@@ -152,7 +160,8 @@ exports.exportTemplate = async (template) => {
 
 };
 
-exports.workOnFileTask = async (args) => {
+
+exports.trayTask = async (args) => {
 
     let c_taskIcon = nativeImage.createFromDataURL(taskIcon);
     let c_copyIcon = nativeImage.createFromDataURL(copyIcon);
@@ -207,7 +216,7 @@ exports.workOnFileTask = async (args) => {
                         args.win.webContents.send('app:tick-review', { review: i, item: k });
                     }
                 })
-                
+
             }
         }
     }

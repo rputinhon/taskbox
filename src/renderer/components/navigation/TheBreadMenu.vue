@@ -1,5 +1,5 @@
 <template>
-  <v-toolbar absolute width="100%" style="flex-wrap: wrap !important" class="windowbar-button ml-2 mr-2" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
+  <v-toolbar absolute  width="100%" style="flex-wrap: wrap !important" class="windowbar-button px-3" color="transparent" outlined height="38px!important" elevation="0" v-if="breadCrumb">
     <nav-menu :options="['menu', 'home', 'parent']" />
     <!-- <v-autocomplete class="mt-6 mr-6" solo-inverted v-show="searching" :items="items" :search-input.sync="search" hide-no-data autofocus dense placeholder="search" rounded> </v-autocomplete> -->
     <v-list class="pl-1 bread" color="transparent" v-for="(bread, i) in breadCrumb" :key="i">

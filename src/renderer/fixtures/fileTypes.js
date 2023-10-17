@@ -33,7 +33,7 @@ export const typeInfo = {
 	'model': {
 		variants: ['*'],
 		creator: 'TextFileCreator',
-		active: true,
+		active: false,
 		info: {
 			previewerType: "nopreview",
 			category: "model",
@@ -53,7 +53,7 @@ export const typeInfo = {
 	'vector': {
 		variants: ['*'],
 		creator: 'TextFileCreator',
-		active: true,
+		active: false,
 		info: {
 			previewerType: "image",
 			category: "vector",

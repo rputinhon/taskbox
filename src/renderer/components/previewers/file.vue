@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="py-0 px-0 mx-0" style="width: 100%; height: 100%; overflow: hidden">
-    <component v-if="componentType" :showToolsBar="showToolsBar" :inTask="inTask" v-bind:is="componentType" :fullscreen="fullscreen" :fileExist="fileExist" :mime="mime && mime" @closePreview="$emit('closePreview')"> </component>
+    <component v-if="componentType" :showToolsBar="showToolsBar" :inTask="inTask" v-bind:is="componentType" :fullscreen="fullscreen" :fileExist="fileExist" :mime="mime && mime" @closePreview="$emit('closePreview')"></component>
   </v-container>
 </template>
 

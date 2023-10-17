@@ -3,7 +3,6 @@
     <node-editor />
     <worker-list />
     <content-preview />
-    <focus-mode />
     <save-template :open="showSaveTemplate" :folder="folders && folders.templates" :taskbox="toTemplate" @close="closeModal()" />
     <pack-project :folder="folders && folders.packs" :packOpen="showPackWindow" @close="closeModal()" />
   </v-sheet>
@@ -15,7 +14,6 @@ import { eventBus } from '../../main';
 import { ipcRenderer } from 'electron';
 
 import ContentPreview from '../components/dialogs/ContentPreview.vue';
-import FocusMode from '../components/dialogs/FocusMode.vue';
 import NodeEditor from '../components/NodeEditor/TheNodeEditor.vue';
 import PackProject from '../components/dialogs/PackProject.vue';
 import SaveTemplate from '../components/dialogs/SaveTemplate.vue';
@@ -26,7 +24,6 @@ export default {
   props: { showTasks: Boolean },
   components: {
     ContentPreview,
-    FocusMode,
     NodeEditor,
     PackProject,
     SaveTemplate,

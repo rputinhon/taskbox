@@ -23,6 +23,7 @@ import LODTYPES, { getLODTypeByValue } from "../enums/LOD";
 import { allowRule } from "../store/modules/user/user";
 import RULES from "../enums/rules";
 import { hasOpenAuditions } from "../store/modules/task/task";
+import { taskRepository } from "../store/modules/task/taskRepository";
 
 const path = require('path');
 let initialData = {
@@ -75,7 +76,7 @@ class _nodeView extends TaskBox {
         let index = 0;
 
         library.blockLibrary.blocktypes.forEach(type => {
-//&& library.categoryLibrary.find(t => t.name == type.meta.category).active
+            //&& library.categoryLibrary.find(t => t.name == type.meta.category).active
             if (type.properties.isactive) {
                 type.index = index;
                 let args = {
@@ -215,14 +216,24 @@ class _nodeView extends TaskBox {
         if (!editor) return;
         // force update the mouse position
         editor.view.area.pointermove(e);
-        let node = await self.createNode(name, [editor.view.area.mouse.x+200, editor.view.area.mouse.y-100]);
-        await self.addNode(node);
-        self.saveTaskBox();
-        store.dispatch('taskbox/ADD_TASK', { node: node, value: value }).then(() => {
-            changing = false;
-        })
-    }
 
+        const component = editor.components.get(name)
+        if (!component) throw new Error(`Component ${name} not found`)
+
+        let node = await component.createNode({});
+        node.position = [editor.view.area.mouse.x + 200, editor.view.area.mouse.y - 100];
+
+        await editor.addNodeAsync(node);
+        node.vueContext.loading = true;
+        // self.saveTaskBox();
+        store.dispatch('taskbox/ADD_TASK', { node: node, value: value }).then((res) => {
+            node.vueContext.title = res.title;
+            changing = false;
+            node.vueContext.loading = false;
+
+        })
+
+    }
 
     async addNode(node) {
         editor.addNode(node);
@@ -266,15 +277,18 @@ class _nodeView extends TaskBox {
 
     }
 
-    async packInTaskBox() {
+    async boxit() {
 
-        let center = nodesBBox(editor, editor.selected.list).getCenter();
-
+        // create the box to put selected nodes in
         let taskboxNode = await editor.components.get('TaskBox').createNode({});
 
-        taskboxNode.position = center;
+        // get the center of selected nodes
+        let center = nodesBBox(editor, editor.selected.list).getCenter();
 
+        // put created box in center
+        taskboxNode.position = center;
         editor.addNode(taskboxNode);
+
         taskboxNode.vueContext.loading = true;
 
         let selection = _toConsumableArray(editor.selected.list);
@@ -308,7 +322,7 @@ class _nodeView extends TaskBox {
 
     }
 
-    async unpackTaskBox(node) {
+    async unboxit(node) {
 
         store.dispatch('taskbox/UNPACK_TASKBOX', node)
             .then(async (args) => {
@@ -339,10 +353,13 @@ class _nodeView extends TaskBox {
                     await ipcRenderer.invoke('app:duplicate-File', item.file.name).then(async (response) => {
                         console.log(response);
                         self.createNodeAndAdd('File', e, { file: response })
+
                         store.dispatch('taskbox/GET_FILE_LIST');
                     })
-                else
+                else {
+
                     self.createNodeAndAdd('File', e, { file: item.file })
+                }
             }
         });
     }
@@ -496,45 +513,19 @@ class _nodeView extends TaskBox {
     }
 
 
-    async deleteSelected(force, list) {
+    async deleteSelected(force) {
+        
         changing = true;
-        let selected = editor.selected.list;
-
-        if (list)
-            selected.concat(list)
-
-        //exclude comments
-        commentsSelected.forEach((comment) => {
-            editor.trigger('removecomment', { comment: comment })
-        });
-
-        commentsSelected = commentsSelected.splice(0, commentsSelected.length);
-
-        selected.map(s => {
-            if (!store.state.taskbox.root.tasks[s.id]) {
-                editor.removeNode(s);
-                selected.pop(s);
-            }
-            if (s.name == 'TasBox')
-                console.log(s.data);
-        })
-
-        if (selected.length > 0) {
-            if (force) {
-                store.dispatch('taskbox/DELETE_TASKS', selected.map(s => s.id)).then(() => {
-                    changing = false;
-                    self.saveTaskBox(true);
-                })
-            }
-            else {
-                if (!store.state.taskbox.deletingNodes)
-                    store.dispatch('taskbox/CONFIRM_DELETE_TASKS', selected)
-            }
-        }
+        if (!force)
+            store.commit('taskbox/CONFIRM_DELETE_TASKS', editor.selected.list)
         else {
-            changing = false;
-            self.saveTaskBox(true);
+            taskRepository.deleteTasks(editor.selected.list.map(n => n.id));
+            editor.selected.list.map(n => n.id).forEach((id) => {
+                console.log(id)
+                NodeView.deleteNode(id);
+            });
         }
+        changing = false;
 
     }
 
@@ -903,8 +894,8 @@ class _nodeView extends TaskBox {
             })
         })
 
-        editor.on("confirmdelete", (node) => {
-            self.deleteSelected(false, node);
+        editor.on("confirmdelete", () => {
+            store.commit('taskbox/CONFIRM_DELETE_TASKS', editor.selected.list)
         })
 
         editor.on(

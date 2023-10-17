@@ -409,6 +409,9 @@ const mutations = {
     },
     SUCCESS_UPDATE_TASK() {
     },
+    CHANGE_TASK_TITLE(state,args) {
+        Object.assign(args.task, args.title)
+    },
     ADD_EXTERNAL_VALUE(state, args) {
         if (!args.task.externalValue)
             Object.assign(args.task, { externalValue: null })

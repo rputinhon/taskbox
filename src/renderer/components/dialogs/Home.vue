@@ -1,7 +1,7 @@
 <template>
   <v-sheet class="windowbar-button" :color="analysing == false ? 'transparent' : 'workspace'">
-    <v-tabs hide-slider vertical v-model="tabIndex" class="main" background-color="#ebedf5">
-      <v-tab v-for="(tab, t) in tabs" :key="t" v-show="!tab.disabled && ((tab.auth && authenticated) || !tab.auth)" :class="tab.c" :style="`min-width: ${tab.w || 50}px; height: ${tab.w || 50}px;max-width: ${tab.w || 50}px;`">
+    <v-tabs hide-slider vertical v-model="tabIndex" class="main">
+      <v-tab v-for="(tab, t) in tabs" :key="t" v-show="!tab.disabled && ((tab.auth && authenticated) || !tab.auth)" :class="tab.c" :style="`min-width: ${tab.w || 50}px; height: ${tab.w || 50}px;max-width: ${tab.w || 50}px;`" @change="changed(t)">
         <v-tooltip bottom transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn tile icon v-on="on" width="50px" height="50px" v-bind="attrs" style="text-transform: capitalize">
@@ -20,9 +20,9 @@
           <span>{{ tab.name }}</span>
         </v-tooltip>
       </v-tab>
-      <v-tab-item tabindex="0">
+      <v-tab-item tabindex="0" :style="`background-color: ${analysing == false ? 'transparent' : '#262629'};`">
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column>
             <tasks v-if="currentTaskBox" />
             <roots v-else :sm="4" :md="4" :lg="4" :xl="4" :options="['recent']" @newProject="$emit('newProject')" />
           </v-layout>
@@ -30,35 +30,35 @@
       </v-tab-item>
       <v-tab-item tabindex="1" eager>
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column>
             <file-list :folder="folders && folders.files" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="2" eager>
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column>
             <template-list :folder="folders && folders.templates" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="3" eager>
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column>
             <pack-list :folder="folders && folders.packs" />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="4">
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column>
             <settings />
           </v-layout>
         </div>
       </v-tab-item>
       <v-tab-item tabindex="5">
         <div class="mx-0" :style="`overflow-y:scroll;width:100%;height:calc(100vh - 40px);`">
-          <v-layout align-center justify-start column style="background-color:transparent!important;">
+          <v-layout align-center justify-start column style="background-color: transparent !important">
             <info />
           </v-layout>
         </div>
@@ -145,6 +145,7 @@ export default {
     await ipcRenderer.invoke('app:get-Folders').then((folders) => {
       this.folders = folders;
     });
+    this.$store.dispatch('user/GET_TASKS', { member: null });
   },
   watch: {
     tab(value) {
@@ -185,6 +186,27 @@ export default {
     },
   },
   methods: {
+    async changed(t) {
+      await new Promise((res) => {
+        switch (t) {
+          case 0:
+            this.$store.dispatch('user/GET_TASKS', { member: null });
+            break;
+          case 1:
+            this.$store.dispatch('taskbox/GET_FILE_LIST');
+            break;
+          case 2:
+            this.$store.dispatch('templates/FETCH_ALL');
+            break;
+          case 3:
+            this.$store.dispatch('taskbox/GET_PACK_LIST');
+            break;
+          default:
+            break;
+        }
+        setTimeout(res, 1000);
+      });
+    },
     signin() {
       this.$listeners.signIn();
     },
@@ -199,14 +221,6 @@ export default {
 </script>
 
 <style>
-.main.theme--light.v-tabs > .v-tabs-bar {
-  width: 50px;
-  background-color: transparent !important;
-}
-
-.theme--light.v-tabs-items {
-  background-color: transparent !important;
-}
 .v-badge__badge {
   color: #454545;
 }
@@ -222,6 +236,14 @@ export default {
   right: 10px;
   top: 30px;
   margin-right: 10px;
+}
+.main.theme--light.v-tabs > .v-tabs-bar {
+  width: 50px !important;
+  background-color: transparent !important;
+}
+.theme--light.v-tabs-items {
+  background-color: #eeeeee !important;
+  overflow-x: visible !important;
 }
 </style>
 

@@ -1,7 +1,7 @@
 <template>
   <RULE :rule="rules.EDIT" :returnCondition="true" :doc="task">
-    <v-list-item-title class="text-subtitle-2" slot-scope="allow" :class="extraClass || ''" style="width: fit-content" v-if="!editingTitle" @click.stop="allow.value && options.includes('edit') ? (editingTitle = true) : null">
     <task-subject :status="status" :task="task" :options="['popup','right']" />
+    <v-list-item-title class="text-subtitle-2" slot-scope="allow" :class="extraClass || ''" style="width: fit-content" v-if="!editingTitle" @click.stop="allow.value && options.includes('edit') ? (editingTitle = true) : null">
       {{ task.title }}
       <small v-if="options.includes('progress')"> | {{ task.progress }}% </small>
     </v-list-item-title>

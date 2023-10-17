@@ -1,51 +1,45 @@
 <template>
   <v-sheet height="100%" width="100%">
-    <v-container fluid fill-height class="pa-0 ma-0">
+    <file-actions />
+
+    <v-responsive width="100%" ref="image" height="100%" style="align-items: center" class="pa-0 ma-0">
+      <v-progress-linear absolute top color="primary" indeterminate v-if="loading" />
+     
       <v-list-item-subtitle v-if="fileExist && !task.thumbnail">
         <v-chip color="warning"> No Preview for this type of file. </v-chip>
       </v-list-item-subtitle>
+     
       <v-img v-else-if="fileExist && task.thumbnail" class="ma-0 pa-0 mb-5" height="512" contain :src="task.thumbnail"> </v-img>
+
       <v-list-item-subtitle v-else>
         <v-chip color="error"> file deleted or moved! </v-chip>
       </v-list-item-subtitle>
-    </v-container>
-    <v-overlay v-if="working" opacity="0.9">
-      <v-slider :label="`${task.progress}%`" style="z-index: 20" class="my-5 py-0" :thumb-label="true" :thumb-color="status.color" hide-details="true" v-model="progress" :thumb-size="20" @click.stop @change="updateProgress()"> </v-slider>
-      Opening in the default external app...
-      <v-btn x-small :color="status.color" @click="working = false">back</v-btn>
-    </v-overlay>
-    <v-toolbar v-if="showToolsBar" v-show="!loading && fileExist" color="background" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 40%; bottom: 50px" rounded="pill">
-      <v-tooltip bottom transition="none">
-        <template v-slot:activator="{ on: onTooltip }">
-          <v-btn elevation="0" class="mr-1" color="primary" v-on="onTooltip" rounded x-small @click="selectFile()" v-text="'change file'"> </v-btn>
-        </template>
-        Change File
-      </v-tooltip>
-      <v-tooltip v-if="fileExist" bottom transition="none">
-        <template v-slot:activator="{ on: onTooltip }">
-          <v-btn :disabled="disabled" elevation="0" color="primary" v-on="onTooltip" rounded x-small @click="workOnTask(hasReviews ? true : false)" v-text="'modify'"> </v-btn>
-        </template>
-        Edit in the default external application
-      </v-tooltip>
-      <v-tooltip v-if="fileExist" bottom transition="none">
-        <template v-slot:activator="{ on }">
-          <v-btn class="px-0 mx-1" color="primary" rounded v-on="on" x-small @click="getClipBoardImage()">
-            <svg width="25" height="25" version="1.1" viewBox="0 0 46 50" xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="m 20.253155,11.647161 c -0.668734,0 -1.206806,0.539349 -1.206806,1.208082 v 2.57452 H 14.45921 c -3.408135,0 -6.1515177,2.680389 -6.1515177,6.011042 v 8.900992 c 0,3.330653 2.7433827,6.011042 6.1515177,6.011042 h 19.08158 c 3.408134,0 6.151518,-2.680389 6.151518,-6.011042 v -8.900992 c 0,-2.910725 -2.095667,-5.324701 -4.898739,-5.887169 v -0.621921 c 0,-0.331006 -0.266649,-0.597655 -0.597656,-0.597655 h -1.943659 c -0.331007,0 -0.597657,0.266649 -0.597657,0.597655 v 0.498048 h -3.308819 v -2.57452 c 0,-0.668733 -0.538072,-1.208082 -1.206806,-1.208082 z m 1.694636,1.529898 h 3.561674 c 0.534987,0 0.965445,0.430457 0.965445,0.965444 v 1.085487 c 0,0.534987 -0.430458,0.966722 -0.965445,0.966722 h -3.561674 c -0.534986,0 -0.965444,-0.431735 -0.965444,-0.966722 v -1.085487 c 0,-0.534987 0.430458,-0.965444 0.965444,-0.965444 z M 24,17.718224 A 8.1730769,8.1730769 0 0 1 32.173077,25.891301 8.1730769,8.1730769 0 0 1 24,34.064378 8.1730769,8.1730769 0 0 1 15.826923,25.891301 8.1730769,8.1730769 0 0 1 24,17.718224 Z m 0,1.689528 A 6.4831359,6.4831359 0 0 0 17.516451,25.891301 6.4831359,6.4831359 0 0 0 24,32.37485 6.4831359,6.4831359 0 0 0 30.483549,25.891301 6.4831359,6.4831359 0 0 0 24,19.407752 Z"
-                fill="white"
-                style="pointer-events: none"
-              />
-            </svg>
-          </v-btn>
-        </template>
-        Paste a thumbnail
-      </v-tooltip>
-    </v-toolbar>
+
+      <v-toolbar v-if="showToolsBar" v-show="!loading" color="background" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 43.5%; bottom: 50px" rounded="pill">
+        <v-tooltip v-if="fileExist" bottom transition="none">
+          <template v-slot:activator="{ on }">
+            <v-btn class="px-0 mx-1" color="primary" rounded v-on="on" x-small @click="getClipBoardImage()">
+              <svg width="25" height="25" version="1.1" viewBox="0 0 46 50" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="m 20.253155,11.647161 c -0.668734,0 -1.206806,0.539349 -1.206806,1.208082 v 2.57452 H 14.45921 c -3.408135,0 -6.1515177,2.680389 -6.1515177,6.011042 v 8.900992 c 0,3.330653 2.7433827,6.011042 6.1515177,6.011042 h 19.08158 c 3.408134,0 6.151518,-2.680389 6.151518,-6.011042 v -8.900992 c 0,-2.910725 -2.095667,-5.324701 -4.898739,-5.887169 v -0.621921 c 0,-0.331006 -0.266649,-0.597655 -0.597656,-0.597655 h -1.943659 c -0.331007,0 -0.597657,0.266649 -0.597657,0.597655 v 0.498048 h -3.308819 v -2.57452 c 0,-0.668733 -0.538072,-1.208082 -1.206806,-1.208082 z m 1.694636,1.529898 h 3.561674 c 0.534987,0 0.965445,0.430457 0.965445,0.965444 v 1.085487 c 0,0.534987 -0.430458,0.966722 -0.965445,0.966722 h -3.561674 c -0.534986,0 -0.965444,-0.431735 -0.965444,-0.966722 v -1.085487 c 0,-0.534987 0.430458,-0.965444 0.965444,-0.965444 z M 24,17.718224 A 8.1730769,8.1730769 0 0 1 32.173077,25.891301 8.1730769,8.1730769 0 0 1 24,34.064378 8.1730769,8.1730769 0 0 1 15.826923,25.891301 8.1730769,8.1730769 0 0 1 24,17.718224 Z m 0,1.689528 A 6.4831359,6.4831359 0 0 0 17.516451,25.891301 6.4831359,6.4831359 0 0 0 24,32.37485 6.4831359,6.4831359 0 0 0 30.483549,25.891301 6.4831359,6.4831359 0 0 0 24,19.407752 Z"
+                  fill="white"
+                  style="pointer-events: none"
+                />
+              </svg>
+            </v-btn>
+          </template>
+          Paste a thumbnail
+        </v-tooltip>
+      </v-toolbar>
+    </v-responsive>
   </v-sheet>
 </template>
 
 <script>
+
+import FileActions from './fileActions.vue';
+
+
 import { mapState } from 'vuex';
 import { eventBus } from '../../../../main';
 import taskstate, { getStatusTypeByValue } from '../../../enums/taskstate';
@@ -57,6 +51,7 @@ import _ from 'lodash';
 export default {
   name: 'previewTypeNoPreview',
   props: { hasReviews: Boolean, fullscreen: Boolean, showToolsBar: Boolean },
+  components: { FileActions },
   data() {
     return {
       fileExist: true,
@@ -69,8 +64,8 @@ export default {
   },
   created() {
     ipcRenderer.on('app:tick-review', (e, value) => {
-      console.log(this.task,value);
-      this.$store.dispatch('task/TOGGLE_REVIEW_ITEM', { task: this.task, reviewIndex: this.task.due.reviews.length-1, itemIndex: value.item });
+      console.log(this.task, value);
+      this.$store.dispatch('task/TOGGLE_REVIEW_ITEM', { task: this.task, reviewIndex: this.task.due.reviews.length - 1, itemIndex: value.item });
     });
   },
   watch: {

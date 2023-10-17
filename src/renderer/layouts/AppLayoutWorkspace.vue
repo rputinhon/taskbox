@@ -3,7 +3,7 @@
 
     <window-bar />
 
-    <v-main style="height: 100vh; background-color: transparent">
+    <v-main style="height: 100vh; background-color: transparent!important">
       <v-tabs v-model="mainTab" height="0">
         <v-tab-item eager style="min-height: calc(100vh - 40px) !important">
           <task-box />

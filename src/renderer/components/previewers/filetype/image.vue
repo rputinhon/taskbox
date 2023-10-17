@@ -1,30 +1,19 @@
 <template>
   <v-sheet height="100%" width="100%">
+    
+    <file-actions />
+
     <v-responsive width="100%" ref="image" height="100%" style="align-items: center" class="pa-0 ma-0" :class="background == 0 && 'checked'" :style="`background-color:${backgroundTypes[background]}`">
       <v-progress-linear absolute top color="primary" indeterminate v-if="loading" />
+     
       <v-img class="ma-0 pa-0" :max-height="maxheight" v-if="file && fileExist" contain :src="`data:${mime};base64,${image}`"> </v-img>
+      
       <v-list-item-subtitle v-else>
         <v-chip color="error"> file deleted or moved! </v-chip>
       </v-list-item-subtitle>
-    </v-responsive>
-    <v-overlay v-if="working">
-      Opening in the default external app...
-      <v-btn x-small color="accent" @click="working = false">back</v-btn>
-    </v-overlay>
+
     <v-toolbar v-if="showToolsBar" v-show="!loading" color="background" class="px-4 mb-3" dense height="30" bottom style="position: fixed; left: 43.5%; bottom: 50px" rounded="pill">
-      <v-tooltip bottom transition="none">
-        <template v-slot:activator="{ on: onTooltip }">
-          <v-btn elevation="0" class="mr-1" color="primary" v-on="onTooltip" rounded x-small @click="selectFile()" v-text="'change file'"> </v-btn>
-        </template>
-        Change File
-      </v-tooltip>
-      <v-tooltip v-if="fileExist" bottom transition="none">
-        <template v-slot:activator="{ on: onTooltip }">
-          <v-btn :disabled="disabled" elevation="0" color="primary" v-on="onTooltip" rounded x-small @click="workOnTask(hasReviews ? true : false)" v-text="'edit'"> </v-btn>
-        </template>
-        Edit in the default external application
-      </v-tooltip>
-      <v-btn-toggle v-if="fileExist" class="ml-2 mb-1" rounded group mandatory v-model="background">
+      <v-btn-toggle v-if="fileExist" class="mx-2 mb-1" rounded group mandatory v-model="background">
         <v-item-group v-for="(color, c) in backgroundTypes" :key="c">
           <v-tooltip v-if="image" bottom transition="none">
             <template v-slot:activator="{ on: onTooltip }">
@@ -37,21 +26,29 @@
         </v-item-group>
       </v-btn-toggle>
     </v-toolbar>
+
+    </v-responsive>
+  
   </v-sheet>
+
 </template>
 
 <script>
+
+import FileActions from './fileActions.vue';
+
 import { eventBus } from '../../../../main';
 import taskstate, { getStatusTypeByValue } from '../../../enums/taskstate';
 import _ from 'lodash';
 import { mapState } from 'vuex';
+
 const { ipcRenderer, nativeImage } = require('electron');
 const open = require('open');
 
 export default {
-  components: {},
   name: 'previewTypeImage',
   props: { fullscreen: Boolean, mime: String, inTask: Object, showToolsBar: Boolean },
+  components: { FileActions },
   data() {
     return {
       fileExist: true,
@@ -80,7 +77,7 @@ export default {
               this.maxheight = size;
               eventBus.$emit('previewLoaded', false);
               this.loading = false;
-            })
+            });
         });
     });
   },
@@ -120,6 +117,9 @@ export default {
   methods: {
     async checkFileExist() {
       if (!this.hasFile) return false;
+      await ipcRenderer.invoke('app:existInFilesFolder',this.task.value.file.path).then(response=>{
+        this.isProtected = !response;
+      })
       return await ipcRenderer.invoke('app:fileExist', this.file.path);
     },
     getIconType(t) {
@@ -150,7 +150,7 @@ export default {
 
         if (file.extension == '.png' || file.extension == '.jpg') {
           let clip = await nativeImage.createThumbnailFromPath(file.path, { width: 256, height: 256 });
-          this.maxheight
+          this.maxheight;
           entity.thumbnail = clip.toDataURL();
         }
         entity.value = { file: file };

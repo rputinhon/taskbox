@@ -60,7 +60,7 @@
       <div class="title">
         <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
           <div slot-scope="allow" v-if="allow.value">
-            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="changeName()" @keydown.escape="cancelChangeName()" @blur="changeName()" @click.prevent="" />
+            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="rename()" @keydown.escape="cancelChangeName()" @blur="rename()" @click.prevent="" />
             <span v-else @click.stop="editingTitle = true"> {{ task.title }} {{ '| ' + info }}</span>
           </div>
           <div v-else>
@@ -160,6 +160,9 @@ export default {
       },
       set(value) {
         this.updatedTitle = value;
+        store
+          .commit('task/CHANGE_TASK_TITLE', { task: this.task, title: { title: this.updatedTitle } })
+        this.refreshkey++;
       },
     },
     status() {
@@ -177,16 +180,14 @@ export default {
       this.$refs.nodetitle.blur();
       this.editingTitle = false;
     },
-    changeName() {
-      if (!this.updatedTitle || this.updatedTitle.trim().length == 0) {
-        this.editingTitle = false;
-        return;
-      }
+rename() {
       let copy = _.cloneDeep(this.task);
-      copy.title = this.updatedTitle;
+      this.refreshkey++;
       store
         .dispatch('taskbox/UPDATE_TASK', copy)
-        .then(() => {})
+        .then(() => {
+          this.refreshkey++;
+        })
         .catch((error) => console.log(error));
       this.editingTitle = false;
     },

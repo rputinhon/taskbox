@@ -12,7 +12,7 @@
     <v-tooltip bottom transition="none">
       <template v-slot:activator="{ on }">
         <v-btn v-show="workRemotelly && authenticated" fab icon x-small v-on="on" class="windowbar-button mx-2 ml-3" @dblclick.stop @click.stop="goToFeed()">
-          <v-img contain :style="mainTab !== 1 && 'filter: grayscale(1)!important;'" src="img/globe_64.png" max-width="27px" />
+          <v-img contain :style="mainTab !== 1 && 'filter: grayscale(1)!important;'" src="img/globe_128.png" max-width="30px" />
 
           <!-- <svg style="pointer-events: none" width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
             <path

@@ -1,7 +1,7 @@
 <template>
     <v-sheet height="100%" width="100%" class="overflow-hidden">
-      <v-card :color="status.color" class="pa-6 ma-0" style="width: 100%; height: 100%; overflow-y: auto">
-        <v-textarea :counter="max" :disabled="disabled" full-width ref="textarea" rows="16" :readonly="disabled" class="text-h6" type="text" placeholder="Type the note here." no-resize v-model="value" @keydown="onKeyDown" @keydown.tab.prevent @blur="setValue()" @keydown.esc="setValue()"> </v-textarea>
+      <v-card :color="status.color" class="pa-6 ma-0" style="width: 100%; height: 100%; overflow-y: auto;">
+        <v-textarea :counter="max" :disabled="disabled" full-width ref="textarea" rows="16" :readonly="disabled" style="color:gray;line-height: 30px!important;font-size: 24px!important" type="text" placeholder="Type the note here." no-resize v-model="value" @keydown="onKeyDown" @keydown.tab.prevent @blur="setValue()" @keydown.esc="setValue()"> </v-textarea>
       </v-card>
     </v-sheet>
 </template>
@@ -64,3 +64,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.theme--light.v-input input, .theme--light.v-input textarea {
+    color: #545454;
+}
+</style>

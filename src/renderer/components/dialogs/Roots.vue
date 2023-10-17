@@ -67,14 +67,14 @@
                     {{ root.title }}
                   </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-progress-linear class="px-0" height="12px" rounded bottom :color="status(root.status).color" :value="root.progress">
+                <!-- <v-progress-linear class="px-0" height="12px" rounded bottom :color="status(root.status).color" :value="root.progress">
                   <small style="font-size: 10px"> {{ root.progress || 0 }}% </small>
-                </v-progress-linear>
+                </v-progress-linear> -->
               </div>
               <v-card-actions class="py-0 my-0"> </v-card-actions>
             </v-card>
           </template>
-          Open: {{ root.title }}
+          {{ root.title }}
         </v-tooltip>
       </v-col>
     </v-row>
@@ -139,7 +139,7 @@ export default {
   watch: {
     apiState(value) {
       if (value == apistate.LOADING) this.loading = true;
-      if (value == apistate.DONE) this.loading = false;
+      // if (value == apistate.DONE) this.loading = false;
       // else
       //   setTimeout(() => {
       //     this.loading = false;

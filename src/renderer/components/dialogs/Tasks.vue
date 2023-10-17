@@ -5,7 +5,7 @@
     </v-fade-transition>
     <v-card-title class="text-subtitle-1 py-0 pt-0 mx-3">
       <v-list-item v-if="!searching" class="ma-0 pa-0" style="min-height: 40px; width: 100%">
-        <v-btn style="z-index: 6" icon x-small left @click="showRoots = !showRoots">
+        <!-- <v-btn style="z-index: 6" icon x-small left @click="showRoots = !showRoots">
           <svg :style="`transform:rotate(${showRoots ? 180 : 0}deg)`" height="18" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
             <path d="M 36.338815,14.519012 23.468539,28.411775 11.20589,13.973178 c -1.155312,-0.955569 -2.8664834,-0.793807 -3.8222654,0.361328 -0.9568939,1.155609 -0.7950734,2.868283 0.361328,3.824219 L 21.110879,33.315833 c 1.482641,1.628525 3.29714,1.80994 4.960358,0.300835 L 40.711862,17.737762 c 0.888321,-1.207171 0.630421,-2.905816 -0.576172,-3.794922 -1.437955,-0.918123 -2.745092,-0.318825 -3.796875,0.576172 z" fill="grey" />
           </svg>
@@ -26,7 +26,7 @@
               {{ root.title }}
             </v-list-item-subtitle>
           </v-btn>
-        </v-card>
+        </v-card> -->
         <v-btn rounded :color="hasChanges ? 'primary' : 'secondary'" :depressed="!hasChanges" :disabled="saving" class="mx-1" x-small @click="saveTaskBox()"> Save </v-btn>
         <v-btn rounded color="primary" style="z-index: 6" x-small @click="closeTaskBox()"> Close </v-btn>
         <v-spacer></v-spacer>
@@ -328,6 +328,7 @@ export default {
 </script>
 
 <style scoped>
+
 .audition {
   border-radius: 0 25px 25px 0 !important;
   border-left: 3px dashed #eeeeee !important;

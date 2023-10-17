@@ -7,7 +7,7 @@
           <small class="white--text" style="margin-left: -10px">
             {{ input.name }}
           </small>
-          <external-input  :index="0" :externalInput="externalInputs"  @remove="removeExternalinput" />
+          <external-input :index="0" :externalInput="externalInputs" @remove="removeExternalinput" />
         </div>
       </v-col>
       <v-col align-self="center" cols="10">
@@ -31,6 +31,7 @@
               </text>
             </LOD>
           </svg>
+          <v-progress-circular v-if="loading" fixed style="position: absolute; margin-top: 56px; margin-left: -151px" indeterminate :color="status.color" size="70" />
           <LOD v-if="showMiniature && task.thumbnail" :lod="LODTYPE.MEDIUM" style="pointer-events: none !important">
             <v-card flat color="transparent" style="z-index: 0; pointer-events: none; overflow: hidden; border-radius: 15px; top: 32px; left: 30px; position: absolute" width="201" height="240">
               <v-img width="160" height="176" style="pointer-events: none" :src="task.thumbnail" />
@@ -62,7 +63,7 @@
       <div class="title">
         <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
           <div slot-scope="allow" v-if="allow.value">
-            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="changeName()" @keydown.escape="cancelChangeName()" @blur="changeName()" @click.prevent="" />
+            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="rename()" @keydown.escape="cancelChangeName()" @blur="rename()" @click.prevent="" />
             <span v-else @click.stop="editingTitle = true"> {{ task.title }} {{ '| ' + info }}</span>
           </div>
           <div v-else>
@@ -99,10 +100,11 @@ export default {
   data() {
     return {
       editingTitle: false,
-      updatedTitle: '',
+      updatedTitle: 'task',
       hoverSocket: null,
       externalInputs: null,
       refreshkey: 0,
+      loading: false,
     };
   },
   computed: {
@@ -148,7 +150,7 @@ export default {
     },
     fileIcon() {
       this.refreshkey;
-      return this.task.status == taskstate.DONE.value ? 'm 31.034874,15.137637 c -0.0049,0.0048 -0.0098,0.0097 -0.01465,0.01465 L 20.900611,25.336953 17.618305,22.176565 c -1.987828,-1.914417 -5.195617,-1.855609 -7.110442,0.131827 -1.915925,1.988085 -1.8558089,5.197114 0.133119,7.112164 v 0.0018 l 6.850235,6.59429 c 1.966704,1.893059 5.130922,1.858094 7.055299,-0.07798 L 38.155224,22.245063 c 1.945675,-1.958067 1.935428,-5.16841 -0.02283,-7.113888 -0.02162,-0.02122 -0.04388,-0.04177 -0.06678,-0.06161 -2.161629,-1.733795 -5.217792,-1.648588 -7.030742,0.06807 z' : getFileType(this.file && this.file.extension || null).info.icon;
+      return this.task.status == taskstate.DONE.value ? 'm 31.034874,15.137637 c -0.0049,0.0048 -0.0098,0.0097 -0.01465,0.01465 L 20.900611,25.336953 17.618305,22.176565 c -1.987828,-1.914417 -5.195617,-1.855609 -7.110442,0.131827 -1.915925,1.988085 -1.8558089,5.197114 0.133119,7.112164 v 0.0018 l 6.850235,6.59429 c 1.966704,1.893059 5.130922,1.858094 7.055299,-0.07798 L 38.155224,22.245063 c 1.945675,-1.958067 1.935428,-5.16841 -0.02283,-7.113888 -0.02162,-0.02122 -0.04388,-0.04177 -0.06678,-0.06161 -2.161629,-1.733795 -5.217792,-1.648588 -7.030742,0.06807 z' : getFileType((this.file && this.file.extension) || null).info.icon;
     },
     LODTYPE() {
       this.refreshkey;
@@ -165,6 +167,7 @@ export default {
     rules() {
       return RULES;
     },
+    
     title: {
       get() {
         this.refreshkey;
@@ -172,6 +175,9 @@ export default {
       },
       set(value) {
         this.updatedTitle = value;
+        store
+          .commit('task/CHANGE_TASK_TITLE', { task: this.task, title: { title: this.updatedTitle } })
+        this.refreshkey++;
       },
     },
     lastReview() {
@@ -185,8 +191,12 @@ export default {
     },
   },
   methods: {
+    setTask(task){
+      this.task = task;
+    },
     update() {
       this.refreshkey++;
+      this.$forceUpdate()
     },
     removeExternalinput(id) {
       store.commit('task/REMOVE_EXTERNAL_VALUE', { task: this.task, inputId: id });
@@ -195,19 +205,14 @@ export default {
       this.$refs.nodetitle.blur();
       this.editingTitle = false;
     },
-    changeName() {
-      if (!this.updatedTitle || this.updatedTitle.trim().length == 0) {
-        this.editingTitle = false;
-        return;
-      }
+    rename() {
       let copy = _.cloneDeep(this.task);
-      copy.title = this.updatedTitle;
+      this.refreshkey++;
       store
         .dispatch('taskbox/UPDATE_TASK', copy)
         .then(() => {
-          //  ipcRenderer.invoke('app:rename-File', file.path).then(async (template) => {
-          //       await self.addTemplate(template, e);
-          //   })
+          this.refreshkey++;
+          this.updatedTitle='task';
         })
         .catch((error) => console.log(error));
       this.editingTitle = false;

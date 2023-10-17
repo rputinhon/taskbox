@@ -50,15 +50,14 @@ const state = () => {
         packingTaskBox: null,
         previewingTask: null,
         focusMode:false,
+        deletingNodes:null,
         auditingTask: null,
         taskInputs: [],
         taskOutputs: [],
-
+        
         resetingTaskbox: null,
         changingStatus: null,
         newStatus: null,
-
-        deleting: null,
 
         changingWorker: null,
         toTemplate: null,
@@ -191,7 +190,8 @@ const actions = {
                 taskboxRepository.create({ node: getMutatedNode(args.node), type: 'taskbox' })
                     .then((response) => {
                         commit('SUCCESS_ADD_TASKBOX', response.taskbox);
-                        resolve(commit('SUCCESS_ADD_TASK', response.task));
+                        commit('SUCCESS_ADD_TASK', response.task)
+                        resolve(response.task);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -201,7 +201,8 @@ const actions = {
             else {
                 taskRepository.create({ id: args.node.id, type: args.node.name.toLowerCase(), value: args.value, title: args.value && args.value.file ? args.value.file.name.split('.')[0] : null })
                     .then((response) => {
-                        resolve(commit('SUCCESS_ADD_TASK', response));
+                        commit('SUCCESS_ADD_TASK', response)
+                        resolve(response);
                     })
                     .catch((error) => {
                         console.log(error);
@@ -379,7 +380,7 @@ const actions = {
         store.commit('SET_API_STATE', apistate.SAVING);
 
         return new Promise((resolve) => {
-            console.log(taskbox);
+            // console.log(taskbox);
             taskboxRepository.getChildrenIds(taskbox.id).then(list => {
                 if (list.length)
                     dispatch('MOVE_TASKS_TO', { from: taskbox.id, to: state.currentTaskBox.id, list: list }).then((args) => {
@@ -865,9 +866,25 @@ const mutations = {
     CHANGE_DELETING_STATUS(state, args) {
         args.item.status = args.status
     },
-    CONFIRM_DELETE_TASKS(state, selection) {
+    async CONFIRM_DELETE_TASKS(state, selection) {
+        
         if (state.previewingTask) return;
-        state.deletingNodes = selection.map(id => state.root.tasks[id]);
+        state.deletingNodes = await taskboxRepository.getDeletingTree(selection);
+        taskRepository.deleteTasks(state.deletingNodes);
+    },
+    async DELETE_TASK(state,id) {
+        //if task
+
+        //if taskbox
+        await new Promise((res) => {
+            delete state.root.tasks[id];
+            delete state.root.taskboxes[id];
+            delete state.root.taskboxes[state.root.task.id].data.nodes[id];
+            NodeView.deleteNode(id);
+            NodeView.saveTaskBox();
+            setTimeout(res, 300);
+        });
+        NodeView.saveTaskBox(true);
     },
     CLOSE_DELETE_TASKS(state) {
         state.deletingNodes = null;

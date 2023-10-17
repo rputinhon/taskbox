@@ -1,6 +1,7 @@
 <template>
   <v-container fluid fill-height class="ma-0 pa-0">
     <v-row align="center" justify="center" class="ma-0 pa-0" style="width: 100%; height: calc(100vh - 40px)">
+
       <empty
         v-show="isEmpty"
         :loading="openning"
@@ -39,7 +40,7 @@
 
     <div v-if="dataReady">
       <v-overlay v-if="paused || canceled" absolute color="white" :style="`color:${status.color}`" class="text-h4"> {{ status.text }} </v-overlay>
-      <component-types v-if="analysing == false" />
+      <!-- <component-types v-if="analysing == false" /> -->
       <display-menu  @frameAll="frameAll()" />
       <choose-connection :open="chooseConnection" :droppingConn="droppingConn" @close="closeChooseConnection()" @choose="ChooseSelected()" />
       <modal-color-picker v-if="editingframe" :show="pickColor" :frame="editingframe" @closePickColor="closePickColor()" />
@@ -53,12 +54,14 @@ import './flow.css';
 
 import { eventBus } from '../../../main.js';
 
-import ConfirmDelete from '../dialogs/ConfirmDelete.vue';
 import ChooseConnection from '../dialogs/ChooseConnection.vue';
+// import ComponentTypes from '../lists/ComponentTypes.vue';
+import ConfirmDelete from '../dialogs/ConfirmDelete.vue';
 import DisplayMenu from '../menus/DisplayMenu.vue';
 import Empty from '../dialogs/Empty.vue';
 import ModalColorPicker from '../forms/ModalColorPicker.vue';
 import StaticInput from '../lists/StaticInput.vue';
+
 
 import { NodeView } from '../../libs/nodeview';
 import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
@@ -66,18 +69,17 @@ import taskstate, { getStatusTypeByValue } from '../../enums/taskstate';
 import { mapGetters, mapState } from 'vuex';
 import _ from 'lodash';
 import Analisys from '../navigation/Analisys.vue';
-import ComponentTypes from '../lists/ComponentTypes.vue';
 
 export default {
   components: {
-    Empty,
-    StaticInput,
-    ConfirmDelete,
-    ChooseConnection,
-    ModalColorPicker,
-    DisplayMenu,
     Analisys,
-    ComponentTypes,
+    ChooseConnection,
+    // ComponentTypes,
+    ConfirmDelete,
+    DisplayMenu,
+    Empty,
+    ModalColorPicker,
+    StaticInput,
   },
   data: () => ({
     loading: false,

@@ -4,7 +4,7 @@
       <v-col align-self="center" cols="1">
         <div class="input" v-for="input in inputs()" :key="input.key" @mouseenter="ishoverSocket(input.key)" @mouseleave="hoverSocket = null">
           <Socket v-socket:input="input" type="input" :socket="input.socket" :style="`background:${status.color}!important`"></Socket>
-          <external-input  :index="0" :externalInput="externalInputs"  @remove="removeExternalinput"  />
+          <external-input :index="0" :externalInput="externalInputs" @remove="removeExternalinput" />
         </div>
       </v-col>
       <v-col align-self="center" cols="10">
@@ -34,7 +34,7 @@
         </v-row>
       </v-col>
       <v-col align-self="center" cols="1">
-        <div class="output" v-for="output in outputs()" :key="output.key" @mouseenter="ishoverSocket(output.key)" @mouseleave="hoverSocket = null" style="margin-right:-75px" >
+        <div class="output" v-for="output in outputs()" :key="output.key" @mouseenter="ishoverSocket(output.key)" @mouseleave="hoverSocket = null" style="margin-right: -75px">
           <Socket v-socket:output="output" type="output" :socket="output.socket" :style="`background:${!node.data.passout ? status.color : '#FF5252'}!important;${!showWorker && 'margin-left:-75px'}`"></Socket>
           <v-chip v-if="node.data.passout" :class="hoverSocket == output.key && 'px-10 mr-16'" class="px-4 IOPassout" color="error" link>
             <template slot:close v-if="hoverSocket == output.key">
@@ -54,7 +54,7 @@
       <div class="title">
         <RULE :rule="rules.EDIT" :doc="task" :returnCondition="true">
           <div slot-scope="allow" v-if="allow.value">
-            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="changeName()" @keydown.escape="cancelChangeName()" @blur="changeName()" @click.prevent="" />
+            <v-text-field ref="nodetitle" v-if="editingTitle" color="primary" single-line class="nodetitle mx-auto d-block" style="width: 250px; margin-top: -5px" autofocus v-model="title" :key="node.id" dense hide-details="true" @keydown.enter="rename()" @keydown.escape="cancelChangeName()" @blur="rename()" @click.prevent="" />
             <span v-else @click.stop="editingTitle = true"> {{ task.title }} {{ '| ' + info }}</span>
           </div>
           <div v-else>
@@ -135,8 +135,11 @@ export default {
         this.refreshkey;
         return this.task.title;
       },
-      set(value) {
+     set(value) {
         this.updatedTitle = value;
+        store
+          .commit('task/CHANGE_TASK_TITLE', { task: this.task, title: { title: this.updatedTitle } })
+        this.refreshkey++;
       },
     },
     showLabel() {
@@ -164,21 +167,19 @@ export default {
     async getWorker() {
       this.worker = await memberRepository.find(this.task.workers[0]);
     },
-
+rename() {
+      let copy = _.cloneDeep(this.task);
+      this.refreshkey++;
+      store
+        .dispatch('taskbox/UPDATE_TASK', copy)
+        .then(() => {
+          this.refreshkey++;
+        })
+        .catch((error) => console.log(error));
+      this.editingTitle = false;
+    },
     ishoverSocket(key) {
       this.hoverSocket = key;
-    },
-    //for setting the task done at once
-    changeName() {
-      let copy = _.cloneDeep(this.task);
-      copy.title = this.updatedValue;
-      if (this.updatedTitle == '') return;
-      store.dispatch('taskbox/UPDATE_TASK', copy)
-            .then(() => { })
-            .catch((error) => console.log(error))
-      this.editingTitle = false;
-      this.node.update();
-      // this.changeAction();
     },
     unstartedColor() {
       return taskstate.UNSTARTED.color;

@@ -1,9 +1,9 @@
 <template>
   <v-row align="center" justify="center" style="height: 100%; width: 100%">
     <v-list color="transparent">
-      <!-- <creating-file-list @create="create" /> -->
+      <creating-file-list @create="create" />
       <v-list-item>
-        <v-tooltip bottom transition="none">
+        <v-tooltip left transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="grey" icon :loading="loading" fab @click="selectFile()" v-on="on" v-bind="attrs">
               <svg version="1.1" viewBox="-1 -2 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -32,7 +32,7 @@ import { eventBus } from '../../../../main';
 import taskstate, { getStatusTypeByValue } from '../../../enums/taskstate';
 import { iconTypes } from '../../../fixtures/iconTypes';
 
-// import CreatingFileList from '../../menus/CreatingFileList.vue';
+import CreatingFileList from '../../menus/CreatingFileList.vue';
 import CreatorDialog from '../../NodeEditor/creators/CreatorDialog.vue';
 // import NavMenu from '../../navigation/NavMenu.vue';
 import _ from 'lodash';
@@ -43,7 +43,7 @@ export default {
   name: 'previewTypeNoFile',
   props: { inTask: Object },
   components: {
-    // CreatingFileList,
+    CreatingFileList,
     CreatorDialog,
     // NavMenu
   },

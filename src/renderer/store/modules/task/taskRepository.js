@@ -145,6 +145,7 @@ class TaskRepository extends Repository {
     }
 
 
+
     async getUserAuditions(userId) {
 
         const selector = {
@@ -232,6 +233,7 @@ class TaskRepository extends Repository {
             const relDocs = await this.db.rel.parseRelDocs('task', result.docs)
             let roots = await this.getUserRoots(request.member);
             let taskboxes = relDocs.taskboxes || []
+            
             const taskboxesTasks = await this.db.rel.find('task', taskboxes.map(t => t.id));
 
             return {
@@ -275,6 +277,7 @@ class TaskRepository extends Repository {
     async deleteTasks(list) {
         let response = await this.db.rel.find('task', list);
         super.deleteMany(response.tasks);
+        console.log(list);
     }
 
     async deleteAll(root) {

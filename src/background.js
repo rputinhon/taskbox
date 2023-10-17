@@ -30,7 +30,7 @@ async function createWindow() {
     // icon:new Tray('public/img/tlogobox.png'),
     backgroundColor: '#fafafa',
     frame: false,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -157,10 +157,15 @@ ipcMain.on('app:openFolder', (event, folder) => {
   io.openFolder(folder);
 })
 
-ipcMain.handle('app:workOnFileTask', (event, args) => {
-  Object.assign(args, { win: mainWindow })
-  return io.workOnFileTask(args);
+ipcMain.handle('app:saveFileTemplate', (event, args) => {
+  io.saveFileTemplate(args);
 })
+
+ipcMain.handle('app:trayTask', (event, args) => {
+  Object.assign(args, { win: mainWindow })
+  return io.trayTask(args);
+})
+
 
 ipcMain.handle('app:get-username', () => {
   return io.getUserName();
