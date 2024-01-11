@@ -25,9 +25,9 @@ const state = () => {
     return {
         // actual root taskbox.
         root: null,
-        // actual working taskbox.
+        // actual working taskbox (task).
         currentTaskBox: null,
-        // Current TaskBox task
+        currentTaskBox_NodeView:null,
         // info about the taskbox tasks.
         taskBoxInfo: null,
         // List of the exposed outputs inside the taskbox.
@@ -132,7 +132,8 @@ const actions = {
             })
         else {
             let task = request.id == state.root.task.id ? state.root.task : state.root.tasks[request.id]
-            Object.assign(request, { task: task })
+         
+            Object.assign(request, { task: task,taskbox: state.root.taskboxes[request.id]})
             commit("SUCCESS_OPEN_TASKBOX", request);
         }
 
@@ -157,13 +158,15 @@ const actions = {
 
     },
     // Save current TaskBox
-    async SAVE({ getters, commit }) {
+    async SAVE({ getters, commit },data) {
         store.commit('SET_API_STATE', apistate.SAVING);
         eventBus.$emit('setWorking', true);
         new Promise((resolve) => {
-
+            
             let entity = _.cloneDeep(getters.currentTaskBox);
             taskboxRepository.find(entity.id).then((response) => {
+                if(data)
+                Object.assign(entity.data,data);
                 entity.rev = response.rev;
                 taskboxRepository.saveOrUpdate(entity).then((response) => {
                     resolve(commit("SUCCESS_SAVE_TASKBOX", response));
@@ -704,7 +707,6 @@ const mutations = {
         store.commit('SET_API_STATE', apistate.DONE);
     },
     SUCCESS_ADD_TASK: async (state, task) => {
-
         Object.assign(state.root.tasks, arrayToKeyValue([task]))
         NodeView.saveTaskBox(true);
         store.commit('taskbox/SUCCESS_UPDATE_TASKS_INFO');
@@ -917,9 +919,10 @@ const mutations = {
     // Update current taskbox data from Node View
     UPDATE_EDITOR_CHANGES(state, request) {
         if (!state.currentTaskBox) return;
+
         Object.assign(state.root.taskboxes[state.currentTaskBox.id].data, request.data);
         if (request.save)
-            store.dispatch('taskbox/SAVE')
+            store.dispatch('taskbox/SAVE',request.data)
 
     },
     //Change stack

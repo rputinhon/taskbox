@@ -24,7 +24,7 @@
           {{ hasPost ? 'Show Publication' : 'Publicate as Open Task' }}
         </v-tooltip>
         <task-icon :task="task" :color="completed || (analysing !== 'progress' && analysing !== false) ? 'white' : undefined" :extraClass="'my-auto'" />
-            <task-subject  :status="status" :task="task" :options="['popup', 'right']" />
+        <task-subject :status="status" :task="task" :options="['popup', 'right', 'x-small']" />
         <v-list-item-content class="px-0 mx-2">
           <task-title v-show="analysing == false || hovering" :task="task" :options="['reviews', analysing !== false && 'progress', 'edit']" />
           <v-list-item-subtitle class="text-left" style="max-width: 260px">

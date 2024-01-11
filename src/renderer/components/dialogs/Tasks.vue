@@ -90,7 +90,7 @@
       <!-- Select To Act -->
     </v-card-title>
 
-    <v-overlay v-if="disabled" absolute color="grey" class="text-h4" :style="`color:${parentStatus.color}`"> {{ parentStatus.text }} </v-overlay>
+    <!-- <v-overlay v-if="disabled" absolute color="grey" class="text-h4" :style="`color:${parentStatus.color}`"> {{ parentStatus.text }} </v-overlay> -->
 
     <div v-if="!filtering && !loading" key="0">
       <v-list-item v-for="(task, k) in filteredList(tasks, 'title', { value: filter, field: 'status' })" :key="`${k}_${task.id}`" v-show="task.taskType !== 'audition'" class="my-1" flat rounded="lg" color="transparent">

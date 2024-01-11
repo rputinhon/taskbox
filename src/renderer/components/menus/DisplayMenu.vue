@@ -1,6 +1,6 @@
 <template>
     <v-toolbar floating absolute bottom class="mb-2" :style="`z-index:5;opacity:${analysing !== false && !hovering ? 0.1 : 1}`" style="right: 50px;transition: 0.35s cubic-bezier(0.25, 0.8, 0.5, 1) !important;" color="transparent" flat @mouseenter="hovering = true" @mouseleave="hovering = false">
-      <tools-bar v-if="analysing == false" />
+      <tools-bar  />
       <v-menu rounded="0" nudge-top="30" top left :close-on-content-click="false">
         <template v-slot:activator="{ on: menu }">
           <v-tooltip top transition="none">

@@ -41,6 +41,7 @@
     <div v-if="dataReady">
       <v-overlay v-if="paused || canceled" absolute color="white" :style="`color:${status.color}`" class="text-h4"> {{ status.text }} </v-overlay>
       <!-- <component-types v-if="analysing == false" /> -->
+      
       <display-menu  @frameAll="frameAll()" />
       <choose-connection :open="chooseConnection" :droppingConn="droppingConn" @close="closeChooseConnection()" @choose="ChooseSelected()" />
       <modal-color-picker v-if="editingframe" :show="pickColor" :frame="editingframe" @closePickColor="closePickColor()" />

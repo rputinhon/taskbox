@@ -807,7 +807,6 @@ class _nodeView extends TaskBox {
             if (!allowRule(RULES.EDIT, currentTaskBox) || !currentTaskBox)
                 return false;
 
-
             if (changing)
                 return;
 

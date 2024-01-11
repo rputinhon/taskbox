@@ -944,6 +944,11 @@
     "ajv" "^6.12.0"
     "ajv-keywords" "^3.4.1"
 
+"@editorjs/editorjs@^2.28.2":
+  "integrity" "sha512-g6V0Nd3W9IIWMpvxDNTssQ6e4kxBp1Y0W4GIf8cXRlmcBp3TUjrgCYJQmNy3l2a6ZzhyBAoVSe8krJEq4g7PQw=="
+  "resolved" "https://registry.npmjs.org/@editorjs/editorjs/-/editorjs-2.28.2.tgz"
+  "version" "2.28.2"
+
 "@electron/get@^1.0.1":
   "integrity" "sha512-BrZYyL/6m0ZXz/lDxy/nlVhQz+WF+iPS6qXolEU8atw7h6v1aYkjwJZ63m+bJMBTxDE66X+r2tPS4a/8C82sZw=="
   "resolved" "https://registry.npmjs.org/@electron/get/-/get-1.14.1.tgz"
