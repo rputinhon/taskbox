@@ -2,7 +2,7 @@
   <v-toolbar flat :color="'transparent'" height="30" class="windowbar-button">
     <v-fade-transition hide-on-leave leave-absolute group>
       <v-list-item v-if="analysing == false && hasSelection()" key="0" class="mr-0 pr-0">
-        <v-tooltip v-if="!selecting" bottom transition="none">
+        <v-tooltip v-if="!selecting" top transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn fab v-bind="attrs" v-on="on" icon @click="boxit()">
               <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@
           </template>
           <span>pack selection in a taskBox</span>
         </v-tooltip>
-        <v-tooltip v-else bottom transition="none">
+        <v-tooltip v-else top transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn fab v-bind="attrs" v-on="on" icon @click.stop="unboxit()" :disabled="!readyToUnpack">
               <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +33,7 @@
           <span>split taskBox</span>
         </v-tooltip>
 
-        <v-tooltip bottom transition="none">
+        <v-tooltip top transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn fab v-bind="attrs" v-on="on" icon :disabled="disabled || !hasFramable()" @click.stop="addGroup()">
               <svg width="18" height="18" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -49,7 +49,7 @@
           <span>Group Selected</span>
         </v-tooltip>
 
-        <v-tooltip bottom transition="none">
+        <v-tooltip top transition="none">
           <template v-slot:activator="{ on, attrs }">
             <v-btn :disabled="disabled || !hasSelection()" fab v-bind="attrs" v-on="on" icon @click.stop="deleteSelected()">
               <svg width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +67,7 @@
       </v-list-item>
     </v-fade-transition>
     <v-list-item class="mx-0 pl-0">
-      <v-tooltip bottom transition="none">
+      <v-tooltip top transition="none">
         <template v-slot:activator="{ on, attrs }">
           <v-btn fab v-bind="attrs" v-on="on" x-small icon :disabled="disabled">
             <svg v-if="selecting" width="25" height="25" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">

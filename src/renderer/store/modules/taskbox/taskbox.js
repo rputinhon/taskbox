@@ -1126,8 +1126,9 @@ const mutations = {
 
         let anl = {};
         let tasksList = list.map((t) => {
-            if (t.taskType == 'taskbox')
-                return t.taskInfo ? t.taskInfo.Total.value - t.taskInfo.Canceled.value : 0;
+            if (t.taskType == 'taskbox'){
+                return Object.keys(state.root.taskboxes[t.id].data.nodes).length;
+            }
             else {
                 if (t.taskType == 'audition')
                     return t.value && t.value.auditions ? Object.keys(t.value.auditions).length : 0;
