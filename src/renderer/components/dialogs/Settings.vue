@@ -16,7 +16,7 @@
       </v-list-item>
     </v-card-title>
     <v-card-text>
-      <v-list v-for="(setting, s) in appSettings" :key="s" class="mx-0 px-0">
+      <v-list v-for="(setting, s) in appSettings" :key="s" class="mx-0 px-0" v-show="setting.visible==true">
         <v-list-item>
           <v-switch inset persistent-hint :hint="setting.description" :label="setting.label" v-model="setting.value" @change="updateSettings()" />
         </v-list-item>
@@ -54,7 +54,7 @@
           <v-list-item>
             <v-text-field :disabled="!serverSettings[1].value" rounded success hide-details="false" :loading="synking || retrying" label="url" type="url" placeholder="ex: http://localhost:5984" outlined dense v-model="url" :error="syncErrors.lenght > 0 || !serverReady ? true : false" :error-messages="syncErrors">
               <template v-slot:append>
-                <v-btn :disabled="serverSettings[1].value" outlined rounded small color="primary" style="margin-top: -2px; margin-right: -16px" @click="retry()" v-text="!serverSettings[1].value?'retry':'ok'"></v-btn>
+                <v-btn outlined rounded small color="primary" style="margin-top: -2px; margin-right: -16px" @click="retry()" v-text="!serverSettings[1].value?'retry':'ok'"></v-btn>
               </template>
             </v-text-field>
           </v-list-item>

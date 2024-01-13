@@ -7,8 +7,8 @@
         </svg>
       </v-btn>
     </template>
-    <v-card color="background" max-width="47px" class="py-3 pb-13">
-      <v-list-item class="px-0 ma-0" v-for="(item, i) in library.blockLibrary.blocktypes" :key="i" @click="addNode($event, { name: item.name })">
+    <v-card color="background" max-width="50px" class="py-2 pb-13">
+      <v-list-item class="px-0 ma-0" v-for="(item, i) in library.blockLibrary.blocktypes" :key="i" @click="addNode($event, { name: item.name })" v-show="item.properties.isactive==true">
         <v-list-item-content class="py-0">
           <svg class="categoryIcon" height="38" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
             <path

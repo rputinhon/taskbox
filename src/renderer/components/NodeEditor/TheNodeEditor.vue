@@ -40,7 +40,7 @@
 
     <div v-if="dataReady">
       <v-overlay v-if="paused || canceled" absolute color="white" :style="`color:${status.color}`" class="text-h4"> {{ status.text }} </v-overlay>
-      <!-- <component-types v-if="analysing == false" /> -->
+      <component-types v-if="analysing == false" />
       
       <display-menu  @frameAll="frameAll()" />
       <choose-connection :open="chooseConnection" :droppingConn="droppingConn" @close="closeChooseConnection()" @choose="ChooseSelected()" />
@@ -56,7 +56,7 @@ import './flow.css';
 import { eventBus } from '../../../main.js';
 
 import ChooseConnection from '../dialogs/ChooseConnection.vue';
-// import ComponentTypes from '../lists/ComponentTypes.vue';
+import ComponentTypes from '../lists/ComponentTypes.vue';
 import ConfirmDelete from '../dialogs/ConfirmDelete.vue';
 import DisplayMenu from '../menus/DisplayMenu.vue';
 import Empty from '../dialogs/Empty.vue';
@@ -75,7 +75,7 @@ export default {
   components: {
     Analisys,
     ChooseConnection,
-    // ComponentTypes,
+    ComponentTypes,
     ConfirmDelete,
     DisplayMenu,
     Empty,

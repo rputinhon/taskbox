@@ -41,7 +41,8 @@ const state = () => ({
             type: 'switch',
             label: 'Remember Me',
             description: 'Opens the last Taskbox project you was working on.',
-            value: true
+            value: true,
+            visible:false,
         },
         // {
         //     type: 'switch',
@@ -58,9 +59,11 @@ const state = () => ({
         {
             type: 'switch',
             label: 'Local Notifications',
-            description: 'Show local notifications about your tasks and messages.',
-            value: true
-        }
+            description: 'Show local notifications from your tasks and messages.',
+            value: true,
+            visible:false
+        },
+        
 
     ],
     serverSettings: [
