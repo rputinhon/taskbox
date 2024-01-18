@@ -48,7 +48,7 @@ export const blockTypesFixtures = [
             tags: ['file']
         },
         properties: {
-            isactive: false,
+            isactive: true,
             preview: true,
             confirmDelete: true,
             readonly: false,

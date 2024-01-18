@@ -184,17 +184,19 @@ export default {
       taskBoxInfo: (state) => state.taskbox.taskBoxInfo,
       profile: (state) => state.user.profile,
       currentTaskBoxTask: (state) => _.cloneDeep(state.taskbox.currentTaskBox),
+      currentTaskBoxNodeView: (state) => state.taskbox.currentTaskBoxNodeView,
     }),
     ...mapGetters({
       currentTaskBox: 'taskbox/currentTaskBox',
       currentTaskBoxTasks: 'taskbox/currentTaskBoxTasks',
     }),
     dataReady() {
+      this.refreshkey;
       return this.currentTaskBoxTasks;
     },
     tasks() {
       this.refreshkey;
-      return Object.values(this.root.tasks).filter((t) => (this.currentTaskBox ? Object.keys(this.currentTaskBox.data.nodes).includes(t.id) : null));
+      return Object.values(this.root.tasks).filter((t) => (this.currentTaskBox ? Object.keys(this.currentTaskBoxNodeView.data.nodes).includes(t.id) : null));
     },
     isEmpty() {
       return this.tasks && this.tasks.length == 0 ? true : false;

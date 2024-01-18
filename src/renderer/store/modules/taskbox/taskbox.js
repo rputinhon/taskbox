@@ -27,6 +27,7 @@ const state = () => {
         root: null,
         // actual working taskbox (task).
         currentTaskBox: null,
+        currentTaskBoxNodeView: null,
         currentTaskBox_NodeView:null,
         // info about the taskbox tasks.
         taskBoxInfo: null,
@@ -165,9 +166,11 @@ const actions = {
             
             let entity = _.cloneDeep(getters.currentTaskBox);
             taskboxRepository.find(entity.id).then((response) => {
-                if(data)
-                Object.assign(entity.data,data);
+                if(data){
+                    Object.assign(entity.data,data);
+                }
                 entity.rev = response.rev;
+                
                 taskboxRepository.saveOrUpdate(entity).then((response) => {
                     resolve(commit("SUCCESS_SAVE_TASKBOX", response));
                 })
@@ -504,7 +507,7 @@ const actions = {
             return;
 
         return new Promise((resolve, reject) => {
-            let taskList = tasks || Object.values(state.root.tasks).filter(t => state.root.taskboxes[state.currentTaskBox.id] && Object.keys(state.root.taskboxes[state.currentTaskBox.id].data.nodes).includes(t.id));
+            let taskList = tasks || Object.values(state.root.tasks).filter(t => state.currentTaskBoxNodeView && Object.keys(state.currentTaskBoxNodeView.data.nodes).includes(t.id));
             taskboxRepository.getTaskBoxInfo(taskList).then((info) => {
                 commit('SUCCESS_SET_TASKBOX_INFO', info || taskBoxInfo)
                 resolve(info || taskBoxInfo);
@@ -583,10 +586,11 @@ const mutations = {
         state.loading = value;
     },
     SUCCESS_OPEN_ROOT(state, root) {
-
+        
         state.root = root;
         state.currentTaskBox = root.task;
-
+        state.currentTaskBoxNodeView = root.taskboxes[root.task.id];
+   
         store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
             store.dispatch('taskbox/GET_TASKBOX_INPUTS').then(() => {
                 store.dispatch('taskbox/GET_TASKBOX_INFO').then(() => {
@@ -605,6 +609,7 @@ const mutations = {
     SUCCESS_OPEN_TASKBOX(state, args) {
 
         state.currentTaskBox = args.task;
+        state.currentTaskBoxNodeView = args.taskbox;
         store.commit('app/SET_MAIN_TAB', 0);
         eventBus.$emit('OpenTaskbox', args.deeper);
 
@@ -627,7 +632,11 @@ const mutations = {
 
     },
     SUCCESS_SET_TASKBOX: (state, taskbox) => {
+        state.currentTaskBoxNodeView = taskbox;
         state.root.taskboxes[taskbox.id] = taskbox;
+        // eventBus.$emit('updateTasks');
+
+        // Object.assign(state.root.taskboxes[state.currentTaskBox.id].data,data);
     },
     SUCCESS_SET_TASKBOX_TASK: (state, task) => {
         state.currentTaskBox = task;
@@ -663,6 +672,7 @@ const mutations = {
             store.commit('taskbox/SUCCESS_SET_TASKBOX', taskbox);
 
             nextTick(() => {
+                
                 store.dispatch('taskbox/UPDATE_BREADCRUMB').then(() => {
                     // store.dispatch('taskbox/GET_TASKBOX_INFO').then(() => {
                     setTimeout(() => {
@@ -921,6 +931,8 @@ const mutations = {
         if (!state.currentTaskBox) return;
 
         Object.assign(state.root.taskboxes[state.currentTaskBox.id].data, request.data);
+        Object.assign(state.currentTaskBoxNodeView.data, request.data);
+        
         if (request.save)
             store.dispatch('taskbox/SAVE',request.data)
 
