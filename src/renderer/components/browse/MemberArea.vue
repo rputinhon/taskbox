@@ -25,7 +25,6 @@
         </v-tab> -->
       </v-tabs>
 
-      <v-btn v-if="!authenticated" rounded small class="mx-1 windowbar-button" color="primary" @dblclick.stop @click.stop="signin()"> signin </v-btn>
 
       <v-btn icon fab x-small class="windowbar-button mr-3 ml-0" @click="close()">
         <svg style="transform: rotate(90deg)" width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -184,9 +183,6 @@ export default {
     },
   },
   methods: {
-    signin() {
-      this.$store.commit('app/TOGGLE_LOGIN_WINDOW', true);
-    },
     showTaskBox() {
       if(this.currentMainTab!==0)
         this.$store.commit('app/SET_MAIN_TAB', 0);

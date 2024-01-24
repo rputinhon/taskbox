@@ -32,6 +32,19 @@
         </v-tooltip>
         <v-list-item v-if="selectedMember">
           <member-item :id="selectedMember.member" :align="'center'" :options="['reversed', 'username']" />
+        <v-tooltip bottom transition="none">
+            <template v-slot:activator="{ on }">
+              <v-btn v-on="on" icon x-small fab :loading="loading" @click="refresh()">
+                <svg style="pointer-events: none" width="20" height="20" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <path
+                    d="m 28.140727,1.9592277 c -3.712435,2.1435384 -7.42487,4.2870767 -11.137305,6.4306152 3.712599,2.1430821 7.424944,4.2866031 11.137305,6.4300981 v -3.416329 c 3.85871,1.271454 6.94063,4.256307 8.315254,8.133354 1.522952,4.295395 0.728999,9.060692 -2.103747,12.630752 -1.100653,1.38662 -0.868828,3.402954 0.517798,4.503602 1.387027,1.100297 3.403417,0.86777 4.503599,-0.519348 4.200301,-5.293563 5.383573,-12.386901 3.125391,-18.755961 -2.258179,-6.36906 -7.645813,-11.1358729 -14.24254,-12.6012975 -0.03848,-0.00622 -0.07707,-0.011729 -0.115755,-0.016536 z M 9.612142,10.605212 c -4.8769639,5.256283 -6.4999034,12.76998 -4.2266155,19.570381 2.2732881,6.8004 8.0888365,11.82859 15.1463625,13.095325 0.06113,0.008 0.122479,0.01418 0.183968,0.0186 v 2.751254 c 3.712271,-2.143649 7.424796,-4.286861 11.137306,-6.430097 -3.712436,-2.143538 -7.424871,-4.287076 -11.137306,-6.430614 v 3.572907 c -4.326978,-1.1079 -7.819576,-4.329509 -9.250081,-8.608776 -1.5337477,-4.588111 -0.44303,-9.633235 2.847371,-13.179557 1.203571,-1.297811 1.12746,-3.325506 -0.170015,-4.529439 -1.400971,-1.1671185 -3.388026,-1.0259098 -4.53099,0.170016 z"
+                    fill="grey"
+                  />
+                </svg>
+              </v-btn>
+            </template>
+            refresh
+          </v-tooltip>
         </v-list-item>
       </v-app-bar>
       <v-layout column align-center justify-start style="height: 510px;">
@@ -105,7 +118,7 @@ export default {
     };
   },
   mounted() {
-    if (this.hasMessages) this.playSound();
+    // if (this.hasMessages) this.playSound();
   },
   watch: {
     selectedMember(value) {
@@ -147,6 +160,9 @@ export default {
     },
   },
   methods: {
+    refresh(){
+      this.getMessages(this.selectedMember, true);
+    },
     close() {
       this.$refs.chat.isActive = false;
     },

@@ -13,7 +13,7 @@
       go up
     </v-tooltip>
     <v-app-bar elevation="2" height="150" :src="userProfile.coverPicture">
-      <member-item :size="90" :options="['bordered']" :align="'left'" :id="!loggedUser ? userProfile.id : null" :subtitle="session.text" :extraClass="'ma-6'" />
+      <member-item :size="90" :options="['bordered','session']" :align="'left'" :id="!loggedUser ? userProfile.id : null" :subtitle="session.text" :extraClass="'ma-6'" />
       <v-btn v-if="loggedUser" absolute left style="margin-top: 50px" fab x-small @click="selectAvatar()">
         <svg width="30" height="30" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path

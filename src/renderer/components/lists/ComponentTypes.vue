@@ -1,25 +1,21 @@
 <template>
-  <v-menu ref="addMenu" top rounded="pill" z-index="1" offset-y light nudge-left="8" nudge-bottom="65">
+  <v-menu ref="addMenu" top rounded="pill" z-index="1" offset-y light nudge-left="9" nudge-bottom="65">
     <template v-slot:activator="{ on: menu, attrs }">
-      <v-btn fab left bottom absolute elevation="0" color="primary" v-bind="attrs" v-on="menu" x-small class="mb-9 ml-2 windowbar-button" :disabled="disabled">
+      <v-btn fab left top absolute elevation="0" color="primary" v-bind="attrs" v-on="menu" x-small class="mt-9 ml-2 windowbar-button" :disabled="disabled">
         <svg width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
           <path d="m 22.065319,8.3519448 c -0.704083,0 -1.27124,0.5666409 -1.27124,1.2707236 V 21.058663 H 9.8872518 c -0.7040827,0 -1.2707237,0.567157 -1.2707237,1.27124 v 2.965194 c 0,0.704083 0.566641,1.271239 1.2707237,1.271239 H 20.794079 v 10.906829 c 0,0.704082 0.567157,1.270722 1.27124,1.270722 h 2.965194 c 0.704083,0 1.27124,-0.56664 1.27124,-1.270722 V 26.566336 h 11.435995 c 0.704083,0 1.270722,-0.567156 1.270722,-1.271239 v -2.965194 c 0,-0.704083 -0.566639,-1.27124 -1.270722,-1.27124 H 26.301753 V 9.6226684 c 0,-0.7040827 -0.567157,-1.2707236 -1.27124,-1.2707236 z" :fill="disabled ? 'rgba(0,0,0,0.26)' : 'white'" stop-color="#000000" style="paint-order: fill markers stroke" />
         </svg>
       </v-btn>
     </template>
-    <v-card color="background" max-width="50px" class="py-2 pb-13">
-      <v-list-item class="px-0 ma-0" v-for="(item, i) in library.blockLibrary.blocktypes" :key="i" @click="addNode($event, { name: item.name })" v-show="item.properties.isactive==true">
+    <v-card color="background" rounded="pill" max-width="50px" class="py-2 pt-13 mt-9">
+      <v-list-item class="px-0 ma-0" v-for="(item, i) in library.blockLibrary.blocktypes" :key="i" @click="addNode($event, { name: item.name })" v-show="item.properties.isactive == true">
         <v-list-item-content class="py-0">
           <svg class="categoryIcon" height="38" version="1.1" viewBox="0 0 45 45" xmlns="http://www.w3.org/2000/svg">
-            <path
-              :d="item.meta.typeicon"
-              fill="grey"
-            />
+            <path :d="item.meta.typeicon" fill="grey" />
           </svg>
         </v-list-item-content>
       </v-list-item>
-      
-      
+
       <!-- <v-list class="my-1 mt-0 pt-0" v-for="(category, c) in getcategoryActive()" :key="c" color="background">
           <v-menu nudge-top="30" offset-x open-on-hover light v-if="c>0">
             <template v-slot:activator="{ on: menu, attrs }">
@@ -69,7 +65,7 @@ export default {
       return this.$store.getters['user/authenticated'];
     },
   },
-  mounted(){
+  mounted() {
     // console.log(this.library);
   },
   methods: {

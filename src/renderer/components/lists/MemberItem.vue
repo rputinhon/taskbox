@@ -14,14 +14,15 @@
       </v-tooltip>
     </v-list-item-avatar>
     <v-list-item-content>
-      <v-list-item-title style="line-height: normal" :class="`ma-0 pa-0 text-h6 black--text text-${align || 'left'}`">
+      <v-list-item-title class="name" :class="`ma-0 pa-0 text-h6 black--text text-${align || 'left'}`">
         {{ member.username }}
       </v-list-item-title>
       <v-list-item-subtitle v-if="subtitle" class="text-left">
         <svg v-if="status" width="15" height="15" version="1.1" viewBox="0 0 48 30" xmlns="http://www.w3.org/2000/svg">
           <path :d="status.icon" :fill="status.color" />
         </svg>
-        {{ subtitle }}
+        <v-badge v-if="options.includes('session') && session" inline left dot :color="session.color">{{ session.text }}</v-badge>
+        <span>{{ !options.includes('session') ? subtitle : '' }}</span>
       </v-list-item-subtitle>
     </v-list-item-content>
     <div v-if="options.includes('connectionActions')">
@@ -59,7 +60,7 @@ import { connectionStatus, getConnectionStatusByValue } from '../../store/models
 
 export default {
   name: 'MemberItem',
-  props: { id: String,iconOver:Object, options: Array, size: Number, subtitle: String, align: String, badge: Object, status: Object, extraClass: String, height: Number, busEvent: String },
+  props: { id: String, iconOver: Object, options: Array, size: Number, session: Object, subtitle: String, align: String, badge: Object, status: Object, extraClass: String, height: Number, busEvent: String },
   data() {
     return {
       loadedMember: null,
@@ -158,3 +159,13 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.name {
+  line-height: normal;
+  background: rgba(255, 255, 255, 0.7);
+  max-width: fit-content;
+  padding: 4px !important;
+  border-radius: 15px;
+}
+</style>

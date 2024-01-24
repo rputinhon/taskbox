@@ -11,7 +11,7 @@
         </svg>
       </v-list-item-icon>
       <v-list-item-title class="text-center text-h6"> Taskbox </v-list-item-title>
-      <v-list-item-subtitle> version 0.1.0 </v-list-item-subtitle>
+      <v-list-item-subtitle> version 0.1.0 Beta</v-list-item-subtitle>
     </v-card-title>
     <!-- <v-divider></v-divider> -->
     <v-card-text class="pa-10"> Taskbox is a task manager tool to keep track and facilitate your tasks in an easy and intuitive way. It uses nodes and connections to make your pipeline directional and flowing. Taskbox also concatenates the tasks in boxes so you can plane you project with the deepness of complecity you may need. </v-card-text>

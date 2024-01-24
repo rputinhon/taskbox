@@ -3,7 +3,7 @@
     <template v-slot:activator="{ on: onMenu }">
       <v-tooltip bottom transition="none">
         <template v-slot:activator="{ on: onTooltip }">
-          <v-badge color="warning" left offset-x="7" bottom offset-y="17" :value="hasMessages" dot />
+          <v-badge style="z-index:1" color="warning" left offset-x="36" bottom offset-y="17" :value="hasMessages" dot />
           <v-btn fab :icon="!authenticated" v-on="{ ...onMenu, ...onTooltip }" class="windowbar-button" elevation="0" height="30" width="30" x-small>
             <member-item v-if="authenticated" :size="28" :options="['onlyAvatar', 'bordered']" />
             <svg v-else width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
@@ -18,17 +18,27 @@
     <v-card min-width="450px" max-width="450px" min-height="450px" height="650px" color="background" style="overflow: hidden">
       <v-app-bar class="pa-0 ma-0" height="40" flat color="white">
         <v-tabs class="pa-0 ma-0" hide-slider v-model="memberTab" height="40">
+          <v-tab :style="`min-width: 50px;max-width:50px;`" class="pa-2 windowbar-button">
+            <v-badge color="warning" left offset-x="35" bottom offset-y="17" :value="hasMessages" dot />
+            <svg height="28" version="1.1" viewBox="-5 -5 48 48" xmlns="http://www.w3.org/2000/svg">
+              <path
+                :style="memberTab !== 0 && 'filter: grayscale(1)!important;'"
+                d="m 9.7554768,1.9197794 c -5.2488448,0 -9.47435701,4.2255121 -9.47435701,9.4743566 v 10.826213 c 0,4.497199 0.87137051,6.433385 1.94975171,10.882023 0.608895,2.511693 2.0803879,4.665348 4.6648315,4.665348 2.5844434,0 3.853265,-2.211636 4.664831,-4.665348 l 0.465605,-1.407665 h 17.938958 c 5.248843,0 9.474356,-4.225512 9.474356,-9.474358 V 11.394136 c 0,-5.2488445 -4.225513,-9.4743566 -9.474356,-9.4743566 z M 10.851017,13.780554 A 3.367596,3.367596 0 0 1 14.21877,17.14779 3.367596,3.367596 0 0 1 10.851017,20.515543 3.367596,3.367596 0 0 1 7.4837808,17.14779 3.367596,3.367596 0 0 1 10.851017,13.780554 Z m 9.009269,0 a 3.367596,3.367596 0 0 1 3.367753,3.367236 3.367596,3.367596 0 0 1 -3.367753,3.367753 3.367596,3.367596 0 0 1 -3.367236,-3.367753 3.367596,3.367596 0 0 1 3.367236,-3.367236 z m 8.995833,0 a 3.367596,3.367596 0 0 1 3.367755,3.367236 3.367596,3.367596 0 0 1 -3.367755,3.367753 3.367596,3.367596 0 0 1 -3.367236,-3.367753 3.367596,3.367596 0 0 1 3.367236,-3.367236 z"
+                :fill="'#049cff'"
+              />
+            </svg>
+          </v-tab>
           <v-tab :style="`min-width: 50px;max-width:50px;`" class="pa-3 windowbar-button">
             <v-badge color="primary" left offset-x="35" bottom offset-y="17" :value="hasTasks" dot />
             <svg version="1.1" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <path :style="memberTab !== 0 && 'filter:grayscale(1)'" d="m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z" :fill="'#0187f3'" />
+              <path :style="memberTab !== 1 && 'filter:grayscale(1)'" d="m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z" :fill="'#0187f3'" />
             </svg>
           </v-tab>
           <v-tab :style="`min-width: 50px;max-width:50px;`" class="pa-2 windowbar-button">
             <v-badge color="primary" left offset-x="35" bottom offset-y="17" :value="hasInvitations" dot />
             <svg height="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
               <path
-                :style="memberTab !== 1 && 'filter:grayscale(1)'"
+                :style="memberTab !== 2 && 'filter:grayscale(1)'"
                 d="m 15.799846,15.472064 c -4.691982,0 -8.5338938,3.841912 -8.5338938,8.533895 v 0.0024 c 0.00219,1.754435 0.5627167,3.410711 1.5163438,4.801357 -3.6742287,1.070006 -6.4272008,4.336342 -6.4272008,8.345839 v 2.499468 c 1.012e-4,1.009635 0.8185463,1.82808 1.8281816,1.828182 H 27.064112 c 1.009635,-1.02e-4 1.82808,-0.818547 1.828181,-1.828182 v -2.499468 c 0,-3.903169 -2.601925,-7.122957 -6.127265,-8.283948 0.982787,-1.404003 1.566434,-3.080197 1.568713,-4.863248 v -0.0024 c 0,-4.691983 -3.841912,-8.533895 -8.533895,-8.533895 z m 0,3.656364 c 2.715126,0 4.876234,2.160358 4.877532,4.87515 -0.0024,1.946412 -1.149412,3.695969 -2.935089,4.470476 -1.813196,0.791537 -1.252392,3.498107 0.726036,3.504015 h 1.592518 c 2.898623,0 5.175087,2.278293 5.175087,5.177466 v 0.671286 H 6.0114583 v -0.671286 c 0,-2.899173 2.276462,-5.177466 5.1750867,-5.177466 h 1.944823 c 1.979735,-0.0033 2.5428,-2.711944 0.728416,-3.504015 -1.784948,-0.774191 -2.93405,-2.522646 -2.937469,-4.468095 v -0.0024 c 0.0013,-2.714792 2.162408,-4.875151 4.877531,-4.875151 z M 32.552465,6.5167582 c -4.691983,0 -8.533894,3.8419118 -8.533894,8.5338938 v 0.0024 c 0.0022,1.754435 0.562715,3.41071 1.516342,4.801357 -0.350673,0.102122 -0.688913,0.230476 -1.02121,0.371349 0.356126,1.002958 0.552263,2.078543 0.552263,3.199317 v 0.0024 c -1.89e-4,0.15345 -0.01133,0.305013 -0.01905,0.457045 0.821177,-0.545753 1.813396,-0.86172 2.89224,-0.86172 h 1.944823 c 1.979736,-0.0033 2.5428,-2.711944 0.728416,-3.504015 -1.784947,-0.774191 -2.93405,-2.522643 -2.937468,-4.468095 v -0.0024 c 0.0013,-2.714792 2.162407,-4.875151 4.877531,-4.875151 2.715125,0 4.876233,2.160359 4.877531,4.875151 -0.0024,1.946412 -1.149412,3.695969 -2.935088,4.470476 -1.813197,0.791537 -1.252392,3.498107 0.726035,3.504014 h 1.592518 c 2.898624,0 5.175086,2.278295 5.175086,5.177468 V 28.87157 H 24.704133 c 1.798049,0.972797 2.691769,1.930582 3.984864,3.656363 h 15.127726 c 1.009635,-1.01e-4 1.82808,-0.818546 1.828181,-1.828181 v -2.499467 c 0,-3.903169 -2.601925,-7.122957 -6.127264,-8.283948 0.982787,-1.404003 1.566434,-3.080197 1.568713,-4.863248 v -0.0024 c 0,-4.691982 -3.841911,-8.5338938 -8.533894,-8.5338938 z"
                 :fill="'#0187f3'"
               />
@@ -37,46 +47,44 @@
           <v-tab :style="`min-width: 50px;max-width:50px;`" class="pa-2 windowbar-button">
             <svg height="28" version="1.1" viewBox="0 -5 48 48" xmlns="http://www.w3.org/2000/svg">
               <path
-                :style="memberTab !== 2 && 'filter:grayscale(1)'"
+                :style="memberTab !== 3 && 'filter:grayscale(1)'"
                 d="m 8.9624917,-0.40566 c -5.14645,0 -9.35137003,4.20492 -9.35137003,9.35137 v 21.79608 c 0,5.14645 4.20492003,9.35137 9.35137003,9.35137 H 30.758572 c 5.14645,0 9.35136,-4.20492 9.35136,-9.35137 V 8.94571 c 0,-5.14645 -4.20491,-9.35137 -9.35136,-9.35137 z m 0,3.84525 H 30.758572 c 3.08251,0 5.50612,2.42362 5.50612,5.50612 v 21.79608 c 0,3.08251 -2.42361,5.50612 -5.50612,5.50612 H 8.9624917 c -3.08251,0 -5.50613,-2.42361 -5.50613,-5.50612 V 8.94571 c 0,-3.0825 2.42362,-5.50612 5.50613,-5.50612 z M 20.036742,6.83835 c -4.69198,0 -8.53384,3.84186 -8.53384,8.53384 v 0.002 c 0.002,1.75443 0.56256,3.41112 1.51619,4.80177 -3.6742303,1.07001 -6.4270003,4.33625 -6.4270003,8.34574 v 2.49959 c 10e-5,1.00964 0.81816,1.82769 1.82779,1.8278 H 31.301172 c 1.00963,-1.1e-4 1.82769,-0.81816 1.8278,-1.8278 V 28.5217 c 0,-3.90317 -2.60194,-7.12325 -6.12728,-8.28424 0.98279,-1.40401 1.56662,-3.08022 1.5689,-4.86327 v -0.002 c 0,-4.69198 -3.84186,-8.53384 -8.53385,-8.53384 z m 0,3.6561 c 2.71513,0 4.87593,2.16037 4.87723,4.87515 -0.002,1.94641 -1.14903,3.69602 -2.93471,4.47053 -1.81319,0.79154 -1.25237,3.49827 0.72605,3.50418 h 1.59216 c 2.89862,0 5.17539,2.27829 5.17539,5.17746 v 0.67128 h -19.22466 v -0.67128 c 0,-2.89917 2.27677,-5.17746 5.17539,-5.17746 h 1.94458 c 1.97974,-0.003 2.54303,-2.71211 0.72864,-3.50418 -1.78495,-0.77419 -2.93438,-2.52249 -2.9378,-4.46794 v -0.003 c 10e-4,-2.71479 2.16261,-4.87515 4.87773,-4.87515 z"
                 :fill="'#0187f3'"
               />
             </svg>
           </v-tab>
-          <v-tab :style="`position:absolute;right:0px;min-width: 50px;max-width:50px;`" class="pa-2 windowbar-button">
-            <v-badge color="warning" left offset-x="35" bottom offset-y="17" :value="hasMessages" dot />
-            <svg height="28" version="1.1" viewBox="-5 -5 48 48" xmlns="http://www.w3.org/2000/svg">
-              <path
-                :style="memberTab !== 3 && 'filter: grayscale(1)!important;'"
-                d="m 9.7554768,1.9197794 c -5.2488448,0 -9.47435701,4.2255121 -9.47435701,9.4743566 v 10.826213 c 0,4.497199 0.87137051,6.433385 1.94975171,10.882023 0.608895,2.511693 2.0803879,4.665348 4.6648315,4.665348 2.5844434,0 3.853265,-2.211636 4.664831,-4.665348 l 0.465605,-1.407665 h 17.938958 c 5.248843,0 9.474356,-4.225512 9.474356,-9.474358 V 11.394136 c 0,-5.2488445 -4.225513,-9.4743566 -9.474356,-9.4743566 z M 10.851017,13.780554 A 3.367596,3.367596 0 0 1 14.21877,17.14779 3.367596,3.367596 0 0 1 10.851017,20.515543 3.367596,3.367596 0 0 1 7.4837808,17.14779 3.367596,3.367596 0 0 1 10.851017,13.780554 Z m 9.009269,0 a 3.367596,3.367596 0 0 1 3.367753,3.367236 3.367596,3.367596 0 0 1 -3.367753,3.367753 3.367596,3.367596 0 0 1 -3.367236,-3.367753 3.367596,3.367596 0 0 1 3.367236,-3.367236 z m 8.995833,0 a 3.367596,3.367596 0 0 1 3.367755,3.367236 3.367596,3.367596 0 0 1 -3.367755,3.367753 3.367596,3.367596 0 0 1 -3.367236,-3.367753 3.367596,3.367596 0 0 1 3.367236,-3.367236 z"
-                :fill="'#049cff'"
-              />
-            </svg>
-          </v-tab>
+          
         </v-tabs>
         <v-progress-linear v-if="working" indeterminate top fixed class="mt-10" />
       </v-app-bar>
 
       <v-tabs hide-slider v-model="memberTab" height="0" background-color="#eeeeee">
-        <v-tab-item tabindex="0" eager style="overflow: hidden !important">
+        <v-tab-item tabindex="0" style="overflow: hidden !important">
+          <div class="mx-0" :style="`width:100%;overflow-y: auto !important;`">
+            <v-layout align-center justify-start column>
+              <chat />
+            </v-layout>
+          </div>
+        </v-tab-item>
+        <v-tab-item tabindex="1" eager style="overflow: hidden !important">
           <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;`">
             <v-layout align-center justify-start column fill-height>
               <tasks-pannel :group="false" :height="'610px'" :icon="'m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z'" :title="'Personal Tasks'" :subtitle="`${TaskDoneCount} of ${TaskTotalCount - TaskCanceledCount} task(s) done.`" :taskboxList="myTaskboxes" :filtering="filtering" :taskList="filteredList(myTasks, 'title', { value: filter, field: 'status' })" :refreshing="refreshing" @refresh="getTasks(true)" @mounting="setMounting" />
             </v-layout>
           </div>
         </v-tab-item>
-        <v-tab-item tabindex="1" style="overflow: hidden !important">
+        <v-tab-item tabindex="2" style="overflow: hidden !important">
           <div class="mx-0" :style="`width:100%;overflow-y: auto !important;`">
             <v-layout align-center justify-start column fill-height>
               <connections :height="'610px'" />
             </v-layout>
           </div>
         </v-tab-item>
-        <v-tab-item tabindex="2" style="overflow: hidden !important">
+        <v-tab-item tabindex="3" style="overflow: hidden !important">
           <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;background-color:#eeeeee`">
             <v-layout align-center justify-start column>
               <v-app-bar  elevation="2" height="100" width="100%" :src="profile.coverPicture" class="pa-0 ma-0">
-                <member-item  :size="90" :options="['bordered']" :align="'left'" :id="profile.id" :subtitle="session.text" :extraClass="'ma-6'" />
+                <member-item  :size="90" :options="['bordered','session']" :align="'left'" :id="profile.id" :subtitle="session.text" :session="session" :extraClass="'ma-6'" />
                 <v-btn  absolute left style="margin-top: 50px" fab x-small @click="selectAvatar()">
                   <svg width="30" height="30" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                     <path
@@ -121,13 +129,7 @@
             </v-layout>
           </div>
         </v-tab-item>
-        <v-tab-item tabindex="3" style="overflow: hidden !important">
-          <div class="mx-0" :style="`width:100%;overflow-y: auto !important;`">
-            <v-layout align-center justify-start column>
-              <chat />
-            </v-layout>
-          </div>
-        </v-tab-item>
+        
       </v-tabs>
     </v-card>
   </v-menu>

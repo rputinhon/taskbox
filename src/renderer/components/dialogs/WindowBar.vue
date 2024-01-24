@@ -9,22 +9,16 @@
       taskbox
     </v-tooltip>
 
+    <!-- When feed system is ready
+    
     <v-tooltip bottom transition="none">
       <template v-slot:activator="{ on }">
         <v-btn v-show="workRemotelly && authenticated" fab icon x-small v-on="on" class="windowbar-button mx-2 ml-3" @dblclick.stop @click.stop="goToFeed()">
           <v-img contain :style="mainTab !== 1 && 'filter: grayscale(1)!important;'" src="img/globe_128.png" max-width="30px" />
-
-          <!-- <svg style="pointer-events: none" width="28" version="1.1" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-            <path
-              d="m 23.86521,3.1191893 c -11.305829,0 -20.5429321,9.2350367 -20.5429321,20.5408647 0,11.305829 9.2371031,20.542933 20.5429321,20.542933 11.305828,0 20.540863,-9.237104 20.540863,-20.542933 0,-11.305828 -9.235035,-20.5408647 -20.540863,-20.5408647 z m -5.29e-4,3.2943725 a 17.247273,17.247273 0 0 1 0.612365,0.016536 c 0.943543,1.0446959 3.756207,4.4428342 5.447728,9.8159392 H 17.700211 c 1.660282,-5.273868 4.411628,-8.6570986 5.408972,-9.7730476 a 17.247273,17.247273 0 0 1 0.75551,-0.059428 z M 28.78841,7.1370319 A 17.247273,17.247273 0 0 1 39.432206,16.246037 H 33.045527 C 31.948866,12.368733 30.232672,9.269382 28.788423,7.1370319 Z m -9.989041,0.057361 C 17.36285,9.3249164 15.666836,12.401602 14.579472,16.246037 H 8.3250732 A 17.247273,17.247273 0 0 1 18.799369,7.1943929 Z M 7.2419352,19.245853 h 6.6543738 c -0.296225,1.706227 -0.458243,3.529329 -0.425814,5.459099 0.03013,1.792907 0.214283,3.460375 0.507463,5.002279 H 7.7586995 A 17.247273,17.247273 0 0 1 6.6176839,23.661088 17.247273,17.247273 0 0 1 7.2419352,19.245853 Z m 9.6996658,0 h 13.741797 c 0.322244,1.675362 0.503158,3.483399 0.470773,5.410523 -0.03094,1.841303 -0.231923,3.523143 -0.546737,5.050855 H 17.017566 c -0.314814,-1.527712 -0.515794,-3.209552 -0.546737,-5.050855 -0.03238,-1.927124 0.148529,-3.735161 0.470772,-5.410523 z m 16.78709,0 h 6.804753 a 17.247273,17.247273 0 0 1 0.578776,4.415235 17.247273,17.247273 0 0 1 -1.141016,6.046143 h -6.324163 c 0.293179,-1.541904 0.477332,-3.209372 0.507463,-5.002279 0.03243,-1.92977 -0.129588,-3.752872 -0.425813,-5.459099 z M 9.2428466,32.707048 h 5.4808024 c 0.936435,3.031088 2.2598,5.434137 3.49591,7.225913 A 17.247273,17.247273 0 0 1 9.2428466,32.707048 Z m 8.5912064,0 h 11.956892 c -1.48844,4.349506 -3.795569,7.003462 -4.932514,8.123018 a 17.247273,17.247273 0 0 1 -0.993738,0.07803 17.247273,17.247273 0 0 1 -1.106393,-0.08733 c -1.139717,-1.124048 -3.439193,-3.774107 -4.924247,-8.113715 z m 15.067297,0 h 5.585706 a 17.247273,17.247273 0 0 1 -9.12399,7.28741 c 1.248061,-1.797854 2.591197,-4.221845 3.538284,-7.28741 z"
-              :style="mainTab !== 1 && 'filter:grayscale(1)'"
-              fill="#0187f3"
-            />
-          </svg> -->
-        </v-btn>
+       </v-btn>
       </template>
       Feed
-    </v-tooltip>
+    </v-tooltip> -->
 
     <v-toolbar height="40" flat color="transparent" class="px-0 text-center windowbar">
       <v-list-item v-if="analysing !== false && mainTab == 0 && dataReady" class="windowbar">
@@ -48,6 +42,8 @@
     <v-spacer></v-spacer>
 
     <task-box-menu v-if="mainTab == 0 && dataReady" :taskbox="currentTaskBox" :extraClass="'mx-2'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
+
+    <v-btn v-if="!authenticated" rounded small class="mx-1 windowbar-button" color="primary" @dblclick.stop @click.stop="signin()"> signin </v-btn>
 
     <!-- <task-subject v-if="mainTab == 0 && dataReady" :color="'grey'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" /> -->
 
@@ -245,6 +241,9 @@ export default {
     },
   },
   methods: {
+    signin() {
+      this.$store.commit('app/TOGGLE_LOGIN_WINDOW', true);
+    },
     toggleAnalisis() {
       this.$store.commit('taskbox/CHANGE_ANALISIS', this.analysing == false ? 'progress' : false);
       this.$store.commit('taskbox/ANALISE');

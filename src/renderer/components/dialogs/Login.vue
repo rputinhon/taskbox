@@ -51,7 +51,7 @@
            ! reconnect
           </v-btn>
         <v-fade-transition leave-absolute>
-          <v-btn rounded block elevation="6" type="submit" class="mt-4 text--darken-4" color="secondary" value="log in" @click="workOffline()">continue offline</v-btn>
+          <v-btn rounded block elevation="6" type="submit" class="mt-4 text--darken-4" color="secondary" value="log in" @click="keepWorking()">{{authenticated?user.name:'continue offline'}}</v-btn>
         </v-fade-transition>
       </div>
       <v-card-text v-show="serverReady" link class="secondary--text" v-on:click="isRegister = !isRegister">
@@ -135,6 +135,9 @@ export default {
     toggleMessage: function () {
       return this.isRegister ? this.stateObj.register.message : this.stateObj.login.message;
     },
+    authenticated() {
+      return this.$store.getters['user/authenticated'];
+    },
   },
   methods: {
     getUser() {
@@ -147,7 +150,7 @@ export default {
         this.avatar = clip.toDataURL();
       });
     },
-    async workOffline() {
+    async keepWorking() {
       this.resetForm();
       this.$store.commit('app/TOGGLE_LOGIN_WINDOW', false);
     },
