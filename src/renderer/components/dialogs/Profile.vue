@@ -81,7 +81,7 @@
           </div>
         </v-tab-item>
         <v-tab-item tabindex="3" style="overflow: hidden !important">
-          <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;background-color:#eeeeee`">
+          <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;background-color:rgb(245 245 245)`">
             <v-layout align-center justify-start column>
               <v-app-bar  elevation="2" height="100" width="100%" :src="profile.coverPicture" class="pa-0 ma-0">
                 <member-item  :size="90" :options="['bordered','session']" :align="'left'" :id="profile.id" :subtitle="session.text" :session="session" :extraClass="'ma-6'" />

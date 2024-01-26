@@ -83,7 +83,7 @@ export class taskboxDB {
               })
               .on('error', err => {
                 store.commit('user/SET_SERVER_READY', false)
-                store.dispatch('user/LOGOUT');
+                // store.dispatch('user/LOGOUT');
                 console.warn(err)
                 return reject(err)
               })

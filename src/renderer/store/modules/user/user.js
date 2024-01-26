@@ -166,10 +166,12 @@ const actions = {
 
                         store.getters['app/remoteDB'].taskbox()
                             .getUser(response.name).then((user) => {
-                                if (user)
+                                if (user){
+                                    store.commit('taskbox/SUCCESS_CLOSE_ROOT');
                                     dispatch('WORK_ONLINE', user).then(() => {
                                         resolve(response);
                                     });
+                                }
 
                                 else
                                     dispatch('WORK_OFFLINE').then(() => {
@@ -203,6 +205,7 @@ const actions = {
         return new Promise(resolve => {
             store.getters['app/remoteDB'].taskbox()
                 .logOut().then(() => {
+                    store.commit('taskbox/SUCCESS_CLOSE_ROOT');
                     resolve(dispatch("WORK_OFFLINE"));
                 })
         });
@@ -452,8 +455,9 @@ const mutations = {
     async INIT_SESSION(state, request) {
 
 
-        if (state.root && state.root.createdBy !== 'offline')
-            store.commit('taskbox/SUCCESS_CLOSE_ROOT');
+        // if (state.root && state.root.createdBy !== 'offline'){
+        //    store.commit('taskbox/SUCCESS_CLOSE_ROOT');
+        // }
 
         state.user = initialState;
         state.profile = request.profile;
@@ -461,7 +465,6 @@ const mutations = {
         nextTick(() => {
             store.dispatch('connection/GET_ALL', state.profile.id).then(() => {
                 store.dispatch('connection/SET_MESSAGES_RECEIVED').then(() => {
-                    store.commit('taskbox/SUCCESS_CLOSE_ROOT');
                     store.dispatch('user/GET_TASKS', {
                         member: state.profile.id
                     }).then(async () => {
@@ -483,8 +486,6 @@ const mutations = {
             store.commit('app/UPDATE_SETTINGS', state.profile.appSettings)
     },
     async SET_SESSION(state, request) {
-
-        store.commit('taskbox/SUCCESS_CLOSE_ROOT');
 
         state.user = request.user;
         state.profile = request.profile;
