@@ -341,6 +341,7 @@ export function getTimeWasted(due) {
         let start = new Date(due.startedAt).getTime();
         let end = new Date(due.completedAt).getTime();
         let duration = end - start;
+        console.log(duration);
         return duration;
     }
     else

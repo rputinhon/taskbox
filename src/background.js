@@ -55,7 +55,8 @@ async function createWindow() {
   //   console.log(event);
   // })
   app.setAppUserModelId('Taskbox')
-  mainWindow.maximize();
+  
+  // mainWindow.maximize();
 }
 
 const gotTheLock = app.requestSingleInstanceLock()

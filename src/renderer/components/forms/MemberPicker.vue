@@ -1,10 +1,10 @@
 <template>
-  <v-card width="210" max-height="400px" min-height="300" class="overflow-y-auto" color="background">
+  <v-card width="210" max-height="400px"  class="overflow-y-auto" color="background">
     <v-app-bar absolute height="30">
       <v-btn x-small class="mx-2" width="93px" color="secondary" @click="(many = []), (single = null)"> clear </v-btn>
       <v-btn x-small color="primary" width="93px" @click="setWorkers()"> ok </v-btn>
     </v-app-bar>
-    <v-list-item-group v-model="selection" :multiple="multiple" class="mt-8 pa-1 ma-0 overflow-y-auto" active-class="selectedMember">
+    <v-list-item-group  v-model="selection" :multiple="multiple" class="mt-8 pa-1 ma-0 overflow-y-auto" active-class="selectedMember">
       <member-item v-for="member in memberList" :key="member" :size="30" :id="member" :options="['username']" :extraClass="'px-2'" :height="38" :align="'left'" />
     </v-list-item-group>
   </v-card>

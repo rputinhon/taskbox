@@ -69,7 +69,12 @@
         <v-tab-item tabindex="1" eager style="overflow: hidden !important">
           <div class="mx-0" :style="`min-height: auto;max-height: 610px;width:100%;overflow-y: auto !important;`">
             <v-layout align-center justify-start column fill-height>
-              <tasks-pannel :group="false" :height="'610px'" :icon="'m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z'" :title="'Personal Tasks'" :subtitle="`${TaskDoneCount} of ${TaskTotalCount - TaskCanceledCount} task(s) done.`" :taskboxList="myTaskboxes" :filtering="filtering" :taskList="filteredList(myTasks, 'title', { value: filter, field: 'status' })" :refreshing="refreshing" @refresh="getTasks(true)" @mounting="setMounting" />
+              <tasks-pannel :group="false" :height="'610px'" :icon="'m 27.869099,7.3592406 c -0.0059,0.00582 -0.01175,0.011671 -0.01757,0.017571 L 15.712736,19.593636 11.775508,15.802653 c -2.3844606,-2.296403 -6.2323023,-2.22586 -8.5291946,0.15813 -2.29821147,2.38477 -2.2261004,6.2341 0.1596802,8.531262 v 0.0021 l 8.2170694,7.910114 c 2.359122,2.270783 6.1547,2.228842 8.463049,-0.09354 L 36.41018,15.884818 C 38.744077,13.536056 38.731785,9.6851501 36.38279,7.3514891 36.35686,7.3260311 36.33015,7.3013871 36.30269,7.2775921 33.709749,5.197852 30.043786,5.30006 27.869096,7.3592411 Z'" 
+              :title="'Personal Tasks'" 
+              :subtitle="`${TaskDoneCount} of ${TaskTotalCount - TaskCanceledCount} task(s) done.`" 
+              :taskboxList="myTaskboxes" :filtering="filtering" 
+              :taskList="filteredList(myTasks, 'title', { value: filter, field: 'status' })" 
+              :refreshing="refreshing" @refresh="getTasks(true)" @mounting="setMounting" />
             </v-layout>
           </div>
         </v-tab-item>

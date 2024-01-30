@@ -175,12 +175,12 @@ const actions = {
     },
     async SET_MESSAGES_READ({ dispatch, state }, id) {
         let member = state.members.find(m => m.connection == id);
-        if (member && member.lastMessage && member.lastMessage.status !== messageStatus.READ.value)
-            return dispatch('SET_ALL_MESSAGES', { connection: id, status: messageStatus.READ.value }).then((response) => {
+        if (member)
+            return await dispatch('SET_ALL_MESSAGES', { connection: id, status: messageStatus.READ.value }).then((response) => {
                 return response;
             })
         else {
-            return connectionRepository.getMessages(id).then(messages => {
+            return await connectionRepository.getMessages(id).then(messages => {
                 return messages;
             })
         }

@@ -43,26 +43,14 @@
 
     <task-box-menu v-if="mainTab == 0 && dataReady" :taskbox="currentTaskBox" :extraClass="'mx-2'" :options="[analysing !== false && 'white', 'save', 'icon', 'close', 'template', 'reset', 'pack']" />
 
-    <v-btn v-if="!authenticated" rounded small class="mx-1 windowbar-button" color="primary" @dblclick.stop @click.stop="signin()"> signin </v-btn>
 
     <!-- <task-subject v-if="mainTab == 0 && dataReady" :color="'grey'" :task="currentTaskBox" :options="['popup', 'statistics', 'status']" /> -->
-
-    <!-- focus mode -->
-    <!-- <v-tooltip v-if="mainTab == 0 && dataReady" bottom transition="none">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn v-if="mainTab == 0 && dataReady" v-on="on" v-bind="attrs" rounded :color="'primary'" class="mx-1 windowbar-button" fab elevation="0" height="24" width="24" x-small @click="toggleFocusMode()">
-          <svg width="48" height="48" version="1.1" viewBox="-14 -14 48 48" xmlns="http://www.w3.org/2000/svg">
-            <path d="M 9.8261719 0.90234375 C 4.8515464 0.90234375 0.81445312 4.9472608 0.81445312 9.921875 C 0.81445312 14.896489 4.8515464 18.935547 9.8261719 18.935547 C 14.800801 18.935547 18.847656 14.896489 18.847656 9.921875 C 18.847656 4.9472608 14.800801 0.90234375 9.8261719 0.90234375 z M 9.8261719 1.8242188 C 14.301798 1.8242188 17.923828 5.4462341 17.923828 9.921875 C 17.923828 14.397478 14.301798 18.013672 9.8261719 18.013672 C 5.350546 18.013672 1.7363281 14.397478 1.7363281 9.921875 C 1.7363281 5.4462341 5.350546 1.8242188 9.8261719 1.8242188 z M 9.828125 6.8730469 A 3.0494247 3.0494247 0 0 0 6.7792969 9.921875 A 3.0494247 3.0494247 0 0 0 9.828125 12.970703 A 3.0494247 3.0494247 0 0 0 12.876953 9.921875 A 3.0494247 3.0494247 0 0 0 9.828125 6.8730469 z " fill="white" />
-          </svg>
-        </v-btn>
-      </template>
-      focus mode
-    </v-tooltip> -->
-    <!-- focus mode -->
-
-    <v-list-item v-if="authenticated" style="max-width: fit-content" class="ma-0 pa-0 mx-1">
+    <span v-if="workRemotelly">
+    <v-btn v-if="!authenticated" rounded small class="mx-1 windowbar-button" color="primary" @dblclick.stop @click.stop="signin()"> signin </v-btn>
+    <v-list-item v-else style="max-width: fit-content" class="ma-0 pa-0 mx-1">
       <profile />
     </v-list-item>
+    </span>
 
     <v-divider vertical class="mx-2"></v-divider>
 

@@ -47,7 +47,7 @@
           </v-tooltip>
         </v-list-item>
       </v-app-bar>
-      <v-layout column align-center justify-start style="height: 510px;">
+      <v-layout column align-center justify-start style="height: 510px;background-color: #fffcee;">
         <v-card-text style="width: 100%; height: auto; height: 100%" ref="messages" class="pa-3 overflow-y-auto">
           <v-fade-transition hide-on-leave leave-absolute>
             <div v-if="!loading" key="0">
@@ -209,7 +209,8 @@ export default {
     getMessages(value, reload) {
       if (!value || !value.connection) return;
       if (reload) this.loading = true;
-      this.$store.dispatch('connection/GET_MESSAGES', value.connection).then((response) => {
+        this.$store.dispatch('connection/GET_MESSAGES', value.connection).then((response) => {
+          console.log(response,value)
         this.messageList.splice(0, this.messageList.length);
         this.$nextTick(() => {
           this.messageList = response || [];
